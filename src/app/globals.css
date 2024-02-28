@@ -14,3 +14,11 @@ body{
 .global-secondary-container{
     background-color: #283371;
 }
+
+.global-main-text{
+    color: #283371;
+}
+
+.global-main-button{
+    background-color: #283371;
+}
