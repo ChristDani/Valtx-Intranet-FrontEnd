@@ -5,6 +5,8 @@
 
 body{
     background-color: rgb(243 244 246);
+    display: flex;
+    justify-content: center;
 }
 
 .global-main-container{
