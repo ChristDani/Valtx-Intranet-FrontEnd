@@ -13,8 +13,7 @@ export default function AuthenticationPage(){
         setCredentials({
             ...credentials,
             [e.target.name]: e.target.value
-        })
-        console.log(e.target.value);
+        });
     }
 
     const onSubmit = () =>{
@@ -33,7 +32,7 @@ export default function AuthenticationPage(){
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" action="#" method="POST">
                 <div>
-                    <label className="block font-medium text-sm leading-6 text-gray-900">Correo:</label>
+                    <label className="block font-medium text-sm leading-6 text-gray-900">Documento:</label>
                     <div className="mt-2">
                     <input id="document" name="document" type="text" autoComplete="email" 
                     required className="block w-full rounded-md border-0 py-1.5 text-gray-900 
