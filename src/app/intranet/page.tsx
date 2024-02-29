@@ -9,7 +9,7 @@ export default function IntranetPage(){
 
     return(
 
-            <div className="bg-gray-100 ml-80 mt-12 p-4 pt-6">
+            <div className="bg-gray-100 w-full">
 
             {/** Parte superior del home - Banner principal y Noticias **/}
             <div className="main-container">
