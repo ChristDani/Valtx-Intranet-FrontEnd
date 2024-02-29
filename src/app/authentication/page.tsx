@@ -1,5 +1,27 @@
+'use client';
+
+import { SyntheticEvent, useState } from "react";
+
 export default function AuthenticationPage(){
+
+    const [credentials, setCredentials] = useState({
+        document: '',
+        password: ''
+    })
     
+    const onInputChange = (e:any) =>{
+        setCredentials({
+            ...credentials,
+            [e.target.name]: e.target.value
+        })
+        console.log(e.target.value);
+    }
+
+    const onSubmit = () =>{
+      
+    }
+
+
     return(
         <>
         <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
@@ -13,19 +35,30 @@ export default function AuthenticationPage(){
                 <div>
                     <label className="block font-medium text-sm leading-6 text-gray-900">Correo:</label>
                     <div className="mt-2">
-                    <input id="email" name="email" type="email" autoComplete="email" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></input>
+                    <input id="document" name="document" type="text" autoComplete="email" 
+                    required className="block w-full rounded-md border-0 py-1.5 text-gray-900 
+                    shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
+                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={onInputChange}
+                    ></input>
                     </div>
                 </div>
 
                 <div>
                     <div className="flex items-center justify-between">
                     <label className="block text-sm font-medium leading-6 text-gray-900">Constraseña:</label>
-                    <div className="text-sm">
-                        <a href="#" className="font-semibold global-main-text">Recuperar contraseña</a>
-                    </div>
                     </div>
                     <div className="mt-2">
-                    <input id="password" name="password" type="password" autoComplete="current-password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></input>
+                    <input id="password" name="password" type="password" 
+                    autoComplete="current-password" required className="block w-full 
+                    rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
+                    ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                    focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={onInputChange}
+                    ></input>
+                    </div>
+                    <div className="text-sm">
+                        <a href="#" className="font-semibold global-main-text">Recuperar contraseña</a>
                     </div>
                 </div>
 
