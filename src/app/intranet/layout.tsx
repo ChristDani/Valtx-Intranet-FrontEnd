@@ -8,7 +8,7 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
     return(
         <div>
             {/* Contenido principal y Sidebar */}
-            <div className="flex flex-col w-[90%] min-w-[300px] h-auto">
+            <div className="flex flex-col w-[98%] min-w-[300px] h-auto">
 
                 {/* Navbar */}
                 <Navbar />
