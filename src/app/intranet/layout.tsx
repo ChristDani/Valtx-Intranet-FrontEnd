@@ -8,21 +8,16 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
     return(
         <div>
             {/* Contenido principal y Sidebar */}
-            <div className="flex flex-1">
-
-                {/* Sidebar */}
-                <Sidebar />
-
-
-                {/* Contenido principal */}
-                <div className="flex-1">
+            <div className="flex flex-col w-[90%] min-w-[300px] h-auto">
 
                 {/* Navbar */}
                 <Navbar />
                 
+                {/* Sidebar */}
+                <Sidebar />
+                
                 {children}
 
-                </div>
             </div>
         </div>
 

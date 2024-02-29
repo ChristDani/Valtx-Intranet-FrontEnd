@@ -26,13 +26,10 @@ const Sidebar = () => {
   };
 
     return(
-        <div className="bg-gray-100">
+        <div>
         {/* Sidebar */}
-        <div className=" fixed flex-shrink-0 h-auto left-0 top-[4rem] w-80">
-          <div className="flex items-center justify-center h-16  bg-gray-100">
-            <h1 className="text-xl text-gray-600 font-bold">MENÚ</h1>
-          </div>
-          <ul>
+        <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-2xl">
+          <ul className="flex align-middle  justify-center w-fit">
             <Link href="/intranet" className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
             <IoHomeOutline size={20} /> <p className="pl-3">Inicio</p>
             </Link>
@@ -65,7 +62,29 @@ const Sidebar = () => {
             <CiBullhorn size={20} /><p className="pl-3">Noticias</p>
             </li>
           </ul>
-          <hr></hr>
+          <div className="relative flex">
+            <input
+                      type="text"
+                      placeholder="Buscar"
+                      className="px-4 pr-10 rounded-2xl border border-gray-300 focus:outline-none focus:border-blue-500"
+                      />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-2xl">
+                      <svg
+                          className="h-5 w-5 text-gray-400"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                      >
+                          <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M15 15l5-5m0 0l-5-5m5 5h-12"
+                          />
+                      </svg>
+              </div>
+            </div>
         </div>
         </div>
     );
