@@ -61,6 +61,29 @@ const Sidebar = () => {
             <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer">
             <CiBullhorn size={20} /><p className="pl-3">Noticias</p>
             </li>
+            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</li>
+              {expandedItems['item5'] && (
+                <ul className="pl-8">
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Artículos</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Banners</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Blogs</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Documentaciones</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Enlaces</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Entérate</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Eventos</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Iconos</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Valtx News</li>
+                </ul>
+              )}
+            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</li>
+              {expandedItems['item6'] && (
+                <ul className="pl-8">
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Auxiliares</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Parametros</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Perfiles</li>
+                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Usuarios</li>
+                </ul>
+              )}
           </ul>
           <div className="relative flex">
             <input
