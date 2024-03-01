@@ -1,15 +1,17 @@
 'use client';
-import axios from 'axios';
-import crypto from 'crypto'
 
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
+import { loginService } from './services/login.service';
+import { useRouter } from 'next/navigation';
 
-export default function AuthenticationPage() {
+export default function AuthenticationPage(){
 
+    const router = useRouter();
     const [credentials, setCredentials] = useState({
         document: '',
         password: ''
-    })
+    });
+
 
     const onInputChange = (e: any) => {
         setCredentials({
@@ -18,25 +20,12 @@ export default function AuthenticationPage() {
         });
     }
 
-    const encryptPassword = (password: any) => {
-        return crypto.createHash('sha512').update(password).digest('hex').toUpperCase();
-    }
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const userDocument = credentials.document
-        const userPassword = encryptPassword(credentials.password)
-        console.log(`documento: ${userDocument}, password: ${userPassword}`)
-        const res = await axios.post('http://localhost:4000/api/v1/seguridad/login', {
-            email: userDocument,
-            password: userPassword
-        })
-
-        if (res.data.IsSuccess) {
-            console.log(`Mensaje: ${res.data.Message}, Token: ${res.data.tokens.access.token}`);
-        } else {
-            console.log(`Mennsaje: ${res.data.Message}`);
-        }
+        await loginService.validate(credentials);
+        router.push('/intranet');
+        
     }
 
 
