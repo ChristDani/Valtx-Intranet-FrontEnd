@@ -14,9 +14,7 @@ export async function middleware(req:NextRequest){
     }
 
     try{
-        console.log(token)
         const {payload} = await jwtVerify(token!.value, new TextEncoder().encode("202402INTRANET202402"));
-        console.log(payload);
         return NextResponse.next();
 
     } catch(error){
