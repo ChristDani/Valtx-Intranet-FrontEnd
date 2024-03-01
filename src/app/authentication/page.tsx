@@ -19,7 +19,7 @@ export default function AuthenticationPage() {
     }
 
     const encryptPassword = (password: any) => {
-        return crypto.createHash('sha512').update(password).digest('hex').toUpperCase;
+        return crypto.createHash('sha512').update(password).digest('hex').toUpperCase();
     }
 
     const onSubmit = async (e: any) => {
@@ -32,7 +32,11 @@ export default function AuthenticationPage() {
             password: userPassword
         })
 
-        console.log(`Mensaje: ${res.data.Message}, Token: ${res.data.tokens.access.token}`);
+        if (res.data.IsSuccess) {
+            console.log(`Mensaje: ${res.data.Message}, Token: ${res.data.tokens.access.token}`);
+        } else {
+            console.log(`Mennsaje: ${res.data.Message}`);
+        }
     }
 
 
