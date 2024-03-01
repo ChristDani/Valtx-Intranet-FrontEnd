@@ -19,7 +19,7 @@ export const loginService = {
     validate: async (credentials: any) =>{
         const userDocument = credentials.document
         const userPassword = loginService.encryptPassword(credentials.password);
-        const res = await axios.post('http://localhost:3000/api/v1/seguridad/login', {
+        const res = await axios.post('http://localhost:4000/api/v1/seguridad/login', {
             email: userDocument,
             password: userPassword
         })

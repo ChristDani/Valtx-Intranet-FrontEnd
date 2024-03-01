@@ -4,7 +4,7 @@ import { useState } from "react";
 import { loginService } from './services/login.service';
 import { useRouter } from 'next/navigation';
 
-export default function AuthenticationPage(){
+export default function AuthenticationPage() {
 
     const router = useRouter();
     const [credentials, setCredentials] = useState({
@@ -25,7 +25,6 @@ export default function AuthenticationPage(){
         e.preventDefault();
         await loginService.validate(credentials);
         router.push('/intranet');
-        
     }
 
 
@@ -42,32 +41,18 @@ export default function AuthenticationPage(){
                         <div>
                             <label className="block font-medium text-sm leading-6 text-gray-900">Documento:</label>
                             <div className="mt-2">
-                                <input id="document" name="document" type="text" autoComplete="email"
+                                <input required id="document" name="document" type="text" autoComplete="email"
                                     className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 
                     shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
                     focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={onInputChange}
                                 ></input>
                             </div>
-                            {/* </div>
-
-                        <div>
-                            <div className="flex items-center justify-between">
-                                <label className="block text-sm font-medium leading-6 text-gray-900">Constraseña:</label>
-                                <div className="text-sm">
-                                    <a href="#" className="font-semibold global-main-text">Recuperar contraseña</a>
-                                </div>
-                            </div>
-                            <div className="mt-2">
-                                <input id="password" name="password" type="password" autoComplete="current-password" required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"></input>
-                            </div>
-                        </div>
-                <div> */}
                             <div className="flex items-center justify-between">
                                 <label className="block text-sm font-medium leading-6 text-gray-900">Constraseña:</label>
                             </div>
                             <div className="mt-2">
-                                <input id="password" name="password" type="password"
+                                <input required id="password" name="password" type="password"
                                     autoComplete="current-password" className="block w-full 
                     rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
