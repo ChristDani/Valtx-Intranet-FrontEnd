@@ -28,7 +28,7 @@ const Sidebar = () => {
     return(
         <div>
         {/* Sidebar */}
-        <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-2xl">
+        <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
           <ul className="flex align-middle  justify-center w-fit">
             <Link href="/intranet" className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
             <IoHomeOutline size={20} /> <p className="pl-3">Inicio</p>
@@ -89,9 +89,9 @@ const Sidebar = () => {
             <input
                       type="text"
                       placeholder="Buscar"
-                      className="px-4 pr-10 rounded-2xl border border-gray-300 focus:outline-none focus:border-blue-500"
+                      className="px-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500 bg-[#E6E6F1] placeholder-gray-400"
                       />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-2xl">
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
                       <svg
                           className="h-5 w-5 text-gray-400"
                           xmlns="http://www.w3.org/2000/svg"
