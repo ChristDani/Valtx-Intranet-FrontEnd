@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { SetStateAction, useState } from 'react';
 import Link from "next/link";
 
 import { IoHomeOutline } from "react-icons/io5";
@@ -16,74 +16,87 @@ interface ExpandedItems {
 }
 
 const Sidebar = () => {
-  const [expandedItems, setExpandedItems] = useState<ExpandedItems>({});
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
-  const toggleItem = (itemName: string) => {
-    setExpandedItems((prevState) => ({
-      ...prevState,
-      [itemName]: !prevState[itemName],
-    }));
+  const toggleItem = (item: string) => {
+    if (expandedItem === item) {
+      setExpandedItem(null);
+  } else {
+      setExpandedItem(item);
+  }
   };
 
     return(
         <div>
         {/* Sidebar */}
         <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
-          <ul className="flex align-middle  justify-center w-fit">
-            <Link href="/intranet" className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
-            <IoHomeOutline size={20} /> <p className="pl-3">Inicio</p>
-            </Link>
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-xl cursor-pointer" onClick={() => toggleItem('item2')}>
-            <RiTeamLine size={20} /> <p className="pl-3">Nosotros</p>
+        <ul className="flex align-middle justify-center w-fit">
+            <li className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
+                <Link href="/intranet" className="flex items-center">
+                    <IoHomeOutline size={20} /> <p className="pl-3">Inicio</p>
+                </Link>
             </li>
-              {expandedItems['item2'] && (
-                <ul className="pl-8">
-                  <Link href="/intranet/pages/us" className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Subitem 1</Link>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Subitem 2</li>
-                </ul>
-              )}
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>
-            <LiaShareAltSolid size={20} /> <p className="pl-3">Áreas</p>
+            <li className="relative">
+                <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item2')}>
+                    <RiTeamLine size={20} /> <p className="pl-3">Nosotros</p>
+                </div>
+                {expandedItem === 'item2' && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <Link href="/intranet/pages/us" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</Link>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 2</div>
+                    </div>
+                )}
             </li>
-              {expandedItems['item3'] && (
-                <ul className="pl-8">
-                  <Link href="/intranet/pages/areas" className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Subitem 1</Link>
-                </ul>
-              )}
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>
-            <GiGraduateCap size={20} /> <p className="pl-3">E-learning</p>
+            <li className="relative">
+                <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>
+                    <LiaShareAltSolid size={20} /> <p className="pl-3">Áreas</p>
+                </div>
+                {expandedItem === 'item3' && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <Link href="/intranet/pages/areas" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</Link>
+                    </div>
+                )}
             </li>
-              {expandedItems['item4'] && (
-                <ul className="pl-8">
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Subitem 1</li>
-                </ul>
-              )}
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer">
-            <CiBullhorn size={20} /><p className="pl-3">Noticias</p>
+            <li className="relative">
+                <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>
+                    <GiGraduateCap size={20} /> <p className="pl-3">E-learning</p>
+                </div>
+                {expandedItem === 'item4' && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</div>
+                    </div>
+                )}
             </li>
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</li>
-              {expandedItems['item5'] && (
-                <ul className="pl-8">
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Artículos</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Banners</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Blogs</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Documentaciones</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Enlaces</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Entérate</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Eventos</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Iconos</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Valtx News</li>
-                </ul>
-              )}
-            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300  rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</li>
-              {expandedItems['item6'] && (
-                <ul className="pl-8">
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Auxiliares</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Parametros</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Perfiles</li>
-                  <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-200  rounded-xl cursor-pointer">Usuarios</li>
-                </ul>
-              )}
+            <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer">
+                <CiBullhorn size={20} /><p className="pl-3">Noticias</p>
+            </li>
+            <li className="relative">
+                <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
+                {expandedItem === 'item5' && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Artículos</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Banners</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Blogs</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Documentaciones</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Enlaces</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Entérate</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Eventos</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Iconos</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Valtx News</div>
+                    </div>
+                )}
+            </li>
+            <li className="relative">
+                <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</div>
+                {expandedItem === 'item6' && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Auxiliares</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Parametros</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Perfiles</div>
+                        <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Usuarios</div>
+                    </div>
+                )}
+            </li>
           </ul>
           <div className="relative flex">
             <input
