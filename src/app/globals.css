@@ -18,7 +18,11 @@ body{
 }
 
 .global-main-text{
-    color: #283371;
+    color: #1f2f79;
+}
+
+.global-secondary-text{
+    color: #1aabe3;
 }
 
 .global-main-button{
