@@ -16,18 +16,23 @@ export const loginService = {
         document.cookie = name + "=" + value + ";" + expires + ";path=/";
     },
 
-    validate: async (credentials: any) =>{
+    validate: async (credentials: any) => {
         const userDocument = credentials.document
         const userPassword = loginService.encryptPassword(credentials.password);
         const res = await axios.post('http://localhost:4000/api/v1/seguridad/login', {
             email: userDocument,
             password: userPassword
         })
-        
+
 
         if (res.data.IsSuccess) {
             console.log(`Mensaje: ${res.data.Message}, Token: ${res.data.tokens.access.token}`);
-            loginService.setCookie("token", res.data.tokens.access.token, 1);  
+            loginService.setCookie("token", res.data.tokens.access.token, 1);
+            localStorage.setItem("userId", res.data.data.iid_usuario);
+            localStorage.setItem("userDocument", res.data.data.vnro_documento);
+            localStorage.setItem("userName", res.data.data.vnombres);
+            localStorage.setItem("userFirstLastName", res.data.data.vapellido_paterno);
+            localStorage.setItem("userSecondLastName", res.data.data.vapellido_materno);
         } else {
             console.log(`Mennsaje: ${res.data.Message}`);
         }
