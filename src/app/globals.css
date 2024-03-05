@@ -19,10 +19,12 @@ body{
 
 .global-main-text{
     color: #1f2f79;
+    font-size: 1.5rem;
 }
 
 .global-secondary-text{
     color: #1aabe3;
+    font-size: 1rem;
 }
 
 .global-main-button{
