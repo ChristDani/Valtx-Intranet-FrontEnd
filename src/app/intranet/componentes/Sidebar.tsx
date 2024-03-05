@@ -1,14 +1,7 @@
 'use client';
 
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import Link from "next/link";
-
-import { IoHomeOutline } from "react-icons/io5";
-import { RiTeamLine } from "react-icons/ri";
-import { LiaShareAltSolid } from "react-icons/lia";
-import { GiGraduateCap } from "react-icons/gi";
-import { CiBullhorn } from "react-icons/ci";
-
 
 // Definimos un tipo para el estado
 interface ExpandedItems {
