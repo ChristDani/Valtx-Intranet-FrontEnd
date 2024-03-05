@@ -7,7 +7,7 @@ const Events = () =>{
 
         <>
             <div className="flex justify-between align-bottom font-bold mt-4">
-                <h1 className="text-lg global-main-text"> Entérate </h1>
+                <h1 className="text-lg global-main-text"> Celebraciones </h1>
                 <span className="global-secondary-text">Ver todos</span>
             </div>
             <ul className="mt-4 w-full bg-white rounded-2xl">
