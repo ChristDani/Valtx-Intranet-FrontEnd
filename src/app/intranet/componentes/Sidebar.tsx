@@ -36,19 +36,13 @@ const Sidebar = () => {
             <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
                 <ul className="flex align-middle justify-center w-fit">
                     <li className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
-                        <Link href="/intranet" className="flex items-center">
-                            <IoHomeOutline size={20} /> <p className="pl-3">Inicio</p>
-                        </Link>
+                        <Link href="/intranet" className="flex items-center">Inicio</Link>
                     </li>
                     <li className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
-                        <Link href="/intranet/pages/us" className="flex items-center">
-                            <RiTeamLine size={20} /> <p className="pl-3">Nosotros</p>
-                        </Link>
+                        <Link href="/intranet/pages/us" className="flex items-center">Nosotros</Link>
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>
-                            <LiaShareAltSolid size={20} /> <p className="pl-3">Áreas</p>
-                        </div>
+                        <div className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>Áreas</div>
                         {expandedItem === 'item3' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <Link href="/intranet/pages/areas" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</Link>
@@ -56,9 +50,7 @@ const Sidebar = () => {
                         )}
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>
-                            <GiGraduateCap size={20} /> <p className="pl-3">E-learning</p>
-                        </div>
+                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>E-learning</div>
                         {expandedItem === 'item4' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</div>
@@ -66,7 +58,7 @@ const Sidebar = () => {
                         )}
                     </li>
                     <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer">
-                        <CiBullhorn size={20} /><p className="pl-3">Noticias</p>
+                        <Link href={""}>Noticias</Link>
                     </li>
                     <li className="relative">
                         <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
