@@ -28,14 +28,14 @@ const Sidebar = () => {
             {/* Sidebar */}
             <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
                 <ul className="flex align-middle justify-center w-fit">
-                    <li className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
+                    <li className="flex px-6 py-3 text-gray-900 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href="/intranet" className="flex items-center">Inicio</Link>
                     </li>
-                    <li className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer">
+                    <li className="flex px-6 py-3 text-gray-900 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href="/intranet/pages/us" className="flex items-center">Nosotros</Link>
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-900 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>Áreas</div>
+                        <div className="flex px-6 py-3 text-gray-900 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item3')}>Áreas</div>
                         {expandedItem === 'item3' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <Link href="/intranet/pages/areas" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</Link>
@@ -43,18 +43,18 @@ const Sidebar = () => {
                         )}
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>E-learning</div>
+                        <div className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item4')}>E-learning</div>
                         {expandedItem === 'item4' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <div className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Subitem 1</div>
                             </div>
                         )}
                     </li>
-                    <li className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer">
+                    <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href={""}>Noticias</Link>
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
+                        <div className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
                         {expandedItem === 'item5' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/articulos">Artículos</Link>
@@ -70,7 +70,7 @@ const Sidebar = () => {
                         )}
                     </li>
                     <li className="relative">
-                        <div className="flex px-6 py-3 text-gray-700 hover:bg-gray-300 rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</div>
+                        <div className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</div>
                         {expandedItem === 'item6' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/auxiliares">Auxiliares</Link>
