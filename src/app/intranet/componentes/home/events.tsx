@@ -6,13 +6,17 @@ const Events = () =>{
     return(
 
         <>
-            <h1 className='text-xl font-bold text-cyan-900'>Eventos</h1>
-            <ul className="mt-4 w-full">
-                <li className="flex justify-center items-center border border-solid border-slate-700 rounded-xl p-2">
+            <div className="flex justify-between align-bottom font-bold mt-4">
+                <h1 className="text-lg global-main-text"> Entérate </h1>
+                <span className="global-secondary-text">Ver todos</span>
+            </div>
+            <ul className="mt-4 w-full bg-white rounded-2xl">
+                <li className="flex justify-center items-center p-4">
                 <GiCupidonArrow />
                     <h1 className='text-md ml-3 font-bold text-cyan-900 text-center'>San Valentín</h1>
                 </li>
-                <li className="flex justify-center items-center border border-solid border-slate-700 rounded-xl p-2 mt-2">
+                <hr></hr>
+                <li className="flex justify-center items-center  p-4">
                     <CgGym />
                     <h1 className='text-md ml-3 font-bold text-cyan-900 text-center'>Vida Saludable</h1>
                 </li>
