@@ -1,4 +1,4 @@
-const UsPage = () =>{
+    const UsPage = () =>{
     
     return(
 
