@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image'
 
 export default function Navbar(){
 
@@ -10,8 +11,8 @@ export default function Navbar(){
         
         <div className="flex items-center h-16 justify-between my-6 text-white top-0 w-full">
                 <div className="relative flex">
-                    <div className=" text-4xl text-[#283371] font-bold text-center">VALTX</div>
-        </div>
+                    <Image src="ValtxIco.svg" alt="Descripción de la imagen" width={120} height={80} ></Image>
+                </div>
                 <div className="flex items-center">
             <img src="https://t3.ftcdn.net/jpg/04/77/87/44/360_F_477874414_kSQ9ip26804g8B3ItYsh5XsjNRgqf693.jpg" alt="Foto de perfil" className="w-10 h-10 rounded-full mr-2" />
             <h3 className="text-black mr-2">Hola, {localStorage.getItem("userName")} {localStorage.getItem("userFirstLastName")} {localStorage.getItem("userSecondLastName")}</h3>
