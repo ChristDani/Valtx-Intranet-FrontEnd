@@ -4,7 +4,7 @@ export const Enterate = () =>{
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom font-bold mt-4">
                 <h1 className="text-lg global-main-text"> Entérate </h1>
-                <span className="global-secondary-text">Ver todos</span>
+                <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
 
             {/** Contenido */}

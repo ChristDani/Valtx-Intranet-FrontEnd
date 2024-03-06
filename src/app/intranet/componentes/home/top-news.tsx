@@ -6,7 +6,7 @@ const TopNews = () =>{
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
                 <h1 className="global-main-text text-lg"> Valtx news </h1>
-                <span className="global-secondary-text">Ver todos</span>
+                <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
             <div className="flex flex-row w-full h-64">
 

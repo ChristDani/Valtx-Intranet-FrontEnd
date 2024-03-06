@@ -7,7 +7,7 @@ const Articles = () =>{
         <>
         <div className="flex justify-between align-bottom font-bold mt-4">
                 <h1 className="text-lg global-main-text"> Nuestro blog </h1>
-                <span className="global-secondary-text">Ver todos</span>
+                <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
         <div className="flex justify-between">
 

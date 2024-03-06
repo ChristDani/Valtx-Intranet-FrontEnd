@@ -4,7 +4,7 @@ export const Novedades = () =>{
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
                 <h1 className="text-lg global-main-text"> Novedades </h1>
-                <span className="global-secondary-text">Ver todos</span>
+                <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
 
             {/** Contenido */}
