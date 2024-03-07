@@ -2,7 +2,8 @@ import axios from 'axios'
 
 export const bannerServices = {
     async getBanners() {
-        const res = await axios.post('http://localhost:4000/api/v1/banner/getBannerList')
+        const res = await axios.post('http://localhost:4000/api/v1/banner/getBannerList');
+        return res;
     },
     
     async getBanner(id:any) {
