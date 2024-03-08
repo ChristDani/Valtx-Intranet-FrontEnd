@@ -1,3 +1,4 @@
+'use client'
 import axios, { AxiosRequestConfig } from 'axios'
 import axiosClient from './axios';
 import { getCookie } from '../get-cookie.service';
