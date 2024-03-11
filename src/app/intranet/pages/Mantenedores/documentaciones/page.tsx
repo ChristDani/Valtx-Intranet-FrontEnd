@@ -16,8 +16,6 @@ const DocuPage = () =>{
         const documentList = await documentacionServices.getDocumentaciones(1, 10);
 
         setDocumentation(documentList.data)
-
-        console.log(documentList);
     }
 
     return(

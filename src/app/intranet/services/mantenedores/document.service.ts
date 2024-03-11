@@ -17,8 +17,6 @@ export const documentacionServices = {
             "vtitulo": "",
             "iid_estado_registro": -1
         });
-        
-        console.log(data)
 
         return data;
     },
