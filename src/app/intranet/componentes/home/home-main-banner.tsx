@@ -17,7 +17,6 @@ const HomeMainBanner = () =>{
 
     }, []);
 
-
     const getAllBanners = async ()=>{
         try {
 
@@ -26,7 +25,7 @@ const HomeMainBanner = () =>{
 
             const imagesToAdd = bannersList.map((banner:any) => banner.vimagen);
             setImages(imagesToAdd);
-            console.log(images);
+
         } catch (error) {
             console.error('Error al obtener banners:', error);
         }
@@ -50,7 +49,7 @@ const HomeMainBanner = () =>{
       };
 
     return(
-        <div className='max-w-[1400px] h-[500px] w-full m-auto py-8 relative group'>
+        <div className='relative max-w-[1400px] h-[500px] w-full m-auto py-8 relative group'>
         <div
          style={{ backgroundImage: `url(${`/images/${images[currentIndex]}`})` }} 
           className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
@@ -65,14 +64,14 @@ const HomeMainBanner = () =>{
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
           <BsChevronCompactRight onClick={nextSlide} size={30} />
         </div>
-        <div className='flex top-4 justify-center py-2'>
+        <div className='absolute flex bottom-10 right-10 py-2'>
           {images.map((image, slideIndex) => (
             <div
               key={slideIndex}
               onClick={() => goToSlide(slideIndex)}
-              className='text-2xl cursor-pointer'
+              className={`text-2xl cursor-pointer ${slideIndex === currentIndex ? 'active-indicator' : ''}`}
             >
-              <RxDotFilled />
+              <div className="bg-white h-2 mr-2 rounded-2xl w-10" style={{ backgroundColor: slideIndex === currentIndex ? '#31BAFF' : 'white' }}></div>
             </div>
           ))}
         </div>

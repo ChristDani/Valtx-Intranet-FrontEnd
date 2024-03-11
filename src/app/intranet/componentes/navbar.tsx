@@ -1,11 +1,16 @@
 'use client';
 
 import Image from 'next/image'
+import { useState } from 'react';
 
 export default function Navbar() {
 
+    const [nombre, setNombre] = useState('');
+
     const UserName = async () => {
         const userdoc = localStorage.getItem("userDocument");
+        const userName = localStorage.getItem("userName") + ' ' + localStorage.getItem("userFirstLastName") + ' ' + localStorage.getItem("userSecondLastName");
+        setNombre(userName);
     }
 
     return (
