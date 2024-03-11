@@ -17,7 +17,6 @@ const HomeMainBanner = () =>{
 
     }, []);
 
-
     const getAllBanners = async ()=>{
         try {
 
@@ -26,7 +25,7 @@ const HomeMainBanner = () =>{
 
             const imagesToAdd = bannersList.map((banner:any) => banner.vimagen);
             setImages(imagesToAdd);
-            console.log(images);
+
         } catch (error) {
             console.error('Error al obtener banners:', error);
         }
