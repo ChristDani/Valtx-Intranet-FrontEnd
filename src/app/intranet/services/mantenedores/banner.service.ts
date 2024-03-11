@@ -13,13 +13,13 @@ tokenAuth(token);
 export const bannerServices = {
 
 
-    async getBanners() { 
+    async getBanners(pageNumber:number, bannersPerPage:number) { 
         
         const { data } = await axiosClient.post('api/v1/banner/getBannerList', {
-            "inumero_pagina": 0,
-            "itotal_pagina": 10,
+            "inumero_pagina": pageNumber-1,
+            "itotal_pagina": bannersPerPage,
             "vtitulo": "",
-            "iid_estado_registro": 1
+            "iid_estado_registro": -1
         });
 
         return data;
