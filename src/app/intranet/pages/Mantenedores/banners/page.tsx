@@ -36,7 +36,7 @@ const BannPage = () => {
                 {
                     banners.map(banner => (
 
-                            <Image src={`http://localhost:4000/public/${banner.vimagen}`} alt="prueba" width={200} height={500}></Image>
+                            <Image src={`/images/${banner.vimagen}`} alt={`${banner.vtextobreve}`} width={200} height={500} key={banner.iid_banner}></Image>
                     ))
                 }
             </div>
