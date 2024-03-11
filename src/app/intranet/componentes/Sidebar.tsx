@@ -50,9 +50,9 @@ const Sidebar = () => {
                             </div>
                         )}
                     </li>
-                    <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
+                    {/* <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href={""}>Noticias</Link>
-                    </li>
+                    </li> */}
                     <li className="relative">
                         <div className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
                         {expandedItem === 'item5' && (
@@ -65,6 +65,7 @@ const Sidebar = () => {
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/enterate">Entérate</Link>
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/eventos">Eventos</Link>
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/iconos">Iconos</Link>
+                                <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/novedades">Novedades</Link>
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/news">Valtx News</Link>
                             </div>
                         )}
