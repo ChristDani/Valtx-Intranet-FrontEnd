@@ -49,7 +49,7 @@ const HomeMainBanner = () =>{
       };
 
     return(
-        <div className='relative max-w-[1400px] h-[500px] w-full m-auto py-8 relative group'>
+        <div className='relative max-w-[1400px] h-[500px] w-full m-auto relative group'>
         <div
          style={{ backgroundImage: `url(${`/images/${images[currentIndex]}`})` }} 
           className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
