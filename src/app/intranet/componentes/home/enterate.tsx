@@ -41,14 +41,14 @@ export const Enterate = () =>{
                         <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>                  
                     </span>
                     
-                    <img src={`/images/${items[0].vimagen}`}></img>
+                    {items.length > 1 ? <img src={`/images/${items[0].vimagen}`} /> : null}
                 </div>
                 <div className="relative bg-[white] cursor-pointer h-40 rounded-2xl mt-3 overflow-hidden w-full">
                     <span className="flex absolute align-middle h-full justify-center  w-full">     
                         <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>                  
                     </span>
                     
-                    <img src={`/images/${items[0].vimagen}`}></img>
+                    {items.length > 1 ? <img src={`/images/${items[1].vimagen}`} /> : null}
                 </div>
                 
             </div>
