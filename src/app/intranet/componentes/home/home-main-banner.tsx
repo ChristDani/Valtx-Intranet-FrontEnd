@@ -8,7 +8,7 @@ import { RxDotFilled } from 'react-icons/rx';
 
 const HomeMainBanner = () =>{
 
-    const [images, setImages] = useState<string[]>([]);
+    const [banners, setBanners] = useState([{vimagen: '', vlink:'', vredireccion:''}]);
 
 
     useEffect(()=>{
@@ -22,24 +22,28 @@ const HomeMainBanner = () =>{
 
             const banners = await bannerServices.getBanners(1,10);
             const bannersList = banners.data;
-
-            const imagesToAdd = bannersList.map((banner:any) => banner.vimagen);
-            setImages(imagesToAdd);
+            bannersList.sort((a:any, b:any)=> a.iorden - b.iorden);
+            setBanners(bannersList);
 
         } catch (error) {
             console.error('Error al obtener banners:', error);
         }
+    }
+
+    const goLink = () =>{
+      const banner = banners[currentIndex]
+      window.open(banner.vlink, banner.vredireccion);
     }
     
       const [currentIndex, setCurrentIndex] = useState(0);
     
       const prevSlide = () => {
         const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? images.length - 1 : currentIndex - 1;
+        const newIndex = isFirstSlide ? banners.length - 1 : currentIndex - 1;
         setCurrentIndex(newIndex);
       };
       const nextSlide = () => {
-        const isLastSlide = currentIndex === images.length - 1;
+        const isLastSlide = currentIndex === banners.length - 1;
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
       };
@@ -49,10 +53,11 @@ const HomeMainBanner = () =>{
       };
 
     return(
-        <div className='relative max-w-[1400px] h-[500px] w-full m-auto relative group'>
+        <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full m-auto relative group'>
         <div
-         style={{ backgroundImage: `url(${`/images/${images[currentIndex]}`})` }} 
           className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
+          style={{ backgroundImage: `url(${`/images/${banners[currentIndex].vimagen}`})` }} 
+          onClick={goLink}
         >
         </div>
         {/* Flecha izquierda */}
@@ -65,7 +70,7 @@ const HomeMainBanner = () =>{
           <BsChevronCompactRight onClick={nextSlide} size={30} />
         </div>
         <div className='absolute flex bottom-10 right-10 py-2'>
-          {images.map((image, slideIndex) => (
+          {banners.map((banner, slideIndex) => (
             <div
               key={slideIndex}
               onClick={() => goToSlide(slideIndex)}
