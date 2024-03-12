@@ -1,5 +1,31 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { newsServices } from "../../services/mantenedores/news.service";
 
 const TopNews = () =>{
+
+    const [newsList, setNewsList] = useState([{vimagen:'', vlink:''}]);
+
+    useEffect(()=>{
+
+        getNews();
+
+    }, []);
+
+
+    const getNews = async () =>{
+        try{
+
+            const news = await newsServices.getNews(1,10);
+            const newsL = news.data;
+            newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
+            setNewsList(newsL);
+
+        }catch(e){
+
+        }
+    }
 
     return(
         
@@ -11,11 +37,11 @@ const TopNews = () =>{
             <div className="flex flex-row w-full h-64">
 
                 <div className="w-1/2 h-[100%] p-4 pl-0">
-                    <div className="h-full rounded-2xl bg-white bg-cover" style={{ backgroundImage: "url(https://www.valtx.pe/img/nosotros/certificaciones-ISO-3.png)"}}></div>
+                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer" style={{ backgroundImage: `url(/images/${newsList[0].vimagen})`}}></div> : null}
                 </div>
 
                 <div className="w-1/2 h-[100%] p-4 pr-0">
-                    <div className="h-full rounded-2xl bg-white bg-contain" style={{ backgroundImage: "url(https://i.ytimg.com/vi/RykPB87_PAQ/maxresdefault.jpg)"}}></div>
+                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer" style={{ backgroundImage: `url(/images/${newsList[1].vimagen})`}}></div> : null}
                 </div>
 
             </div>
