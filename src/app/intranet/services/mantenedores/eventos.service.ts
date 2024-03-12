@@ -10,10 +10,10 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const eventServices = {
-    async getEvents(pageNumber:number, novedadesPerPage:number) {
+    async getEvents(pageNumber:number, eventsPerPage:number) {
         const { data } = await axiosClient.post('api/v1/evento/getEventoList', {
             "inumero_pagina": pageNumber-1,
-            "itotal_pagina": novedadesPerPage,
+            "itotal_pagina": eventsPerPage,
             "vtitulo": "",
             "iid_estado_registro": -1
         });
