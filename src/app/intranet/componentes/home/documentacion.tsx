@@ -14,7 +14,7 @@ export const Documentacion = () =>{
 
 
     const getAllDocumentation = async () =>{
-        const docum = await documentacionServices.getDocumentaciones(1,10);
+        const docum = await documentacionServices.getList(1,10, "", -1);
         const documList = docum.data;
         setDocumns(documList);
 

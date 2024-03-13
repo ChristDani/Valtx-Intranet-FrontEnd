@@ -17,7 +17,7 @@ const TopNews = () =>{
     const getNews = async () =>{
         try{
 
-            const news = await newsServices.getNews(1,10);
+            const news = await newsServices.getList(1, 10, "", -1);
             const newsL = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setNewsList(newsL);

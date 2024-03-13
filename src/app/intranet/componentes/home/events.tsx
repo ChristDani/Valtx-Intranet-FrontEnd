@@ -18,7 +18,7 @@ const Events = () =>{
     }, []);
 
     const getAllEvents = async () =>{
-        const eventsResponse = await eventServices.getEvents(1,10);
+        const eventsResponse = await eventServices.getList(1, 10, "", -1);
         const eventsList = eventsResponse.data;
         eventsList.sort((a:any, b:any)=> a.iorden - b.iorden);
         setEvents(eventsList);

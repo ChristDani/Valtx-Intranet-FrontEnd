@@ -18,7 +18,7 @@ const Articles = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes = await blogServices.getList(1,10);
+        const articlesRes = await blogServices.getList(1,10, "", -1);
         const articlesList = articlesRes.data;
         console.log(articlesRes);
         setArticles(articlesList);
