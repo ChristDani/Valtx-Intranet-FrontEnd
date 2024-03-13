@@ -5,26 +5,25 @@ import { documentacionServices } from "../../services/mantenedores/document.serv
 
 export const Documentacion = () =>{
 
-    const [images, setImages] = useState<string[]>([]);
+    const [docums, setDocumns] = useState<any[]>([]);
 
     useEffect(()=>{
         getAllDocumentation();
-        console.log(images);
     }, []);
 
-    
-    useEffect(()=>{
-        console.log(images)
-      }, [images])
-  
+
 
     const getAllDocumentation = async () =>{
         const docum = await documentacionServices.getDocumentaciones(1,10);
         const documList = docum.data;
-        const imagesToAdd = documList.map((docum:any) => docum.vimagen);
-        setImages(imagesToAdd);
+        setDocumns(documList);
 
     }
+
+    const goLink = (vlink: string, redireccion: string) =>{
+        if(vlink == null || vlink == '') return;
+        window.open(vlink, redireccion);
+      }
 
     return(
         <div className="flex flex-col">
@@ -35,20 +34,20 @@ export const Documentacion = () =>{
             {/** Contenido */}
             <div className="cursor-pointer flex flex-col rounded-2xl justify-between">
 
-                <div className="bg-cover cursor-pointer  w-full h-40 rounded-2xl mt-3"
-                        style={{ backgroundImage: `url(${`/images/${images[0]}`})` }}>
-
+            {docums.map((docum,index)=>(
+                <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full">
+                    <span className="absolute top-0 left-0 w-full h-full bg-black opacity-55 hover:opacity-25 z-30">
+                        
+                    </span>
+                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40" onClick={() => { goLink(docum.vlink, docum.vredireccion) }}>
+                        <h1 className="text-white text-2xl">
+                            {docum.vtitulo}
+                        </h1>
+                    </span>
+                    <img src={`/images/${docum.vimagen}`} className="easy-in duration-500 w-full"></img>
                 </div>
-                <div className="bg-cover cursor-pointer  w-full h-40 rounded-2xl mt-4"
-                        style={{ backgroundImage: `url(${`/images/${images[1]}`})` }}>
-
-                </div>
-
-                <div className="bg-cover cursor-pointer  w-full h-40 rounded-2xl mt-4"
-                        style={{ backgroundImage: `url(${`/images/${images[2]}`})` }}>
-
-                </div>
-                
+            ))}
+            
             </div>
         </div>
     );
