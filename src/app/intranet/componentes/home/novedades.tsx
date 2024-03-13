@@ -16,8 +16,8 @@ export const Novedades = () =>{
             <div className="flex w-full h-96 bg-white rounded-2xl mt-3">
             <div className=" h-full w-2/3">
                         {/** Header */}
-                        <div className="bg-[#31BAFF] h-44 p-4 rounded-br-full w-full">
-                           <h1 className="flex text-6xl text-white justify-center"> Conoce al nuevo Gerente Comercial </h1>
+                        <div className="bg-[#31BAFF] h-44 p-4 rounded-br-full rounded-tl-lg w-full">
+                           <h1 className="flex text-5xl text-white justify-center"> Conoce al nuevo Gerente Comercial </h1>
                         </div>
                         {/** Content */}
                         <div className="p-4 pr-10">
@@ -29,7 +29,7 @@ export const Novedades = () =>{
                 </div>
                 <div className="h-full  w-1/3">
                         <div className="flex h-60 pt-4 justify-center w-full">
-                            <div className="h-[80%] w-[60%] rounded-full bg-cover"
+                            <div className="h-[80%] w-[60%] rounded-full bg-cover border-2 border-[#31BAFF]"
                                 style={{ backgroundImage: `url(gerente.png)` }}>
                             </div>
                         </div>
