@@ -6,7 +6,7 @@ import { blogServices } from "../../services/mantenedores/blogs.service";
 
 const Articles = () =>{
 
-    const [articles, setArticles] = useState([{vtitulo:'', vtextobreve:'', vlink:'', vimagen:''}]); 
+    const [articles, setArticles] = useState([{vtitulo:'', vtextobreve:'', vlink:'', vredireccion:'', vimagen:''}]); 
 
 {}
     useEffect(()=>{
@@ -24,6 +24,12 @@ const Articles = () =>{
         setArticles(articlesList);
     }
 
+    const goLink = (vlink: string, vredireccion: string) =>{
+        if(vlink == null || vlink == '') return;
+        window.open(vlink, vredireccion);
+      }
+
+
     return(
 
         <>
@@ -35,7 +41,8 @@ const Articles = () =>{
 
         {articles.map((article, index) => (
 
-            <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]">
+            <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
+                    onClick={()=>{goLink(article.vlink, article.vredireccion)}}>
 
                 <div className="bg-[red] h-52 overflow-hidden rounded-t-xl w-full">
                     <img src={`/images/${article.vimagen}`}></img>
