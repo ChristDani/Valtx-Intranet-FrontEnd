@@ -10,30 +10,30 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const novedadesServices = {
-    async getNovedades(pageNumber:number, novedadesPerPage:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
         const { data } = await axiosClient.post('api/v1/novedades/getNovedadesList', {
-            "inumero_pagina": pageNumber-1,
-            "itotal_pagina": novedadesPerPage,
-            "vtitulo": "",
-            "iid_estado_registro": -1
+            "inumero_pagina": pageNumber-1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state // -1
         });
 
         return data;
     },
     
-    async getNovedad(id:any) {
+    async getOne(id:any) {
         const res = await axiosClient.post(`api/v1/novedades/getNovedadesId?iid_novedad=${id}`)
     },
     
-    async setNovedad() {
+    async create() {
         const res = await axiosClient.post('api/v1/novedades/setNovedades')
     },
     
-    async udpNovedad() {
+    async update() {
         const res = await axiosClient.post('api/v1/novedades/updateNovedades')
     },
     
-    async delNovedad(id:any) {
+    async delete(id:any) {
         const res = await axiosClient.post(`api/v1/novedades/delNovedadesId?iid_novedad=${id}`)
     }
 }

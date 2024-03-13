@@ -13,32 +13,48 @@ tokenAuth(token);
 export const bannerServices = {
 
 
-    async getBanners(pageNumber:number, bannersPerPage:number) { 
-        
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number) {
+
         const { data } = await axiosClient.post('api/v1/banner/getBannerList', {
-            "inumero_pagina": pageNumber-1,
-            "itotal_pagina": bannersPerPage,
-            "vtitulo": "",
-            "iid_estado_registro": -1
+            "inumero_pagina": pageNumber - 1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state // -1
         });
 
         return data;
 
     },
-    
-    async getBanner(id:any) {
-        const res = await axios.post(`api/v1/banner/getBannerId?iid_banner=${id}`);
+
+    async getOne(id: any) {
+        const { data } = await axiosClient.get(`api/v1/banner/getBannerId?iid_banner=${id}`);
+
+        return data;
     },
-    
-    async setBanner() {
-        const res = await axios.post('api/v1/banner/setBanner')
+
+    async create(image: any, titulo: string, descripcion: string, link: string, redireccion: string, orden: number, fecha: string, estado: number, id: number) {
+        fecha = ''
+        estado = 1
+        id = 0
+        const data = {
+            vtitulo: titulo,
+            vtextobreve: descripcion,
+            vlink: link,
+            vimagen: image,
+            vredireccion: redireccion,
+            iorden: orden,
+            dfecha: fecha,
+            iid_estado_registro: estado,
+            iid_banner: id
+        }
+        const res = await axiosClient.post('api/v1/banner/setBanner', data)
     },
-    
-    async udpBanner() {
-        const res = await axios.post('api/v1/banner/updateBanner')
+
+    async update() {
+        const res = await axiosClient.post('api/v1/banner/updateBanner')
     },
-    
-    async delBanner() {
-        const res = await axios.post('api/v1/banner/delBannerId')
+
+    async delete(id:any) {
+        const res = await axiosClient.post('api/v1/banner/delBannerId')
     }
 }

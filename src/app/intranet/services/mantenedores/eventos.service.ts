@@ -10,30 +10,30 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const eventServices = {
-    async getEvents(pageNumber:number, eventsPerPage:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
         const { data } = await axiosClient.post('api/v1/evento/getEventoList', {
-            "inumero_pagina": pageNumber-1,
-            "itotal_pagina": eventsPerPage,
-            "vtitulo": "",
-            "iid_estado_registro": -1
+            "inumero_pagina": pageNumber-1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state // -1
         });
 
         return data;
     },
     
-    async getEvent(id:any) {
+    async getOne(id:any) {
         const res = await axiosClient.post(`api/v1/evento/getEventoId?iid_evento=${id}`)
     },
     
-    async setEvent() {
+    async create() {
         const res = await axiosClient.post('api/v1/evento/setEvento')
     },
     
-    async udpEvent() {
+    async update() {
         const res = await axiosClient.post('api/v1/evento/updateEvento')
     },
     
-    async delEvent(id:any) {
+    async delete(id:any) {
         const res = await axiosClient.post(`api/v1/evento/delEventoId?iid_evento=${id}`)
     }
 }

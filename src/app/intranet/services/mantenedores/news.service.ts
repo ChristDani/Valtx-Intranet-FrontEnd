@@ -10,30 +10,30 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const newsServices = {
-    async getNews(pageNumber:number, newsPerPage:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
         const { data } = await axiosClient.post('api/v1/valtx-news/getValtxNewsList', {
-            "inumero_pagina": pageNumber-1,
-            "itotal_pagina": newsPerPage,
-            "vtitulo": "",
-            "iid_estado_registro": -1
+            "inumero_pagina": pageNumber-1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state // -1
         });
 
         return data;
     },
     
-    async getNew(id:any) {
-        const res = await axios.post(`http://localhost:4000/api/v1/valtx-news/getValtxNewsId?iid_news=${id}`)
+    async getOne(id:any) {
+        const res = await axiosClient.post(`api/v1/valtx-news/getValtxNewsId?iid_news=${id}`)
     },
     
-    async setNew() {
-        const res = await axios.post('http://localhost:4000/api/v1/valtx-news/setValtxNews')
+    async create() {
+        const res = await axiosClient.post('api/v1/valtx-news/setValtxNews')
     },
     
-    async udpNew() {
-        const res = await axios.post('http://localhost:4000/api/v1/valtx-news/updateValtxNews')
+    async update() {
+        const res = await axiosClient.post('api/v1/valtx-news/updateValtxNews')
     },
     
-    async delNew(id:any) {
-        const res = await axios.post(`http://localhost:4000/api/v1/valtx-news/delValtxNewsId?iid_news=${id}`)
+    async delete(id:any) {
+        const res = await axiosClient.post(`api/v1/valtx-news/delValtxNewsId?iid_news=${id}`)
     }
 }

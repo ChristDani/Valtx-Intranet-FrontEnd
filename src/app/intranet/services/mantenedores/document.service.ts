@@ -10,30 +10,30 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const documentacionServices = {
-    async getDocumentaciones(pageNumber:number, documentPerPage:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
         const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
-            "inumero_pagina": pageNumber-1,
-            "itotal_pagina": documentPerPage,
-            "vtitulo": "",
-            "iid_estado_registro": -1
+            "inumero_pagina": pageNumber-1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state // -1
         });
 
         return data;
     },
     
-    async getDocumentacion(id:any) {
-        const res = await axios.post(`http://localhost:4000/api/v1/documentacion/getDocumId?iid_documentacion=${id}`)
+    async getOne(id:any) {
+        const res = await axiosClient.post(`api/v1/documentacion/getDocumId?iid_documentacion=${id}`)
     },
     
-    async setDocumentacion() {
-        const res = await axios.post('http://localhost:4000/api/v1/documentacion/setDocum')
+    async create() {
+        const res = await axiosClient.post('api/v1/documentacion/setDocum')
     },
     
-    async udpDocumentacion() {
-        const res = await axios.post('http://localhost:4000/api/v1/documentacion/updateDocum')
+    async update() {
+        const res = await axiosClient.post('api/v1/documentacion/updateDocum')
     },
     
-    async delDocumentacion(id:any) {
-        const res = await axios.post(`http://localhost:4000/api/v1/documentacion/delDocumId?iid_documentacion=${id}`)
+    async delete(id:any) {
+        const res = await axiosClient.post(`api/v1/documentacion/delDocumId?iid_documentacion=${id}`)
     }
 }
