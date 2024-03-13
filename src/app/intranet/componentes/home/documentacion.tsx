@@ -35,11 +35,11 @@ export const Documentacion = () =>{
             <div className="cursor-pointer flex flex-col rounded-2xl justify-between">
 
             {docums.map((docum,index)=>(
-                <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full">
+                <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full" onClick={() => { goLink(docum.vlink, docum.vredireccion) }}>
                     <span className="absolute top-0 left-0 w-full h-full bg-black opacity-55 hover:opacity-25 z-30">
                         
                     </span>
-                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40" onClick={() => { goLink(docum.vlink, docum.vredireccion) }}>
+                    <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
                         <h1 className="text-white text-2xl">
                             {docum.vtitulo}
                         </h1>
