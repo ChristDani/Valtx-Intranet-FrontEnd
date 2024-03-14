@@ -32,29 +32,28 @@ export const bannerServices = {
         return data;
     },
 
-    async create(image: any, titulo: string, descripcion: string, link: string, redireccion: string, orden: number, fecha: string, estado: number, id: number) {
-        fecha = ''
-        estado = 1
-        id = 0
-        const data = {
-            vtitulo: titulo,
-            vtextobreve: descripcion,
-            vlink: link,
-            vimagen: image,
-            vredireccion: redireccion,
-            iorden: orden,
-            dfecha: fecha,
-            iid_estado_registro: estado,
-            iid_banner: id
-        }
-        const res = await axiosClient.post('api/v1/banner/setBanner', data)
+    async create(image: File, titulo: string, descripcion: string, link: string, redireccion: string, orden: string, fecha: string, estado: string, id: string) {
+        const formData = new FormData()
+
+        formData.append('vimagen', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', redireccion);
+        formData.append('iorden', orden);
+        formData.append('dfecha', fecha);
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/banners');
+        formData.append('iid_banner', id);
+
+        const res = await axiosClient.post('api/v1/banner/setBanner', formData)
     },
 
     async update() {
-        const res = await axiosClient.post('api/v1/banner/updateBanner')
+        const res = await axiosClient.post('api/v1/banner/setBanner')
     },
 
-    async delete(id:any) {
-        const res = await axiosClient.post('api/v1/banner/delBannerId')
+    async delete(id: any) {
+        const res = await axiosClient.post(`api/v1/banner/delBannerId?iid_banner=${id}`)
     }
 }

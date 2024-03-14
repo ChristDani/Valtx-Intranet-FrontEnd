@@ -13,7 +13,7 @@ const DocuPage = () =>{
     },[])
 
     const getDocument = async () => {
-        const documentList = await documentacionServices.getDocumentaciones(1, 10);
+        const documentList = await documentacionServices.getList(1, 10,"",-1);
 
         setDocumentation(documentList.data)
     }
