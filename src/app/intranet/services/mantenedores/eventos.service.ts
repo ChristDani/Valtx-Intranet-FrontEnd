@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import axiosClient from './axios';
 import { getCookie } from '../get-cookie.service';
 import tokenAuth from './token.service';
+import { EventResponseDTO } from '../../interfaces/event.response.dto';
 
 
 const token = getCookie('token') || '';
@@ -10,7 +11,7 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const eventServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number): Promise<EventResponseDTO> {
         const { data } = await axiosClient.post('api/v1/evento/getEventoList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10

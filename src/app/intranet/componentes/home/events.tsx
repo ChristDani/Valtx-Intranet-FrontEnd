@@ -3,6 +3,7 @@
 import { eventServices } from "../../services/mantenedores/eventos.service";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import { EventResponseDTO, Evento } from "../../interfaces/event.response.dto";
 
 const meses = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -11,15 +12,15 @@ const meses = [
 
 const Events = () =>{
 
-    const [events, setEvents] = useState<any[]>([]);
+    const [events, setEvents] = useState<Evento[]>([]);
     
     useEffect(()=>{
         getAllEvents();
     }, []);
 
     const getAllEvents = async () =>{
-        const eventsResponse = await eventServices.getList(1, 10, "", -1);
-        const eventsList = eventsResponse.data;
+        const eventsResponse: EventResponseDTO = await eventServices.getList(1, 10, "", -1);
+        const eventsList: Evento[] = eventsResponse.data;
         eventsList.sort((a:any, b:any)=> a.iorden - b.iorden);
         setEvents(eventsList);
     };

@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { newsServices } from "../../services/mantenedores/news.service";
+import { Noticias, NoticiasResponseDTO } from "../../interfaces/news.response.dto";
 
 const TopNews = () =>{
 
-    const [newsList, setNewsList] = useState([{vimagen:'', vlink:'', vredireccion:''}]);
+    const [newsList, setNewsList] = useState<Noticias[]>([]);
 
     useEffect(()=>{
 
@@ -17,8 +18,8 @@ const TopNews = () =>{
     const getNews = async () =>{
         try{
 
-            const news = await newsServices.getList(1, 10, "", -1);
-            const newsL = news.data;
+            const news: NoticiasResponseDTO = await newsServices.getList(1, 10, "", -1);
+            const newsL: Noticias[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setNewsList(newsL);
 

@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import axiosClient from './axios';
 import { getCookie } from '../get-cookie.service';
 import tokenAuth from './token.service';
+import { BannerResponseDTO } from '../../interfaces/banner.response.dto';
 
 
 const token = getCookie('token') || '';
@@ -13,7 +14,7 @@ tokenAuth(token);
 export const bannerServices = {
 
 
-    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number) {
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number): Promise<BannerResponseDTO> {
 
         const { data } = await axiosClient.post('api/v1/banner/getBannerList', {
             "inumero_pagina": pageNumber - 1, // 0
