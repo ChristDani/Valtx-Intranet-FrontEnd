@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/react-modal": "^3.16.3",
     "axios": "^1.6.7",
     "father": "^4.4.0",
     "flowbite": "^2.3.0",

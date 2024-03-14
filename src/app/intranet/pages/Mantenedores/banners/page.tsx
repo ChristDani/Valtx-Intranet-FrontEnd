@@ -67,7 +67,7 @@ const BannPage = () => {
 
         const edittttt = onlyOneBanner.data
 
-        edittttt.map((item:any) => (
+        edittttt.map((item: any) => (
             setEditId(item.iid_banner),
             setEditTitle(item.vtitulo),
             setEditDesc(item.vtextobreve),
@@ -84,12 +84,12 @@ const BannPage = () => {
 
     const cancel = () => {
         setEditId(0),
-        setEditTitle(''),
-        setEditDesc(''),
-        setEditLink(''),
-        setEditImage(null),
-        setEditOrden('')
-        
+            setEditTitle(''),
+            setEditDesc(''),
+            setEditLink(''),
+            setEditImage(null),
+            setEditOrden('')
+
         closeModal()
     }
 
