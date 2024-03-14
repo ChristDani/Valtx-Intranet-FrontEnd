@@ -1,8 +1,8 @@
 'use client'
 import axios, { AxiosRequestConfig } from 'axios'
-import axiosClient from './axios';
+import axiosClient from '../axios.service';
 import { getCookie } from '../get-cookie.service';
-import tokenAuth from './token.service';
+import tokenAuth from '../token.service';
 import { EventResponseDTO } from '../../interfaces/event.response.dto';
 
 

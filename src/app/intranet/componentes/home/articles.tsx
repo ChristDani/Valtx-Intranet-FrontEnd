@@ -21,7 +21,7 @@ const Articles = () =>{
     const getArticles = async () =>{
         const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", -1);
         const articlesList: Article[] = articlesRes.data;
-        console.log(articlesRes);
+        // console.log(articlesRes);
         setArticles(articlesList);
     }
 
@@ -40,7 +40,7 @@ const Articles = () =>{
             </div>
         <div className="flex justify-between">
 
-        {articles.map((article, index) => (
+        {/* {articles.map((article, index) => (
 
             <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
                     onClick={()=>{goLink(article.vlink, article.vredireccion)}}>
@@ -62,7 +62,7 @@ const Articles = () =>{
                     <Link href={''} className="global-secondary-text">Ver detalles -{'>'}</Link>
                 </div>
             </div>
-        ))}
+        ))} */}
         </div>
     </>
 

@@ -1,15 +1,13 @@
 'use client'
 import axios, { AxiosRequestConfig } from 'axios'
-import axiosClient from './axios';
+import axiosClient from '../axios.service';
 import { getCookie } from '../get-cookie.service';
-import tokenAuth from './token.service';
+import tokenAuth from '../token.service';
 import { BannerResponseDTO } from '../../interfaces/banner.response.dto';
-
 
 const token = getCookie('token') || '';
 
 tokenAuth(token);
-
 
 export const bannerServices = {
 
@@ -34,9 +32,12 @@ export const bannerServices = {
     },
 
     async create(image: File, titulo: string, descripcion: string, link: string, redireccion: string, orden: string, fecha: string, estado: string, id: string) {
+        
+        tokenAuth(token,'multipart/form-data');
+
         const formData = new FormData()
 
-        formData.append('vimagen', image);
+        formData.append('image', image);
         formData.append('vtitulo', titulo);
         formData.append('vtextobreve', descripcion);
         formData.append('vlink', link);
@@ -47,7 +48,12 @@ export const bannerServices = {
         formData.append('storage', '/banners');
         formData.append('iid_banner', id);
 
+        console.log(image,titulo,descripcion,link,redireccion,orden,fecha,estado,id);
+        
+
         const res = await axiosClient.post('api/v1/banner/setBanner', formData)
+
+        return res;
     },
 
     async update() {

@@ -20,7 +20,7 @@ const BannPage = () => {
     const [editTitle, setEditTitle] = useState('');
     const [editDesc, setEditDesc] = useState('');
     const [editLink, setEditLink] = useState('');
-    const [editOrden, setEditOrden] = useState(0);
+    const [editOrden, setEditOrden] = useState('');
     const [editImage, setEditImage] = useState(null);
 
     const handleFileChange = (e: any) => {
@@ -54,20 +54,20 @@ const BannPage = () => {
     }
 
     const createBanner = async () => {
-        const iamg = document.getElementsByName('vimagen')
-        console.log('first')
-        const res = await bannerServices.create(editImage, 'prueba de servicios', 'creando desde el back', 'example.com','_blank', '7', '', '1', '0')
+        const iamg = document.getElementsByName('vimagen').values
+        console.log(iamg)
+        const res = await bannerServices.create(editImage, 'prueba de servicios 2', 'creando desde el back', 'example.com', '_blank', '9', '', '1', '0')
     }
 
     const editBanner = async (e: any, id: number) => {
         e.target.preventDefault;
-        // openModal()
+        openModal()
 
         const onlyOneBanner = await bannerServices.getOne(id);
 
         const edittttt = onlyOneBanner.data
 
-        edittttt.map(item => (
+        edittttt.map((item:any) => (
             setEditId(item.iid_banner),
             setEditTitle(item.vtitulo),
             setEditDesc(item.vtextobreve),
@@ -84,11 +84,13 @@ const BannPage = () => {
 
     const cancel = () => {
         setEditId(0),
-            setEditTitle(''),
-            setEditDesc(''),
-            setEditLink(''),
-            setEditImage(null),
-            setEditOrden(0)
+        setEditTitle(''),
+        setEditDesc(''),
+        setEditLink(''),
+        setEditImage(null),
+        setEditOrden('')
+        
+        closeModal()
     }
 
     return (
@@ -98,16 +100,16 @@ const BannPage = () => {
                 <h1 className="uppercase font-bold">Banners</h1>
                 <div>
                     <select name="numberOfBanners" id="numberOfBanners" onChange={(e) => getBanners(1, Number(e.target.value), bannerTitle)}>
-                        <option value="1">10</option>
-                        <option value="2">25</option>
+                        <option value="10">10</option>
+                        <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
                 </div>
-                <p>cantidad de banners por pagina {itemsPorPagina}</p>
+                {/* <p>cantidad de banners por pagina {itemsPorPagina}</p>
                 <p>Total: {itemsTotales}</p>
-                <p>Total páginas: {paginas}</p>
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createBanner}>
+                <p>Total páginas: {paginas}</p> */}
+                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={openModal}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
@@ -164,13 +166,13 @@ const BannPage = () => {
                                             <td className="px-6 py-4 text-center">
                                                 {item.vdescripcion_estado}
                                             </td>
-                                            <td className="px-6 py-4 text-center">
-                                                <a href="" className="font-medium text-blue-600 hover:underline" onClick={openModal}>
+                                            <td className="px-6 py-4 text-center flex gap-3 h-22">
+                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={openModal}>
                                                     <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
 
-                                                </a>
+                                                </Link>
                                                 <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editBanner(e, item.iid_banner)}>
                                                     <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
@@ -237,57 +239,25 @@ const BannPage = () => {
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div className="mb-5">
-                        <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                        <input type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                        <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                        <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
                     </div>
                     <div className="mb-5">
-                        <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">textobreve</label>
-                        <input type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                        <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
+                        <input type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} />
+                    </div>
+                    <div className="mb-5">
+                        <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
+                        <input type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                        <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+                        <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} />
                     </div>
                     <div className="mb-5">
-                        <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                        <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="vredireccion" className="uppercase block mb-2 text-sm font-medium text-gray-900">redireccion</label>
-                        <input type="text" name="vredireccion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                        <input type="date" name="dfecha" />
-                    </div>
-                </div>
-            </ModalComponent>
-            {/* intento de modificación */}
-            <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                <div className="mb-5">
-                    <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                    <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                    <input type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">textobreve</label>
-                    <input type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} />
-                </div>
-                <div className="mb-5">
-                    <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                    <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} />
-                </div>
-                <div className="mb-5">
 
 
-                    {/* <div className="flex items-center justify-center w-full">
+                        {/* <div className="flex items-center justify-center w-full">
                         <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                 <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -301,31 +271,32 @@ const BannPage = () => {
                     </div> */}
 
 
-                    <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                    <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
-                </div>
+                        <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
+                        <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
+                    </div>
 
-                <div className="mb-5">
-                    <label className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" value="1" className="sr-only peer" defaultValue={1} defaultChecked/>
-                        <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                        <span className="ms-3 text-sm font-medium text-gray-900">Checked toggle</span>
-                    </label>
-                </div>
+                    <div className="mb-5">
+                        <label className="inline-flex items-center cursor-pointer">
+                            <input type="checkbox" value="1" className="sr-only peer" defaultValue={1} defaultChecked />
+                            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            <span className="ms-3 text-sm font-medium text-gray-900">Checked toggle</span>
+                        </label>
+                    </div>
 
-                <div className="mb-5">
-                    <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                    <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} />
+                    <div className="mb-5">
+                        <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
+                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} />
+                    </div>
+                    <div className="mb-5">
+                        <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
+                        <input type="date" name="dfecha" />
+                    </div>
+                    <div>
+                        <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={createBanner}>Confirmar</button>
+                        <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
+                    </div>
                 </div>
-                <div className="mb-5">
-                    <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                    <input type="date" name="dfecha" />
-                </div>
-                <div>
-                    <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Confirmar</button>
-                    <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
-                </div>
-            </div>
+            </ModalComponent>
         </div>
     );
 }
