@@ -1,4 +1,11 @@
-export interface DocumentacionResponseDTO{
+export interface DocumentationResponseDTO{
+    IsSuccess: boolean
+    Message: string
+    data: Documentation[]
+    TotalRecords: number
+  }
+  
+  export interface Documentation{
     iid_documentacion: number
     vtitulo: string
     vtextobreve: string
@@ -9,4 +16,5 @@ export interface DocumentacionResponseDTO{
     dfecha: string
     iid_estado_registro: number
     vdescripcion_estado: string
-}
+  }
+  

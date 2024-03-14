@@ -1,4 +1,11 @@
-export interface NewsResponseDTO{
+export interface NoticiasResponseDTO{
+    IsSuccess: boolean
+    Message: string
+    data: Noticias[]
+    TotalRecords: number
+  }
+  
+  export interface Noticias {
     iid_news: number
     vtitulo: string
     vtextobreve: string
@@ -9,4 +16,5 @@ export interface NewsResponseDTO{
     dfecha: string
     iid_estado_registro: number
     vdescripcion_estado: string
-}
+  }
+  

@@ -1,4 +1,11 @@
 export interface EnterateResponseDTO{
+    IsSuccess: boolean
+    Message: string
+    data: IEnterate[]
+    TotalRecords: number
+  }
+  
+  export interface IEnterate{
     iid_enterate: number
     vtitulo: string
     vtextobreve: string
@@ -9,4 +16,5 @@ export interface EnterateResponseDTO{
     dfecha: string
     iid_estado_registro: number
     vdescripcion_estado: string
-}
+  }
+  

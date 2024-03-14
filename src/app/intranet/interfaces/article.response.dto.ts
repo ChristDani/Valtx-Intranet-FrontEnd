@@ -1,4 +1,11 @@
-export interface ArticleResponseDTO{
+export interface ArticleResponseDTO {
+    IsSuccess: boolean
+    Message: string
+    data: Article[]
+    TotalRecords: number
+  }
+  
+  export interface Article {
     iid_blog: number
     vtitulo: string
     vtextobreve: string
@@ -10,4 +17,6 @@ export interface ArticleResponseDTO{
     iid_estado_registro: number
     iid_categoria: number
     vdescripcion_estado: string
-}
+    vdescripcion_categoria: string
+  }
+  
