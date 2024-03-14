@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import axiosClient from './axios';
 import { getCookie } from '../get-cookie.service';
 import tokenAuth from './token.service';
+import { DocumentationResponseDTO } from '../../interfaces/documentacion.response.dto';
 
 
 const token = getCookie('token') || '';
@@ -10,7 +11,7 @@ const token = getCookie('token') || '';
 tokenAuth(token);
 
 export const documentacionServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number): Promise<DocumentationResponseDTO> {
         const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
