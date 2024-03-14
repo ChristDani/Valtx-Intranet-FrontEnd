@@ -33,7 +33,7 @@ const HomeMainBanner = () =>{
     const getAllBanners = async ()=>{
         try {
 
-            const banners: BannerResponseDTO = await bannerServices.getList(1, 10, "", -1);
+            const banners: BannerResponseDTO = await bannerServices.getList(1, 10, "", 1);
             const bannersList: Banner[] = banners.data;
             bannersList.sort((a:any, b:any)=> a.iorden - b.iorden);
             setBanners(bannersList);
