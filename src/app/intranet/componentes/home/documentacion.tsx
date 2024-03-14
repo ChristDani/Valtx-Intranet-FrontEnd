@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { documentacionServices } from "../../services/mantenedores/document.service";
-import { DocumentacionResponseDTO } from "../../interfaces/documentacion.response.dto";
+import { Documentation, DocumentationResponseDTO } from "../../interfaces/documentacion.response.dto";
 
 export const Documentacion = () =>{
 
-    const [docums, setDocumns] = useState<DocumentacionResponseDTO[]>([]);
+    const [docums, setDocumns] = useState<Documentation[]>([]);
 
     useEffect(()=>{
         getAllDocumentation();
@@ -15,8 +15,8 @@ export const Documentacion = () =>{
 
 
     const getAllDocumentation = async () =>{
-        const docum = await documentacionServices.getList(1,10, "", -1);
-        const documList: DocumentacionResponseDTO[]  = docum.data;
+        const docum: DocumentationResponseDTO = await documentacionServices.getList(1,10, "", -1);
+        const documList: Documentation[]  = docum.data;
         setDocumns(documList);
 
     }

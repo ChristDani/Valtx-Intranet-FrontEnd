@@ -3,11 +3,11 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { blogServices } from "../../services/mantenedores/blogs.service";
-import { ArticleResponseDTO } from "../../interfaces/article.response.dto";
+import { Article, ArticleResponseDTO } from "../../interfaces/article.response.dto";
 
 const Articles = () =>{
 
-    const [articles, setArticles] = useState<ArticleResponseDTO[]>([]); 
+    const [articles, setArticles] = useState<Article[]>([]); 
 
 {}
     useEffect(()=>{
@@ -19,8 +19,8 @@ const Articles = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes = await blogServices.getList(1,10, "", -1);
-        const articlesList: ArticleResponseDTO[] = articlesRes.data;
+        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", -1);
+        const articlesList: Article[] = articlesRes.data;
         console.log(articlesRes);
         setArticles(articlesList);
     }

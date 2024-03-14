@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { enterateServices } from "../../services/mantenedores/enterate.service";
 import VideoModal from "./video-modal";
-import { EnterateResponseDTO } from "../../interfaces/enterate.response.dto";
+import { IEnterate, EnterateResponseDTO } from "../../interfaces/enterate.response.dto";
 
 export const Enterate = () =>{
 
-    const [items, setItems] = useState<EnterateResponseDTO[]>([]);
+    const [items, setItems] = useState<IEnterate[]>([]);
 
     useEffect(()=>{
 
@@ -18,9 +18,9 @@ export const Enterate = () =>{
     const getEnterate = async () =>{
         try{
 
-            const enterate = await enterateServices.getList(1, 10, "", -1);
+            const enterate: EnterateResponseDTO = await enterateServices.getList(1, 10, "", -1);
 
-            const enterateList = enterate.data;
+            const enterateList: IEnterate[] = enterate.data;
             setItems(enterateList);
 
         }catch(e){

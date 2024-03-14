@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import { bannerServices } from "../../services/mantenedores/banner.service";
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
-import { RxDotFilled } from 'react-icons/rx';
-import { BannerResponseDTO } from "../../interfaces/banner.response.dto";
+import { Banner, BannerResponseDTO } from "../../interfaces/banner.response.dto";
 
 
 const HomeMainBanner = () =>{
@@ -22,7 +21,7 @@ const HomeMainBanner = () =>{
             vdescripcion_estado: "ACTIVO"
     }
 
-    const [banners, setBanners] = useState<BannerResponseDTO[]>([initialBanner]);
+    const [banners, setBanners] = useState<Banner[]>([initialBanner]);
 
 
     useEffect(()=>{
@@ -34,8 +33,8 @@ const HomeMainBanner = () =>{
     const getAllBanners = async ()=>{
         try {
 
-            const banners = await bannerServices.getList(1, 10, "", -1);
-            const bannersList: BannerResponseDTO[] = banners.data;
+            const banners: BannerResponseDTO = await bannerServices.getList(1, 10, "", -1);
+            const bannersList: Banner[] = banners.data;
             bannersList.sort((a:any, b:any)=> a.iorden - b.iorden);
             setBanners(bannersList);
 
