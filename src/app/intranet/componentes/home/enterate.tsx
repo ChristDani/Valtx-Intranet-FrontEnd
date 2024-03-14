@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { enterateServices } from "../../services/mantenedores/enterate.service";
 import VideoModal from "./video-modal";
+import { EnterateResponseDTO } from "../../interfaces/enterate.response.dto";
 
 export const Enterate = () =>{
 
-    const [items, setItems] = useState([{vimagen:'', vlink:''}]);
+    const [items, setItems] = useState<EnterateResponseDTO[]>([]);
 
     useEffect(()=>{
 

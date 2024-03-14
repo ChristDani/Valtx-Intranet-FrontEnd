@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { newsServices } from "../../services/mantenedores/news.service";
+import { NewsResponseDTO } from "../../interfaces/news.response.dto";
 
 const TopNews = () =>{
 
-    const [newsList, setNewsList] = useState([{vimagen:'', vlink:'', vredireccion:''}]);
+    const [newsList, setNewsList] = useState<NewsResponseDTO[]>([]);
 
     useEffect(()=>{
 
@@ -18,7 +19,7 @@ const TopNews = () =>{
         try{
 
             const news = await newsServices.getList(1, 10, "", -1);
-            const newsL = news.data;
+            const newsL: NewsResponseDTO[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setNewsList(newsL);
 

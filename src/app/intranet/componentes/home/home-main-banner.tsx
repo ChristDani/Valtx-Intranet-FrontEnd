@@ -4,11 +4,25 @@ import { useEffect, useState } from "react";
 import { bannerServices } from "../../services/mantenedores/banner.service";
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
+import { BannerResponseDTO } from "../../interfaces/banner.response.dto";
 
 
 const HomeMainBanner = () =>{
 
-    const [banners, setBanners] = useState([{vimagen: '', vlink:'', vredireccion:''}]);
+    const initialBanner = {
+            iid_banner: 1,
+            vtitulo: "1",
+            vtextobreve: "1",
+            vimagen: "banners/1.png",
+            vlink: "https://www.valtx.pe",
+            vredireccion: "_blank",
+            iorden: 1,
+            dfecha: "2024-03-12T22:48:27.914Z",
+            iid_estado_registro: 1,
+            vdescripcion_estado: "ACTIVO"
+    }
+
+    const [banners, setBanners] = useState<BannerResponseDTO[]>([initialBanner]);
 
 
     useEffect(()=>{
@@ -21,7 +35,7 @@ const HomeMainBanner = () =>{
         try {
 
             const banners = await bannerServices.getList(1, 10, "", -1);
-            const bannersList = banners.data;
+            const bannersList: BannerResponseDTO[] = banners.data;
             bannersList.sort((a:any, b:any)=> a.iorden - b.iorden);
             setBanners(bannersList);
 
