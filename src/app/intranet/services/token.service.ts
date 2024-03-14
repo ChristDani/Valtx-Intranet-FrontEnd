@@ -1,7 +1,7 @@
 import axiosClient from './axios.service';
 
-const tokenAuth = (token:any) => {
-  axiosClient.defaults.headers.common['Content-Type'] = 'application/json';
+const tokenAuth = (token: string, contentType?: string) => {
+  axiosClient.defaults.headers.common['Content-Type'] = contentType || 'application/json';
 //   'Content-Type': 'multipart/form-data',
   if (token) {
     axiosClient.defaults.headers.common['Authorization'] = `Bear ${token}`;
