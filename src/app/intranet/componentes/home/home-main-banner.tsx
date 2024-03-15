@@ -61,6 +61,8 @@ const HomeMainBanner = () =>{
         const newIndex = isLastSlide ? 0 : currentIndex + 1;
         setCurrentIndex(newIndex);
       };
+      
+      setTimeout(()=>{nextSlide();}, 4000);
     
       const goToSlide = (slideIndex: any) => {
         setCurrentIndex(slideIndex);
