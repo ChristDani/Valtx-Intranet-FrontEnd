@@ -21,6 +21,8 @@ const BannPage = () => {
     const [editDesc, setEditDesc] = useState('');
     const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
+    const [editFech, setEditFech] = useState('');
+    const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
 
     const handleFileChange = (e: any) => {
@@ -56,7 +58,7 @@ const BannPage = () => {
     const createBanner = async () => {
         const iamg = document.getElementsByName('vimagen').values
         console.log(iamg)
-        const res = await bannerServices.create(editImage, 'prueba de servicios 2', 'creando desde el back', 'example.com', '_blank', '9', '', '1', '0')
+        const res = await bannerServices.create(editImage, editTitle, editDesc, editLink, editOrden, editFech, editState, editId)
     }
 
     const editBanner = async (e: any, id: number) => {
@@ -106,16 +108,17 @@ const BannPage = () => {
                         <option value="100">100</option>
                     </select>
                 </div>
-                {/* <p>cantidad de banners por pagina {itemsPorPagina}</p>
+                <p>cantidad de banners por pagina {itemsPorPagina}</p>
                 <p>Total: {itemsTotales}</p>
-                <p>Total páginas: {paginas}</p> */}
+                <p>Total páginas: {paginas}</p>
+                <p>Página actual: {currentPage}</p>
                 <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={openModal}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
                 </button>
                 {/* tabla */}
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-4">
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -238,26 +241,27 @@ const BannPage = () => {
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <div className="mb-5">
-                        <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                        <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                        <input type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                        <input type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                        <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} />
-                    </div>
-                    <div className="mb-5">
+                    <form onSubmit={createBanner}>
+                        <div className="mb-5 hidden">
+                            <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                            <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
+                            <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} onInput={(e) => setEditTitle(e.target.value)}></input>
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
+                            <input required type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} onInput={(e) => setEditDesc(e.target.value)}></input>
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
+                            <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onInput={(e) => setEditLink(e.target.value)}></input>
+                        </div>
+                        <div className="mb-5">
 
 
-                        {/* <div className="flex items-center justify-center w-full">
+                            {/* <div className="flex items-center justify-center w-full">
                         <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                 <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -268,33 +272,34 @@ const BannPage = () => {
                             </div>
                             <input id="dropzone-file" type="file" className="" />
                         </label>
-                    </div> */}
+                        </div> */}
 
 
-                        <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                        <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
-                    </div>
+                            <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
+                            <input required type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
+                        </div>
 
-                    <div className="mb-5">
-                        <label className="inline-flex items-center cursor-pointer">
-                            <input type="checkbox" value="1" className="sr-only peer" defaultValue={1} defaultChecked />
-                            <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                            <span className="ms-3 text-sm font-medium text-gray-900">Checked toggle</span>
-                        </label>
-                    </div>
+                        <div className="mb-5">
+                            <label className="inline-flex items-center cursor-pointer">
+                                <input type="checkbox" value={editState} className="sr-only peer" defaultValue={1} defaultChecked onChange={(e) => setEditState(e.target.value)}></input>
+                                <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                <span className="ms-3 text-sm font-medium text-gray-900">Estado</span>
+                            </label>
+                        </div>
 
-                    <div className="mb-5">
-                        <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                        <input type="date" name="dfecha" />
-                    </div>
-                    <div>
-                        <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={createBanner}>Confirmar</button>
-                        <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
-                    </div>
+                        <div className="mb-5">
+                            <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
+                            <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} onInput={(e) => setEditOrden(e.target.value)} />
+                        </div>
+                        <div className="mb-5">
+                            <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
+                            <input type="date" name="dfecha" />
+                        </div>
+                        <div>
+                            <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Confirmar</button>
+                            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
+                        </div>
+                    </form>
                 </div>
             </ModalComponent>
         </div>
