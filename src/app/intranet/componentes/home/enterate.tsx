@@ -7,7 +7,20 @@ import { IEnterate, EnterateResponseDTO } from "../../interfaces/enterate.respon
 
 export const Enterate = () =>{
 
-    const [items, setItems] = useState<IEnterate[]>([]);
+    const enterateDefault: IEnterate = {
+        iid_enterate: 0,
+        vtitulo: "",
+        vtextobreve: "",
+        vimagen: "",
+        vlink: "",
+        vredireccion: "",
+        iorden: 0,
+        dfecha: "",
+        iid_estado_registro: 0,
+        vdescripcion_estado: ""
+    }
+
+    const [items, setItems] = useState<IEnterate[]>([enterateDefault]);
 
     useEffect(()=>{
 
@@ -52,23 +65,15 @@ export const Enterate = () =>{
             {/** Contenido */}
             <div className="flex flex-col rounded-2xl justify-between">
 
-                <div className="relative bg-[white] cursor-pointer h-40 rounded-2xl mt-3 overflow-hidden w-full"
-                        onClick={() => openModal(items[0].vlink)}>
-                    <span className="flex absolute align-middle h-full justify-center  w-full">     
-                        <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>                  
-                    </span>
-                    
-                    {items.length > 1 ? <img src={`/images/${items[0].vimagen}`} /> : null}
-                </div>
-                <div className="relative bg-[white] cursor-pointer h-40 rounded-2xl mt-3 overflow-hidden w-full"
-                    onClick={() => openModal(items[1].vlink)}>
-                    <span className="flex absolute align-middle h-full justify-center  w-full">     
-                        <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>                  
-                    </span>
-                    
-                    {items.length > 1 ? <img src={`/images/${items[1].vimagen}`} /> : null}
-                </div>
-                
+            {items && items.length > 0 && items.map((item, index) => (
+            <div key={index} className="relative bg-[white] cursor-pointer h-40 rounded-2xl mt-3 overflow-hidden w-full"
+                onClick={() => openModal(item.vlink)}>
+                <span className="flex absolute align-middle h-full justify-center  w-full">
+                    <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>
+                </span>
+                {item.vimagen && <img src={`/images/${item.vimagen}`} />}
+            </div> ))}
+
             </div>
             {isModalOpen && <VideoModal onClose={closeModal} videoUrl={videoUrl} />}
         </div>
