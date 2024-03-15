@@ -31,7 +31,7 @@ export const bannerServices = {
         return data;
     },
 
-    async create(image: File, titulo: string, descripcion: string, link: string, redireccion: string, orden: string, fecha: string, estado: string, id: string) {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, fecha: string, estado: string, id: string) {
         
         tokenAuth(token,'multipart/form-data');
 
@@ -41,23 +41,16 @@ export const bannerServices = {
         formData.append('vtitulo', titulo);
         formData.append('vtextobreve', descripcion);
         formData.append('vlink', link);
-        formData.append('vredireccion', redireccion);
+        formData.append('vredireccion', '_blank');
         formData.append('iorden', orden);
         formData.append('dfecha', fecha);
         formData.append('iid_estado_registro', estado);
         formData.append('storage', '/banners');
-        formData.append('iid_banner', id);
-
-        console.log(image,titulo,descripcion,link,redireccion,orden,fecha,estado,id);
-        
+        formData.append('iid_banner', id);        
 
         const res = await axiosClient.post('api/v1/banner/setBanner', formData)
 
         return res;
-    },
-
-    async update() {
-        const res = await axiosClient.post('api/v1/banner/setBanner')
     },
 
     async delete(id: any) {
