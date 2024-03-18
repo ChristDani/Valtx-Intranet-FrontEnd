@@ -35,7 +35,7 @@ export const Documentacion = () =>{
             {/** Contenido */}
             <div className="cursor-pointer flex flex-col rounded-2xl justify-between">
 
-            {docums.map((docum,index)=>(
+            {docums && docums.length>0 && docums.map((docum,index)=>(
                 <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full" onClick={() => { goLink(docum.vlink, docum.vredireccion) }}>
                     <span className="absolute top-0 left-0 w-full h-full bg-black opacity-55 hover:opacity-25 z-30">
                         

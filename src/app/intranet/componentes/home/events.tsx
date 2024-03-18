@@ -19,7 +19,7 @@ const Events = () =>{
     }, []);
 
     const getAllEvents = async () =>{
-        const eventsResponse: EventResponseDTO = await eventServices.getList(1, 10, "", -1);
+        const eventsResponse: EventResponseDTO = await eventServices.getList(1, 3, "", 1);
         const eventsList: Evento[] = eventsResponse.data;
         eventsList.sort((a:any, b:any)=> a.iorden - b.iorden);
         setEvents(eventsList);
@@ -37,7 +37,7 @@ const Events = () =>{
                     <>
                     <li className="flex justify-center items-center p-4" key={index}>
                         <div className="flex justify-center h-full w-1/6">
-                            <FaHeart className="inline text-[#31BAFF]" />
+                            <img src={`images/${evento.vimagen}`}></img>
                         </div>
                         <div className="w-5/6">
                             <h1 className='text-md ml-3 text-[#0C3587]'>
