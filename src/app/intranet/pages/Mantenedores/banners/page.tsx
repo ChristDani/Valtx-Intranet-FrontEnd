@@ -16,12 +16,17 @@ const BannPage = () => {
     const [itemsTotales, setTotalItems] = useState(0);
     const [bannerTitle, setbannerTitle] = useState("");
 
-    const [editId, setEditId] = useState(0);
+    const [modalState, setModalState] = useState({
+        create: false,
+        update: false,
+        delete: false
+    })
+
+    const [editId, setEditId] = useState('0');
     const [editTitle, setEditTitle] = useState('');
     const [editDesc, setEditDesc] = useState('');
     const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
-    const [editFech, setEditFech] = useState('');
     const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
 
@@ -36,6 +41,8 @@ const BannPage = () => {
     };
 
     const closeModal = () => {
+        cleanData()
+        setModalState({create:false,update:false,delete:false})
         setModalIsOpen(false);
     };
 
@@ -44,9 +51,10 @@ const BannPage = () => {
     }, [])
 
     const getBanners = async (page: number, items: number, titulo: string) => {
+        setCurrentPage(page)
         setItems(items);
 
-        const bannersList = await bannerServices.getList(page, items, titulo, -1);
+        const bannersList:any = await bannerServices.getList(page, items, titulo, -1);
 
         setBannersInfo(bannersList)
         setTotalItems(bannersList.TotalRecords)
@@ -56,12 +64,23 @@ const BannPage = () => {
     }
 
     const createBanner = async () => {
-        const iamg = document.getElementsByName('vimagen').values
-        console.log(iamg)
-        const res = await bannerServices.create(editImage, editTitle, editDesc, editLink, editOrden, editFech, editState, editId)
+        // document.getElementsByName('vimagen')[0].required = true;
+        setModalState({create:true,update:false,delete:false})
+        openModal()
+        
+        if (editImage != null) {
+            // const res = await bannerServices.create(editImage, editTitle, editDesc, editLink, editOrden, editFech, editState, editId)
+        } else {
+            // alert('debe elegir una imagen')
+        }
+        // const res = await bannerServices.update(editTitle, editDesc, editLink, editOrden, editFech, editState, editId)
+        
+        // getBanners(1, 10, '')
+        // closeModal()
     }
 
     const editBanner = async (e: any, id: number) => {
+        setModalState({create:false,update:true,delete:false})
         e.target.preventDefault;
         openModal()
 
@@ -80,19 +99,39 @@ const BannPage = () => {
     }
 
     const deleteBanner = async (id: number) => {
-        const deBaRes = await bannerServices.delete(id);
-        getBanners(currentPage, itemsPorPagina, bannerTitle)
+        setModalState({create:false,update:false,delete:true})
+        openModal()
+        // const deBaRes = await bannerServices.delete(id);
+        // getBanners(currentPage, itemsPorPagina, bannerTitle)
     }
 
-    const cancel = () => {
-        setEditId(0),
-            setEditTitle(''),
-            setEditDesc(''),
-            setEditLink(''),
-            setEditImage(null),
-            setEditOrden('')
+    const confirmOp = async (e:any) => {
+        e.preventDefault();
 
-        closeModal()
+        const res = ''
+
+        modalState.create ? (
+            alert('Creando')
+            ) : modalState.update ? (
+                alert('actualizando')
+                ) : modalState.delete ? (
+                    alert('eliminando')
+                    ) : (
+                        alert('detalles')
+                        )
+
+
+    }
+
+    const cleanData = () => {
+        setEditId('0')
+        setEditTitle('')
+        setEditDesc('')
+        setEditLink('')
+        setEditImage(null)
+        setEditState('1')
+        setEditOrden('')
+        // document.getElementsByName('vimagen')[0].required = true;
     }
 
     return (
@@ -112,7 +151,7 @@ const BannPage = () => {
                 <p>Total: {itemsTotales}</p>
                 <p>Total páginas: {paginas}</p>
                 <p>Página actual: {currentPage}</p>
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={openModal}>
+                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createBanner}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
@@ -135,9 +174,6 @@ const BannPage = () => {
                                     Orden
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
-                                    Fecha
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
                                     Estado
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
@@ -149,7 +185,7 @@ const BannPage = () => {
                             {/* Replace the following <tr> elements with your actual product data */}
                             {
                                 bannersInfo.IsSuccess ? (
-                                    banners.map(item => (
+                                    banners.map((item:any) => (
                                         <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                                 {item.vtitulo}
@@ -162,9 +198,6 @@ const BannPage = () => {
                                             </td>
                                             <td className="px-6 py-4 text-center">
                                                 {item.iorden}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
-                                                {item.dfecha}
                                             </td>
                                             <td className="px-6 py-4 text-center">
                                                 {item.vdescripcion_estado}
@@ -191,7 +224,7 @@ const BannPage = () => {
                                     ))
                                 ) : (
                                     <tr className="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row" colSpan={7} className="px-6 py-4 font-medium text-gray-900 text-center">
+                                        <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
                                             Lo sentimos, aún no se han registrado datos!
                                         </th>
                                     </tr>
@@ -238,25 +271,28 @@ const BannPage = () => {
                     </nav> */}
                 </div>
             </div>
+
+
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+                {modalState.create ? 'Creando' : modalState.update ? 'actualizando' : modalState.delete ? 'eliminando' : 'detalles'}
                 <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <form onSubmit={createBanner}>
+                    <form onSubmit={confirmOp}>
                         <div className="mb-5 hidden">
                             <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
                             <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
                         </div>
                         <div className="mb-5">
                             <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                            <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} onInput={(e) => setEditTitle(e.target.value)}></input>
+                            <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} onInput={(e:any) => setEditTitle(e.target.value)}></input>
                         </div>
                         <div className="mb-5">
                             <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                            <input required type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} onInput={(e) => setEditDesc(e.target.value)}></input>
+                            <input required type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} onInput={(e:any) => setEditDesc(e.target.value)}></input>
                         </div>
                         <div className="mb-5">
                             <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                            <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onInput={(e) => setEditLink(e.target.value)}></input>
+                            <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onInput={(e:any) => setEditLink(e.target.value)}></input>
                         </div>
                         <div className="mb-5">
 
@@ -276,7 +312,7 @@ const BannPage = () => {
 
 
                             <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                            <input required type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
+                            <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
                         </div>
 
                         <div className="mb-5">
@@ -289,15 +325,11 @@ const BannPage = () => {
 
                         <div className="mb-5">
                             <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                            <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} onInput={(e) => setEditOrden(e.target.value)} />
-                        </div>
-                        <div className="mb-5">
-                            <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                            <input type="date" name="dfecha" />
+                            <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} onInput={(e:any) => setEditOrden(e.target.value)} />
                         </div>
                         <div>
                             <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Confirmar</button>
-                            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
+                            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
                         </div>
                     </form>
                 </div>

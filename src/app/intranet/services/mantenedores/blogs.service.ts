@@ -31,7 +31,7 @@ export const blogServices = {
     },
     
     async update() {
-        const res = await axiosClient.post('api/v1/blogs/setBlog')
+        const res = await axiosClient.post('api/v1/blogs/updateBlog')
     },
     
     async delete(id:any) {
