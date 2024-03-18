@@ -7,31 +7,52 @@ import Link from "next/link";
 import { Documentation, DocumentationResponseDTO } from "@/app/intranet/interfaces/documentacion.response.dto";
 
 const DocuPage = () =>{
+
+    const defaultDocumentation: Documentation = {
+        iid_documentacion: 0,
+        vtitulo: "",
+        vtextobreve: "",
+        vimagen: "",
+        vlink: "",
+        vredireccion: "",
+        iorden: 0,
+        dfecha: "",
+        iid_estado_registro: 0,
+        vdescripcion_estado: ""
+      };
+      
+
  
-    const [documents, setDocuments] = useState<Documentation[]>([]);
-    const [documentsInfo, setDocumentsInfo] = useState([]);
+    const [documents, setDocuments] = useState<Documentation[]>([defaultDocumentation, defaultDocumentation]);
+    const [documentsInfo, setDocumentsInfo] = useState<any>([]);
     const [paginas, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPorPagina, setItems] = useState(10);
     const [itemsTotales, setTotalItems] = useState(0);
-    const [bannerTitle, setbannerTitle] = useState("");
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [editId, setEditId] = useState(0);
-    const [editTitle, setEditTitle] = useState('');
-    const [editDesc, setEditDesc] = useState('');
-    const [editLink, setEditLink] = useState('');
-    const [editOrden, setEditOrden] = useState('');
-    const [editImage, setEditImage] = useState(null);
+    const [editImage, setEditImage] = useState<File>();
 
     const handleFileChange = (e: any) => {
         setEditImage(e.target.files[0]);
     };
 
+    const handleInputChange = (e: any) =>{
+        const {id, value} = e.target
+        const updatedDocuments = [...documents];
+        const fieldName: keyof Documentation = id as keyof Documentation;
+        if(fieldName){
+            updatedDocuments[0] = {...updatedDocuments[0], [fieldName]: value};
+        }
+
+        setDocuments(updatedDocuments);
+    }
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const openModal = () => {
+    const openModal = (i: number) => {
+        setCurrentIndex(i);
         setModalIsOpen(true);
     };
 
@@ -40,7 +61,7 @@ const DocuPage = () =>{
     };
 
     useEffect(() => {
-        getDocuments(currentPage, itemsPorPagina, bannerTitle)
+        getDocuments(currentPage, itemsPorPagina, '')
     }, [])
 
     const getDocuments = async (page: number, items: number, titulo: string) => {
@@ -51,28 +72,37 @@ const DocuPage = () =>{
 
         setDocumentsInfo(documentsList)
         setTotalItems(documentsList.TotalRecords)
+        documentsList.data.unshift(defaultDocumentation);
         setDocuments(documentsList.data)
         const pages = Math.ceil(documentsList.TotalRecords / items) != 0 ? Math.ceil(documentsList.TotalRecords / items) : 1
         setPages(pages);
 
     }
 
-    /*const createDocument = async () =>{
-        const iamg = document.getElementsByName('vimagen').values
-        console.log(iamg)
-        const res = await documentacionServices.create(editImage, 'prueba de servicios 2', 'creando desde el back', 'example.com', '_blank', '9', '', '1', '0')
-    }*/
+    const createDocument = async () =>{
+        const image = document.getElementById('vimagen') as HTMLInputElement;
+        const file: File | null = image.files ? image.files[0] : null;
+        const documentToCreate: Documentation ={
+            iid_documentacion: parseInt((document.getElementById('iid_documentacion') as HTMLInputElement).value),
+            vtitulo: (document.getElementById('vtitulo') as HTMLInputElement).value,
+            vtextobreve: (document.getElementById('vtextobreve') as HTMLInputElement).value,
+            vimagen: (document.getElementById('vimagen') as HTMLInputElement).value,
+            vlink: (document.getElementById('vlink') as HTMLInputElement).value,
+            vredireccion: '_blank',
+            iorden: parseInt((document.getElementById('iorden') as HTMLInputElement).value),
+            dfecha: (document.getElementById('dfecha') as HTMLInputElement).value,
+            iid_estado_registro: 1,
+            vdescripcion_estado: '',
+        }
+        
+        console.log(documentToCreate);
+        const res = await documentacionServices.create(documentToCreate, file);
+        console.log(res);
+    }
 
 
     const cancel = () => {
-        setEditId(0),
-            setEditTitle(''),
-            setEditDesc(''),
-            setEditLink(''),
-            setEditImage(null),
-            setEditOrden('')
 
-        closeModal()
     }
 
     return (
@@ -91,7 +121,7 @@ const DocuPage = () =>{
                 {/* <p>cantidad de banners por pagina {itemsPorPagina}</p>
                 <p>Total: {itemsTotales}</p>
                 <p>Total páginas: {paginas}</p> */}
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={openModal}>
+                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={()=>{openModal(0)}}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
@@ -129,7 +159,7 @@ const DocuPage = () =>{
                             {
                                 documentsInfo.IsSuccess ? (
                                     documents.map((item, index) => (
-                                        <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                        <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_documentacion}>
                                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                                 {item.vtitulo}
                                             </th>
@@ -149,13 +179,13 @@ const DocuPage = () =>{
                                                 {item.vdescripcion_estado}
                                             </td>
                                             <td className="px-6 py-4 text-center flex gap-3 h-22">
-                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={openModal}>
+                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={()=>{openModal(index)}}>
                                                     <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                     </svg>
 
                                                 </Link>
-                                                <Link href="" className="font-medium text-blue-600 hover:underline">
+                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={()=>{openModal(index)}}>
                                                     <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                     </svg>
@@ -187,19 +217,19 @@ const DocuPage = () =>{
                 <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div className="mb-5">
                         <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                        <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} />
+                        <input type="text" id="iid_documentacion" name="iid_documentacion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].iid_documentacion} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                        <input type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} />
+                        <input type="text" id="vtitulo" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vtitulo} onChange={handleInputChange} />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                        <input type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} />
+                        <input type="text" id="vtextobreve" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vtextobreve} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                        <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} />
+                        <input type="text" id="vlink" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vlink} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
 
@@ -219,7 +249,7 @@ const DocuPage = () =>{
 
 
                         <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                        <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
+                        <input type="file" id="vimagen" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
                     </div>
 
                     <div className="mb-5">
@@ -232,14 +262,14 @@ const DocuPage = () =>{
 
                     <div className="mb-5">
                         <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} />
+                        <input type="text" id="iorden" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].iorden} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                        <input type="date" name="dfecha" />
+                        <input type="date" id="dfecha" name="dfecha" onChange={handleInputChange}  />
                     </div>
                     <div>
-                        <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Confirmar</button>
+                        <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={createDocument}>Confirmar</button>
                         <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={cancel}>Cancelar</button>
                     </div>
                 </div>
