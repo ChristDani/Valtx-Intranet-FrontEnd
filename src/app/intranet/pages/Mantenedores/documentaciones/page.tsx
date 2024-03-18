@@ -68,7 +68,7 @@ const DocuPage = () =>{
 
         setItems(items);
 
-        const documentsList: DocumentationResponseDTO = await documentacionServices.getList(page, items, titulo, -1);
+        const documentsList: DocumentationResponseDTO = await documentacionServices.getList(page, items, titulo, -1, "asc");
 
         setDocumentsInfo(documentsList)
         setTotalItems(documentsList.TotalRecords)
@@ -81,7 +81,7 @@ const DocuPage = () =>{
 
     const createDocument = async () =>{
         const image = document.getElementById('vimagen') as HTMLInputElement;
-        const file: File | null = image.files ? image.files[0] : null;
+        const file: File | undefined = image.files ? image.files[0] : undefined;
         const documentToCreate: Documentation ={
             iid_documentacion: parseInt((document.getElementById('iid_documentacion') as HTMLInputElement).value),
             vtitulo: (document.getElementById('vtitulo') as HTMLInputElement).value,
