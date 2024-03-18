@@ -12,13 +12,14 @@ tokenAuth(token);
 export const bannerServices = {
 
 
-    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number): Promise<BannerResponseDTO> {
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, order: string): Promise<BannerResponseDTO> {
 
         const { data } = await axiosClient.post('api/v1/banner/getBannerList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
-            "iid_estado_registro": state // -1
+            "iid_estado_registro": state, // -1
+            "order": order
         });
 
         return data;
