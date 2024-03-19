@@ -13,8 +13,8 @@ const BannPage = () => {
     const [bannersInfo, setBannersInfo] = useState([]);
     const [paginas, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pagInicio, setPagInicio] = useState(0);
-    const [pagFinal, setPagFinal] = useState(0);
+    const [pagInicio, setPagInicio] = useState(1);
+    const [pagFinal, setPagFinal] = useState(5);
     const [pagesToShow, setPagesToShow] = useState<number[]>([]);
     const [itemsPorPagina, setItems] = useState(1);
     const [itemsTotales, setTotalItems] = useState(0);
@@ -144,22 +144,27 @@ const BannPage = () => {
     const iniciarPaginacion = (page: number, pages: number) => {
 
         setPagInicio(1);
+        let starPage = 1
 
         if (page - 3 > 1) {
             setPagInicio(page - 2);
+            starPage = page - 2
         }
 
-        setPagFinal(pagInicio + 5);
+        setPagFinal(starPage + 4);
+        let finishPage = starPage + 4
 
-        if (pagInicio + 5 > pages) {
+        if (starPage + 4 > pages) {
             setPagFinal(pages);
+            finishPage = pages
         }
 
+        let list = []
         setPagesToShow([]);
-        for (let i = pagInicio; i <= pagFinal; i++) {
-            pagesToShow.push(i)
+        for (let i = starPage; i <= finishPage; i++) {
+            list.push(i)
         }
-        console.log(pagesToShow)
+        setPagesToShow(list);
     }
 
     const previusPage = (page: number) => {
@@ -282,7 +287,7 @@ const BannPage = () => {
                     <nav aria-label="Page navigation example">
                         <ul className="flex items-center -space-x-px h-8 text-sm">
                             {(currentPage != pagInicio) ? (
-                                <li key={currentPage - 1}>
+                                <li>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
                                         <span className="sr-only">Previous</span>
                                         <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -291,29 +296,39 @@ const BannPage = () => {
                                     </Link>
                                 </li>
                             ) : (<span></span>)}
-                            {(pagInicio > 1) ? (
-                                <li key={1}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(1, itemsPorPagina, bannerTitle)}>1</Link>
-                                </li>
+                            {(pagInicio > 2) ? (
+                                <>
+                                    <li>
+                                        <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(1, itemsPorPagina, bannerTitle)}>1</Link>
+                                    </li>
+                                    <li>
+                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
+                                    </li>
+                                </>
                             ) : (<span></span>)}
                             {pagesToShow.map((item) => (
                                 (currentPage == item) ? (
-                                    <li key={item}>
+                                    <li>
                                         <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                     </li>
                                 ) : (
-                                    <li key={item}>
+                                    <li>
                                         <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(item, itemsPorPagina, bannerTitle)}>{item}</Link>
                                     </li>
                                 )
                             ))}
                             {(pagFinal < (paginas - 1)) ? (
-                                <li key={paginas}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(paginas, itemsPorPagina, bannerTitle)}>{paginas}</Link>
-                                </li>
+                                <>
+                                    <li>
+                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
+                                    </li>
+                                    <li>
+                                        <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(paginas, itemsPorPagina, bannerTitle)}>{paginas}</Link>
+                                    </li>
+                                </>
                             ) : (<span></span>)}
                             {(currentPage != pagFinal) ? (
-                                <li key={currentPage + 1}>
+                                <li>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
                                         <span className="sr-only">Next</span>
                                         <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
