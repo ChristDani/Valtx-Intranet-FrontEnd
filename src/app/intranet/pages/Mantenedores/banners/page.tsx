@@ -33,6 +33,9 @@ const BannPage = () => {
     const [editOrden, setEditOrden] = useState('');
     const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
+    const [redirecction, setRedirecction] = useState('');
+    const [dfecha, setFecha] = useState('');
+    const [fechaFormat, setFechaFormat] = useState('');
 
     const handleFileChange = (e: any) => {
         setEditImage(e.target.files[0]);
@@ -78,10 +81,32 @@ const BannPage = () => {
         openModal()
     }
 
-    const editBanner = async (e: any, id: number) => {
-        setModalState({ create: false, update: true, delete: false })
-        openModal()
+    const formatFech = (fecha: string) => {
 
+        let diassemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+        const dateString = fecha;
+        const date = new Date(dateString);
+        const day = date.getDay();
+        const dateNum = date.getDate();
+        const month = date.getMonth() + 1; // Note: months are 0-based in JavaScript
+        const year = date.getFullYear();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();// < 10 ? '0' + date.getSeconds() : date.getSeconds();
+        const amOrPm = hours > 11 ? 'PM' : 'AM';
+
+        // const formattedHours = hours % 12 || 12; // convert to 12-hour format
+        const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
+        const formattedMinutes = minutes.toString().padStart(2, '0');
+        const formattedSeconds = seconds.toString().padStart(2, '0');
+        const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${amOrPm}`;
+
+        setFechaFormat(`${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]} del ${year} / ${formattedTime}`);
+    }
+
+    const getOneBAnner = async (id: number) => {
         const onlyOneBanner = await bannerServices.getOne(id);
 
         const edittttt = onlyOneBanner.data
@@ -93,8 +118,22 @@ const BannPage = () => {
             setEditLink(item.vlink),
             setEditImage(item.vimagen),
             setEditOrden(item.iorden),
-            setEditState(item.iid_estado_registro)
+            setEditState(item.iid_estado_registro),
+            setRedirecction(item.vredireccion),
+            setFecha(item.dfecha),
+            formatFech(item.dfecha)
         ))
+    }
+
+    const Details = (e: any, id: number) => {
+        openModal()
+        getOneBAnner(id)
+    }
+
+    const editBanner = (e: any, id: number) => {
+        setModalState({ create: false, update: true, delete: false })
+        openModal()
+        getOneBAnner(id)
     }
 
     const deleteBanner = async (e: any, id: string) => {
@@ -180,177 +219,173 @@ const BannPage = () => {
     return (
 
         <div className="mt-2 pt-4 ml-8 pb-8">
-            <div>
-                <h1 className="uppercase font-bold">Banners</h1>
+            <h1 className="uppercase font-bold">Mantenedor de Banners</h1>
+            <div className="max-w flex flex-wrap items-center justify-between">
                 <div>
+                    <label htmlFor="numberOfBanners">Mostrar </label>
                     <select name="numberOfBanners" id="numberOfBanners" onChange={(e) => getBanners(1, Number(e.target.value), bannerTitle)}>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
+                    <label htmlFor="numberOfBanners"> Registros</label>
                 </div>
-                <p>cantidad de banners por pagina {itemsPorPagina}</p>
-                <p>Total: {itemsTotales}</p>
-                <p>Total páginas: {paginas}</p>
-                <p>Página actual: {currentPage}</p>
+                <div className="mb-5">
+                    <input type="text" name="bannertitle" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="buscar por titulo" value={bannerTitle} onInput={(e: any) => searchBanner(e.target.value)}></input>
+                </div>
                 <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createBanner}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
                 </button>
-                <div className="mb-5">
-                    <label htmlFor="bannertitle" className="uppercase block mb-2 text-sm font-medium text-gray-900">Buscar</label>
-                    <input required type="text" name="bannertitle" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="buscar por titulo" value={bannerTitle} onInput={(e: any) => searchBanner(e.target.value)}></input>
-                </div>
-                {/* tabla */}
-                <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                    <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Titulo
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Descripción
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Imagen
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Orden
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Estado
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Acción
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* Replace the following <tr> elements with your actual product data */}
-                            {
-                                bannersInfo.IsSuccess ? (
-                                    banners.map((item: any) => (
-                                        <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
-                                            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                                {item.vtitulo}
-                                            </th>
-                                            <td className="px-6 py-4 text-center">
-                                                {item.vtextobreve}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
-                                                <img className="object-cover w-10 rounded-t-lg h-20 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
-                                                {item.iorden}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
-                                                {item.vdescripcion_estado}
-                                            </td>
-                                            <td className="px-6 py-4 text-center flex gap-3 h-22">
-                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={openModal}>
-                                                    <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                                    </svg>
-
-                                                </Link>
-                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editBanner(e, item.iid_banner)}>
-                                                    <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                                    </svg>
-                                                </Link>
-                                                <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteBanner(e, item.iid_banner)}>
-                                                    <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                    </svg>
-                                                </Link>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr className="bg-white border-b hover:bg-gray-50">
-                                        <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                            Lo sentimos, aún no se han registrado datos!
-                                        </th>
-                                    </tr>
-
-                                )
-                            }
-                        </tbody>
-                    </table>
-                </div>
-                {/* paginacion */}
-                {/* <Paginacion pagInicio={1} pagFinal={5} currentPage={2} totalPages={8}></Paginacion> */}
-                {(paginas > 1) ? (
-                    <nav aria-label="Page navigation example">
-                        <ul className="flex items-center -space-x-px h-8 text-sm">
-                            {(currentPage != pagInicio) ? (
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
-                                        <span className="sr-only">Previous</span>
-                                        <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-                                        </svg>
-                                    </Link>
-                                </li>
-                            ) : (<span></span>)}
-                            {(pagInicio > 2) ? (
-                                <>
-                                    <li>
-                                        <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(1, itemsPorPagina, bannerTitle)}>1</Link>
-                                    </li>
-                                    <li>
-                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
-                                    </li>
-                                </>
-                            ) : (<span></span>)}
-                            {pagesToShow.map((item) => (
-                                (currentPage == item) ? (
-                                    <li>
-                                        <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
-                                    </li>
-                                ) : (
-                                    <li>
-                                        <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(item, itemsPorPagina, bannerTitle)}>{item}</Link>
-                                    </li>
-                                )
-                            ))}
-                            {(pagFinal < (paginas - 1)) ? (
-                                <>
-                                    <li>
-                                        <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
-                                    </li>
-                                    <li>
-                                        <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(paginas, itemsPorPagina, bannerTitle)}>{paginas}</Link>
-                                    </li>
-                                </>
-                            ) : (<span></span>)}
-                            {(currentPage != pagFinal) ? (
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
-                                        <span className="sr-only">Next</span>
-                                        <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                        </svg>
-                                    </Link>
-                                </li>
-                            ) : (<span></span>)}
-                        </ul>
-                    </nav>
-                ) : (
-                    <span></span>
-                )
-                }
             </div>
 
+            {/* tabla */}
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Titulo
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Descripción
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Imagen
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Orden
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Estado
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
+                                Acción
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Replace the following <tr> elements with your actual product data */}
+                        {
+                            bannersInfo.IsSuccess ? (
+                                banners.map((item: any) => (
+                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                            {item.vtitulo}
+                                        </th>
+                                        <td className="px-6 py-4 text-center">
+                                            {item.vtextobreve}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            <img className="object-cover w-10 rounded-t-lg h-20 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {item.iorden}
+                                        </td>
+                                        <td className="px-6 py-4 text-center">
+                                            {item.vdescripcion_estado}
+                                        </td>
+                                        <td className="px-6 py-4 text-center flex items-center gap-3 h-22">
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => Details(e, item.iid_banner)}>
+                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+
+                                            </Link>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editBanner(e, item.iid_banner)}>
+                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                                </svg>
+                                            </Link>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteBanner(e, item.iid_banner)}>
+                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                </svg>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr className="bg-white border-b hover:bg-gray-50">
+                                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                                        Lo sentimos, aún no se han registrado datos!
+                                    </th>
+                                </tr>
+
+                            )
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            {/* paginacion */}
+            {(paginas > 1) ? (
+                <nav className="w-full">
+                    <ul className="flex items-center -space-x-px h-8 text-sm">
+                        {(currentPage != pagInicio) ? (
+                            <li>
+                                <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
+                                    <span className="sr-only">Previous</span>
+                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                                    </svg>
+                                </Link>
+                            </li>
+                        ) : (<span></span>)}
+                        {(pagInicio > 2) ? (
+                            <>
+                                <li>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(1, itemsPorPagina, bannerTitle)}>1</Link>
+                                </li>
+                                <li>
+                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
+                                </li>
+                            </>
+                        ) : (<span></span>)}
+                        {pagesToShow.map((item) => (
+                            (currentPage == item) ? (
+                                <li>
+                                    <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
+                                </li>
+                            ) : (
+                                <li>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(item, itemsPorPagina, bannerTitle)}>{item}</Link>
+                                </li>
+                            )
+                        ))}
+                        {(pagFinal < (paginas - 1)) ? (
+                            <>
+                                <li>
+                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
+                                </li>
+                                <li>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(paginas, itemsPorPagina, bannerTitle)}>{paginas}</Link>
+                                </li>
+                            </>
+                        ) : (<span></span>)}
+                        {(currentPage != pagFinal) ? (
+                            <li>
+                                <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
+                                    <span className="sr-only">Next</span>
+                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                    </svg>
+                                </Link>
+                            </li>
+                        ) : (<span></span>)}
+                    </ul>
+                </nav>
+            ) : (
+                <span></span>
+            )
+            }
 
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
-                {modalState.create ? 'Creando' : modalState.update ? 'actualizando' : modalState.delete ? 'eliminando' : 'detalles'}
-                <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    {modalState.create || modalState.update ? (
+                {modalState.create || modalState.update ? (
+                    <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                         <form onSubmit={confirmOp}>
                             <div className="mb-5 hidden">
                                 <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
@@ -411,19 +446,29 @@ const BannPage = () => {
                                 <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
                             </div>
                         </form>
-                    ) : modalState.delete ? (
+                    </div>
+                ) : modalState.delete ? (
+                    <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
+                        <h1>¿Esta seguro de eliminar el banner?</h1>
                         <div>
-                            <h1>¿Esta seguro de eliminar el banner?</h1>
-                            <div>
-                                <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={confirmOp}>Confirmar</button>
-                                <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
-                            </div>
+                            <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={confirmOp}>Confirmar</button>
+                            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
                         </div>
-                    ) : (
-                        <div>detalles del banner</div>
-
-                    )}
-                </div>
+                    </div>
+                ) : (
+                    <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
+                        <Link href={editLink} target={redirecction}>
+                            <img className="rounded-t-lg" src={`/images/banners/${editImage}`} alt=""></img>
+                        </Link>
+                        <div className="p-5">
+                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
+                            <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
+                            <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
+                            <p className="mb-1 font-normal text-gray-700">Estado: {editState == '1' ? 'Activo' : 'Inactivo'}</p>
+                            <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
+                        </div>
+                    </div>
+                )}
             </ModalComponent>
         </div>
     );
