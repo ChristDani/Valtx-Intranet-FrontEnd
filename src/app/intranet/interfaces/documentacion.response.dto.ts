@@ -13,7 +13,7 @@ export interface DocumentationResponseDTO{
     vlink: string
     vredireccion: string
     iorden: number
-    dfecha: string
+    dfecha?: string
     iid_estado_registro: number
     vdescripcion_estado: string
   }
