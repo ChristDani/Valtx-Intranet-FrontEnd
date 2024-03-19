@@ -12,6 +12,9 @@ tokenAuth(token);
 
 export const documentacionServices = {
     async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<DocumentationResponseDTO> {
+        
+        tokenAuth(token);
+        
         const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
@@ -39,7 +42,7 @@ export const documentacionServices = {
         formData.append('vlink', document.vlink);
         formData.append('vredireccion', document.vredireccion);
         formData.append('iorden', document.iorden.toString()); 
-        formData.append('dfecha', document.dfecha);
+        formData.append('dfecha', '');
         formData.append('iid_estado_registro', document.iid_estado_registro.toString());
         formData.append('storage', '/documentacion');
         formData.append('vdescripcion_estado', document.vdescripcion_estado);
@@ -49,13 +52,31 @@ export const documentacionServices = {
         const res = await axiosClient.post('api/v1/documentacion/setDocum', formData);
     },
     
-    async update() {
+    async update(document: Documentation, image?: File) {
 
+        tokenAuth(token,'multipart/form-data');
 
-        const res = await axiosClient.post('api/v1/documentacion/updateDocum');
+        const formData = new FormData();
+        if(image) formData.append('image', image);
+        formData.append('iid_documentacion', document.iid_documentacion.toString());
+        formData.append('vtitulo', document.vtitulo);
+        formData.append('vtextobreve', document.vtextobreve);
+        formData.append('vlink', document.vlink);
+        formData.append('vredireccion', document.vredireccion);
+        formData.append('iorden', document.iorden.toString()); 
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', document.iid_estado_registro.toString());
+        formData.append('storage', '/documentacion');
+        formData.append('vdescripcion_estado', document.vdescripcion_estado);
+
+        const res = await axiosClient.post('api/v1/documentacion/updateDocum', formData);
     },
     
     async delete(id:any) {
+
+        tokenAuth(token);
+
+
         const res = await axiosClient.post(`api/v1/documentacion/delDocumId?iid_documentacion=${id}`)
     }
 }
