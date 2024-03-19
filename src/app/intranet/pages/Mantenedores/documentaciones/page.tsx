@@ -30,9 +30,15 @@ const DocuPage = () =>{
     const [itemsPorPagina, setItems] = useState(10);
     const [itemsTotales, setTotalItems] = useState(0);
 
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const [editImage, setEditImage] = useState<File>();
+    const [editId, setEditId] = useState('0');
+    const [editTitle, setEditTitle] = useState('');
+    const [editDesc, setEditDesc] = useState('');
+    const [editLink, setEditLink] = useState('');
+    const [editOrden, setEditOrden] = useState('');
+    const [editState, setEditState] = useState('1');
 
     const handleFileChange = (e: any) => {
         setEditImage(e.target.files[0]);
@@ -41,9 +47,27 @@ const DocuPage = () =>{
     const handleInputChange = (e: any) =>{
         const {id, value} = e.target
         const updatedDocuments = [...documents];
-        const fieldName: keyof Documentation = id as keyof Documentation;
-        if(fieldName){
-            updatedDocuments[0] = {...updatedDocuments[0], [fieldName]: value};
+
+        switch(id){
+
+            case 'iid_documentacion' : setEditId(value)
+                break;
+
+            case 'vtitulo' : setEditTitle(value)    
+                break;
+
+            case 'vtextobreve' : setEditDesc(value)    
+                break;
+
+            case 'vimagen' : setEditImage(value)    
+                break;
+
+            case 'vlink' : setEditLink(value)    
+                break;
+
+            case 'iorden' : setEditOrden(value)
+                break;
+
         }
 
         setDocuments(updatedDocuments);
@@ -52,12 +76,32 @@ const DocuPage = () =>{
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = (i: number) => {
+
         setCurrentIndex(i);
-        setModalIsOpen(true);
+
+        if(i >= 0){
+            setEditId(documents[i].iid_documentacion.toString());
+            setEditTitle(documents[i].vtitulo);
+            setEditDesc(documents[i].vtextobreve);
+            setEditLink(documents[i].vlink);
+            setEditOrden(documents[i].iorden.toString());
+            setEditState('1');
+        }else{
+            setEditId('0');
+            setEditTitle('');
+            setEditDesc('');
+            setEditLink('');
+            setEditOrden('');
+            setEditState('1');
+        }
+        console.log(i)
+        setModalIsOpen(true)
     };
 
     const closeModal = () => {
+
         setModalIsOpen(false);
+        
     };
 
     useEffect(() => {
@@ -72,32 +116,47 @@ const DocuPage = () =>{
 
         setDocumentsInfo(documentsList)
         setTotalItems(documentsList.TotalRecords)
-        documentsList.data.unshift(defaultDocumentation);
         setDocuments(documentsList.data)
         const pages = Math.ceil(documentsList.TotalRecords / items) != 0 ? Math.ceil(documentsList.TotalRecords / items) : 1
         setPages(pages);
 
     }
 
-    const createDocument = async () =>{
-        const image = document.getElementById('vimagen') as HTMLInputElement;
-        const file: File | undefined = image.files ? image.files[0] : undefined;
+    const generateDocument = () =>{
         const documentToCreate: Documentation ={
-            iid_documentacion: parseInt((document.getElementById('iid_documentacion') as HTMLInputElement).value),
-            vtitulo: (document.getElementById('vtitulo') as HTMLInputElement).value,
-            vtextobreve: (document.getElementById('vtextobreve') as HTMLInputElement).value,
+            iid_documentacion: parseInt(editId),
+            vtitulo: editTitle,
+            vtextobreve: editDesc,
             vimagen: (document.getElementById('vimagen') as HTMLInputElement).value,
-            vlink: (document.getElementById('vlink') as HTMLInputElement).value,
+            vlink: editLink,
             vredireccion: '_blank',
-            iorden: parseInt((document.getElementById('iorden') as HTMLInputElement).value),
-            dfecha: (document.getElementById('dfecha') as HTMLInputElement).value,
+            iorden: parseInt(editOrden),
+            dfecha: '',
             iid_estado_registro: 1,
             vdescripcion_estado: '',
         }
-        
-        console.log(documentToCreate);
-        const res = await documentacionServices.create(documentToCreate, file);
+
+        return documentToCreate;
+    }
+
+    const createDocument = async () =>{
+        const file: File | undefined = editImage;
+
+        if(currentIndex==-1){
+            const res = await documentacionServices.create(generateDocument(), file);
+            console.log(res)
+        }else{
+            const res = await documentacionServices.update(generateDocument(), file);
+        }
+
+        closeModal();
+        getDocuments(currentPage, itemsPorPagina, '');
+    }
+
+    const deleteDocument = async (i: number) =>{
+        const res = await documentacionServices.delete(documents[i].iid_documentacion);
         console.log(res);
+        getDocuments(currentPage, itemsPorPagina, '');
     }
 
 
@@ -110,22 +169,22 @@ const DocuPage = () =>{
         <div className="mt-2 pt-4 ml-8 pb-8">
             <div>
                 <h1 className="uppercase font-bold">Documentación</h1>
-                <div>
-                    <select name="numberOfBanners" id="numberOfBanners" onChange={(e) => getDocuments(1, Number(e.target.value), bannerTitle)}>
+                <div className="flex items-center">
+                    <select name="numberOfBanners" id="numberOfBanners" onChange={(e) => getDocuments(1, Number(e.target.value), '')}>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
+                    {/* <p>cantidad de banners por pagina {itemsPorPagina}</p>
+                    <p>Total: {itemsTotales}</p>
+                    <p>Total páginas: {paginas}</p> */}
+                    <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 ml-4 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={()=>{openModal(-1)}}>
+                        <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                            Agregar
+                        </span>
+                    </button>
                 </div>
-                {/* <p>cantidad de banners por pagina {itemsPorPagina}</p>
-                <p>Total: {itemsTotales}</p>
-                <p>Total páginas: {paginas}</p> */}
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={()=>{openModal(0)}}>
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
-                        Agregar
-                    </span>
-                </button>
                 {/* tabla */}
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg m-4">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -142,9 +201,6 @@ const DocuPage = () =>{
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Orden
-                                </th>
-                                <th scope="col" className="px-6 py-3 text-center">
-                                    Fecha
                                 </th>
                                 <th scope="col" className="px-6 py-3 text-center">
                                     Estado
@@ -173,9 +229,6 @@ const DocuPage = () =>{
                                                 {item.iorden}
                                             </td>
                                             <td className="px-6 py-4 text-center">
-                                                {item.dfecha}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
                                                 {item.vdescripcion_estado}
                                             </td>
                                             <td className="px-6 py-4 text-center flex gap-3 h-22">
@@ -190,7 +243,7 @@ const DocuPage = () =>{
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                     </svg>
                                                 </Link>
-                                                <a href="#" className="font-medium text-blue-600 hover:underline">
+                                                <a href="#" className="font-medium text-blue-600 hover:underline" onClick={()=>{deleteDocument(index)}}>
                                                     <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                                     </svg>
@@ -216,20 +269,19 @@ const DocuPage = () =>{
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <div className="mb-5">
-                        <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                        <input type="text" id="iid_documentacion" name="iid_documentacion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].iid_documentacion} onChange={handleInputChange}  />
+                        <input type="hidden" id="iid_documentacion" name="iid_documentacion" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                        <input type="text" id="vtitulo" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vtitulo} onChange={handleInputChange} />
+                        <input type="text" id="vtitulo" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} onChange={handleInputChange} />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                        <input type="text" id="vtextobreve" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vtextobreve} onChange={handleInputChange}  />
+                        <input type="text" id="vtextobreve" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
                         <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                        <input type="text" id="vlink" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].vlink} onChange={handleInputChange}  />
+                        <input type="text" id="vlink" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onChange={handleInputChange}  />
                     </div>
                     <div className="mb-5">
 
@@ -252,21 +304,17 @@ const DocuPage = () =>{
                         <input type="file" id="vimagen" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange} /*value={editImage}*/ />
                     </div>
 
-                    <div className="mb-5">
+                    {/*<div className="mb-5">
                         <label className="inline-flex items-center cursor-pointer">
                             <input type="checkbox" value="1" className="sr-only peer" defaultValue={1} defaultChecked />
                             <div className="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                             <span className="ms-3 text-sm font-medium text-gray-900">Checked toggle</span>
                         </label>
-                    </div>
+                </div>*/}
 
                     <div className="mb-5">
                         <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                        <input type="text" id="iorden" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={documents[currentIndex].iorden} onChange={handleInputChange}  />
-                    </div>
-                    <div className="mb-5">
-                        <label htmlFor="dfecha" className="uppercase block mb-2 text-sm font-medium text-gray-900">fecha</label>
-                        <input type="date" id="dfecha" name="dfecha" onChange={handleInputChange}  />
+                        <input type="text" id="iorden" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} onChange={handleInputChange}  />
                     </div>
                     <div>
                         <button type="button" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={createDocument}>Confirmar</button>
