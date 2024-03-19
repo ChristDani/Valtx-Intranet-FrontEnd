@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { documentacionServices } from '../../../services/mantenedores/document.service';
 
-import ModalComponent from "../components/modal";
+import ModalComponent from "../../../componentes/mantenedores/modal";
 import Link from "next/link";
 import { Documentation, DocumentationResponseDTO } from "@/app/intranet/interfaces/documentacion.response.dto";
 
@@ -47,7 +47,7 @@ const DocuPage = () =>{
 
         setItems(items);
 
-        const documentsList: DocumentationResponseDTO = await documentacionServices.getList(page, items, titulo, -1);
+        const documentsList: DocumentationResponseDTO = await documentacionServices.getList(page, items, titulo, -1, 'asc');
 
         setDocumentsInfo(documentsList)
         setTotalItems(documentsList.TotalRecords)
