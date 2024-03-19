@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { documentacionServices } from '../../../services/mantenedores/document.service';
 
-import ModalComponent from "../components/modal";
+import ModalComponent from "../../../componentes/mantenedores/modal";
 import Link from "next/link";
 import { Documentation, DocumentationResponseDTO } from "@/app/intranet/interfaces/documentacion.response.dto";
 
