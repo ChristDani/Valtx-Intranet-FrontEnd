@@ -15,7 +15,7 @@ export const documentacionServices = {
         const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
-            "vtitulo": titulo, // "
+            "vtitulo": titulo, // ""
             "iid_estado_registro": state, // -1
             "order" : orden // asc
         });
