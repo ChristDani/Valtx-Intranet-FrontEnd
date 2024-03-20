@@ -8,7 +8,7 @@ import { EventResponseDTO } from '../../interfaces/event.response.dto';
 const token = getCookie('token') || '';
 
 export const eventServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number): Promise<EventResponseDTO> {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<EventResponseDTO> {
         
         tokenAuth(token);
         
@@ -16,7 +16,8 @@ export const eventServices = {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
-            "iid_estado_registro": state // -1
+            "iid_estado_registro": state, // -1
+            "order": orden // asc
         });
         
         return data;

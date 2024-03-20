@@ -8,7 +8,7 @@ import { NoticiasResponseDTO } from '../../interfaces/news.response.dto';
 const token = getCookie('token') || '';
 
 export const newsServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number): Promise<NoticiasResponseDTO> {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<NoticiasResponseDTO> {
 
         tokenAuth(token);
 
@@ -16,7 +16,8 @@ export const newsServices = {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
-            "iid_estado_registro": state // -1
+            "iid_estado_registro": state, // -1
+            "order": orden // asc
         });
         
         return data;

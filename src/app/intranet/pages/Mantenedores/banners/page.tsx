@@ -1,22 +1,20 @@
 'use client';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { bannerServices } from '../../../services/mantenedores/banner.service';
 
-import Image from 'next/image';
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
-import { title } from "process";
 
 const BannPage = () => {
 
     const [banners, setBanners] = useState([]);
-    const [bannersInfo, setBannersInfo] = useState([]);
+    const [bannersInfo, setBannersInfo] = useState<any>([]);
     const [paginas, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [pagInicio, setPagInicio] = useState(1);
     const [pagFinal, setPagFinal] = useState(5);
     const [pagesToShow, setPagesToShow] = useState<number[]>([]);
-    const [itemsPorPagina, setItems] = useState(1);
+    const [itemsPorPagina, setItems] = useState(10);
     const [itemsTotales, setTotalItems] = useState(0);
     const [bannerTitle, setbannerTitle] = useState("");
 
@@ -216,6 +214,24 @@ const BannPage = () => {
         getBanners(page, itemsPorPagina, bannerTitle)
     }
 
+    const [imageSrc, setImageSrc] = useState(null);
+    const fileInputRef = useRef(null);
+
+    const handleImageChange = (event: any) => {
+        const file = event.target.files[0];
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setImageSrc(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
+    // const handleButtonClick = () => {
+    //     fileInputRef.current.click();
+    // };
+
     return (
 
         <div className="mt-2 pt-4 ml-8 pb-8">
@@ -279,7 +295,7 @@ const BannPage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <img className="object-cover w-10 rounded-t-lg h-20 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
+                                            <img className="rounded-lg h-36 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             {item.iorden}
@@ -387,6 +403,32 @@ const BannPage = () => {
                 {modalState.create || modalState.update ? (
                     <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                         <form onSubmit={confirmOp}>
+                            {/* <div className="mb-5">
+                                <>
+                                    <button onClick={handleButtonClick}>Select image</button>
+                                    <input type="file" onChange={handleImageChange} ref={fileInputRef} className="d-none" />
+                                    {imageSrc && (
+                                        <img src={imageSrc} alt="Preview" id="fotoPerfileditmuestra" />
+                                    )}
+                                    {!imageSrc && (
+                                        <img src='' alt="Default" id="fotoPerfilmuestra" />
+                                    )}
+                                </>
+                            </div>
+                            <div className="mb-5">
+                                <div className="flex items-center justify-center w-full">
+                                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                            </svg>
+                                            <p className="mb-2 text-sm text-gray-500 text-center"><span className="font-semibold">Click to upload</span></p>
+                                            <p className="text-xs text-gray-500">SVG, PNG or JPG (MAX. 800x400px)</p>
+                                        </div>
+                                    </label>
+                                    <input id="dropzone-file" type="file" className="hidden"></input>
+                                </div>
+                            </div> */}
                             <div className="mb-5 hidden">
                                 <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
                                 <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
@@ -404,28 +446,12 @@ const BannPage = () => {
                                 <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                             </div>
                             <div className="mb-5">
-
-
-                                {/* <div className="flex items-center justify-center w-full">
-                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
-                                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                <p className="text-xs text-gray-500">SVG, PNG or JPG (MAX. 800x400px)</p>
-                            </div>
-                            <input id="dropzone-file" type="file" className="" />
-                        </label>
-                        </div> */}
-
-
                                 <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
                                 <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange}></input>
                             </div>
 
                             <div className="mb-5">
-                                <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900">Seleccione el estado</label>
+                                <label htmlFor="countries" className="uppercase block mb-2 text-sm font-medium text-gray-900">estado</label>
                                 <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setEditState(e.target.value)}>
                                     {modalState.update ? (
                                         <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
@@ -458,9 +484,10 @@ const BannPage = () => {
                 ) : (
                     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                         <Link href={editLink} target={redirecction}>
-                            <img className="rounded-t-lg" src={`/images/banners/${editImage}`} alt=""></img>
+                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/banners/${editImage}`} alt=""></img>
                         </Link>
-                        <div className="p-5">
+                        <hr />
+                        <div className="px-5 py-3">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                             <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                             <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>

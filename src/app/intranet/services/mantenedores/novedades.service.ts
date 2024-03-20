@@ -7,7 +7,7 @@ import tokenAuth from '../token.service';
 const token = getCookie('token') || '';
 
 export const novedadesServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number) {
+    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string) {
         
         tokenAuth(token);
         
@@ -15,7 +15,8 @@ export const novedadesServices = {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
-            "iid_estado_registro": state // -1
+            "iid_estado_registro": state, // -1
+            "order": orden // asc
         });
         
         return data;
