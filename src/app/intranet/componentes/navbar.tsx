@@ -2,16 +2,27 @@
 
 import LogoutService from '@/app/authentication/services/logout.service';
 import Image from 'next/image'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ModalComponent from './mantenedores/modal';
 import { FaRegUserCircle } from 'react-icons/fa';
+import { PerfilesService } from '../services/administration/perfiles.service';
 
 export default function Navbar() {
     const router = useRouter();
     const [nombre, setNombre] = useState('');
     const [opened, setOpened] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    useEffect(()=>{
+        validatePerfil();
+    }, []);
+
+    const validatePerfil = async () =>{
+        const perfilId = localStorage.getItem("perfil") || '';
+        const perfil = await PerfilesService.getPerfilById(perfilId);
+        console.log(perfil);
+    }
 
     const UserName = async () => {
         const userdoc = localStorage.getItem("userDocument");
@@ -29,6 +40,7 @@ export default function Navbar() {
 
         LogoutService();
         router.push('/authentication');
+
     }
 
     const closeModal = () => {
