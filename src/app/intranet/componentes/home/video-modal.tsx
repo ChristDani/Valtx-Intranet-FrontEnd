@@ -12,7 +12,12 @@ const VideoModal = ({ onClose, videoUrl }) => {
         </div>
 
         {/** Contenedor de video */}
-        <div className="video-container m-auto z-50">
+        <div className="relative video-container m-auto z-50">
+          <span className="flex absolute top-0 right-0 bg-white cursor-pointer font-bold items-center 
+                justify-center rounded-full translate-x-4 -translate-y-4 w-[30px] h-[30px]"
+                onClick={onClose}
+                >X</span>
+
           <video width={700} height={700} controls autoPlay>
               <source src={videoUrl} type="video/mp4"></source>
           </video>

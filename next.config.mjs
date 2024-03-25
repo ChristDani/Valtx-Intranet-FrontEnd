@@ -1,4 +1,7 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const nextConfig = {
   images: {

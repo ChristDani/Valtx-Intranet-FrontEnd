@@ -3,10 +3,14 @@
 import { useState } from "react";
 import { loginService } from './services/login.service';
 import { useRouter } from 'next/navigation';
+import ModalComponent from "../intranet/componentes/mantenedores/modal";
+import { IoWarningOutline } from "react-icons/io5";
 
 export default function AuthenticationPage() {
 
     const router = useRouter();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [credentials, setCredentials] = useState({
         document: '',
         password: ''
@@ -23,10 +27,20 @@ export default function AuthenticationPage() {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        await loginService.validate(credentials);
-        router.push('/intranet');
+        const message = await loginService.validate(credentials);
+        if(message == null){
+            router.push('/intranet');
+        }else{
+            setModalMessage(message);
+            setModalIsOpen(true);
+        }
+        
     }
 
+
+    const closeModal = () =>{
+        setModalIsOpen(false);
+    }
 
     return (
         <>
@@ -48,6 +62,7 @@ export default function AuthenticationPage() {
                                     onChange={onInputChange}
                                 ></input>
                             </div>
+                            <br></br>
                             <div className="flex items-center justify-between">
                                 <label className="block text-sm font-medium leading-6 text-gray-900">Constraseña:</label>
                             </div>
@@ -66,11 +81,19 @@ export default function AuthenticationPage() {
                             <button type="submit" className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#284488] focus-visible:outline global-main-button">Ingresar</button>
                         </div>
                         <div className="flex text-sm justify-end">
-                            <a href="#" className="font-semibold global-main-text">Recuperar contraseña</a>
+                            <a href="/authentication/pages/recover-password" className="font-semibold global-main-text">Recuperar contraseña</a>
                         </div>
                     </form>
                 </div>
             </div>
+            <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+                <div className="flex justify-center flex-col items-center max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <IoWarningOutline className="text-[red] h-28 w-28" />
+                    <div className="flex justify-center items-center mt-4">
+                        <h1>Contraseña Incorrecta!</h1>
+                    </div>
+                </div>
+                </ModalComponent>
         </>
     );
 }

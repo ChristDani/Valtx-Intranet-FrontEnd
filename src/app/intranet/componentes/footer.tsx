@@ -92,7 +92,7 @@ export const Footer = () =>{
                         <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
                             style={{backgroundImage:'url(icons/social-media/3.png)'}}
                             onClick={()=>{goToLink('https://www.youtube.com/@valtx4640')}}>
-                                    <img src="/icons/social-media/5.png"
+                                    <img src="/icons/social-media/6.png"
                                     className="h-[80%] m-auto w-[80%]"></img>
                         </div>
                         <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
