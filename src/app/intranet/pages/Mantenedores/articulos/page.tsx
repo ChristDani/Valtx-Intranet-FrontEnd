@@ -222,7 +222,7 @@ const ArticPage = () =>{
     return(
 
         <div className="mt-2 pt-4 ml-8 pb-8">
-            <h1 className="uppercase font-bold">Mantenedor de Articulos</h1>
+            <h1 className="uppercase font-bold">Mantenedor de Artículos</h1>
             <div className="max-w flex flex-wrap items-center justify-between">
                 <div>
                     <label htmlFor="numberOfItems">Mostrar </label>

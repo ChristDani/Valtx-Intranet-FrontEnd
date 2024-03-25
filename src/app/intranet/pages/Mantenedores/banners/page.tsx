@@ -7,23 +7,28 @@ import ModalComponent from '../../../componentes/mantenedores/modal';
 
 const BannPage = () => {
 
-    const [banners, setBanners] = useState([]);
-    const [bannersInfo, setBannersInfo] = useState<any>([]);
+    // data
+    const [dataList, setDataList] = useState([]);
+    const [datInfo, setDataInfo] = useState<any>([]);
+    // paginacion
     const [paginas, setPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [pagInicio, setPagInicio] = useState(1);
     const [pagFinal, setPagFinal] = useState(5);
     const [pagesToShow, setPagesToShow] = useState<number[]>([]);
-    const [itemsPorPagina, setItems] = useState(10);
+    const [itemsPorPagina, setItems] = useState(1);
     const [itemsTotales, setTotalItems] = useState(0);
-    const [bannerTitle, setbannerTitle] = useState("");
+    // busqueda
+    const [searchTitle, setSearchTitle] = useState("");
 
+    // modal
     const [modalState, setModalState] = useState({
         create: false,
         update: false,
         delete: false
     })
 
+    // edición
     const [editId, setEditId] = useState('0');
     const [editTitle, setEditTitle] = useState('');
     const [editDesc, setEditDesc] = useState('');
@@ -52,29 +57,29 @@ const BannPage = () => {
     };
 
     useEffect(() => {
-        getBanners(currentPage, itemsPorPagina, bannerTitle)
+        getData(currentPage, itemsPorPagina, searchTitle)
     }, [])
 
-    const getBanners = async (page: number, items: number, titulo: string) => {
+    const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
         setItems(items);
 
-        const bannersList: any = await bannerServices.getList(page, items, titulo, -1, 'asc');
+        const itemsList: any = await bannerServices.getList(page, items, titulo, -1, 'asc');
 
-        setBannersInfo(bannersList);
-        setTotalItems(bannersList.TotalRecords);
-        setBanners(bannersList.data);
-        const pages = Math.ceil(bannersList.TotalRecords / items) != 0 ? Math.ceil(bannersList.TotalRecords / items) : 1;
+        setDataInfo(itemsList);
+        setTotalItems(itemsList.TotalRecords);
+        setDataList(itemsList.data);
+        const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
         setPages(pages);
         iniciarPaginacion(page, pages);
     }
 
-    const searchBanner = (title: string) => {
-        setbannerTitle(title)
-        getBanners(currentPage, itemsPorPagina, title)
+    const searchData = (title: string) => {
+        setSearchTitle(title)
+        getData(currentPage, itemsPorPagina, title)
     }
 
-    const createBanner = async () => {
+    const createItem = async () => {
         setModalState({ create: true, update: false, delete: false })
         openModal()
     }
@@ -104,10 +109,10 @@ const BannPage = () => {
         setFechaFormat(`${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]} del ${year} / ${formattedTime}`);
     }
 
-    const getOneBAnner = async (id: number) => {
-        const onlyOneBanner = await bannerServices.getOne(id);
+    const getOneItem = async (id: number) => {
+        const onlyOneItem = await bannerServices.getOne(id);
 
-        const edittttt = onlyOneBanner.data
+        const edittttt = onlyOneItem.data
 
         edittttt.map((item: any) => (
             setEditId(item.iid_banner),
@@ -123,20 +128,20 @@ const BannPage = () => {
         ))
     }
 
-    const Details = (e: any, id: number) => {
+    const itemDetails = (e: any, id: number) => {
         openModal()
-        getOneBAnner(id)
+        getOneItem(id)
     }
 
-    const editBanner = (e: any, id: number) => {
+    const editItem = (e: any, id: number) => {
         setModalState({ create: false, update: true, delete: false })
         openModal()
-        getOneBAnner(id)
+        getOneItem(id)
     }
-
-    const deleteBanner = async (e: any, id: string) => {
+    
+    const deleteItem = async (e: any, id: number) => {
         setModalState({ create: false, update: false, delete: true })
-        setEditId(id)
+        getOneItem(id)
         openModal()
     }
 
@@ -146,7 +151,7 @@ const BannPage = () => {
         if (modalState.create) {
             if (editImage != null) {
                 const res = await bannerServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
-                getBanners(currentPage, itemsPorPagina, bannerTitle)
+                getData(currentPage, itemsPorPagina, searchTitle)
                 closeModal()
             } else {
                 alert('debe elegir una imagen')
@@ -157,11 +162,11 @@ const BannPage = () => {
             } else {
                 const res = await bannerServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
             }
-            getBanners(currentPage, itemsPorPagina, bannerTitle)
+            getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
         } else if (modalState.delete) {
             const res = await bannerServices.delete(editId);
-            getBanners(currentPage, itemsPorPagina, bannerTitle)
+            getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
         } else {
             alert('detalles')
@@ -206,16 +211,16 @@ const BannPage = () => {
 
     const previusPage = (page: number) => {
         setCurrentPage(page)
-        getBanners(page, itemsPorPagina, bannerTitle)
+        getData(page, itemsPorPagina, searchTitle)
     }
 
     const nextPage = (page: number) => {
         setCurrentPage(page)
-        getBanners(page, itemsPorPagina, bannerTitle)
+        getData(page, itemsPorPagina, searchTitle)
     }
 
     const [imageSrc, setImageSrc] = useState(null);
-    const fileInputRef = useRef(null);
+    const fileInputRef:any = useRef(null);
 
     const handleImageChange = (event: any) => {
         const file = event.target.files[0];
@@ -228,9 +233,9 @@ const BannPage = () => {
         }
     };
 
-    // const handleButtonClick = () => {
-    //     fileInputRef.current.click();
-    // };
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
 
     return (
 
@@ -238,19 +243,19 @@ const BannPage = () => {
             <h1 className="uppercase font-bold">Mantenedor de Banners</h1>
             <div className="max-w flex flex-wrap items-center justify-between">
                 <div>
-                    <label htmlFor="numberOfBanners">Mostrar </label>
-                    <select name="numberOfBanners" id="numberOfBanners" onChange={(e) => getBanners(1, Number(e.target.value), bannerTitle)}>
+                    <label htmlFor="numberOfItems">Mostrar </label>
+                    <select name="numberOfItems" id="numberOfItems" onChange={(e) => getData(1, Number(e.target.value), searchTitle)}>
                         <option value="10">10</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <label htmlFor="numberOfBanners"> Registros</label>
+                    <label htmlFor="numberOfItems"> Registros</label>
                 </div>
                 <div className="mb-5">
-                    <input type="text" name="bannertitle" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="buscar por titulo" value={bannerTitle} onInput={(e: any) => searchBanner(e.target.value)}></input>
+                    <input type="text" name="itemtitle" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="buscar por titulo" value={searchTitle} onInput={(e: any) => searchData(e.target.value)}></input>
                 </div>
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createBanner}>
+                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createItem}>
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
                         Agregar
                     </span>
@@ -285,8 +290,8 @@ const BannPage = () => {
                     <tbody>
                         {/* Replace the following <tr> elements with your actual product data */}
                         {
-                            bannersInfo.IsSuccess ? (
-                                banners.map((item: any) => (
+                            datInfo.IsSuccess ? (
+                                dataList.map((item: any) => (
                                     <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {item.vtitulo}
@@ -303,19 +308,19 @@ const BannPage = () => {
                                         <td className="px-6 py-4 text-center">
                                             {item.vdescripcion_estado}
                                         </td>
-                                        <td className="px-6 py-4 text-center flex items-center gap-3 h-22">
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => Details(e, item.iid_banner)}>
+                                        <td className="flex gap-3 items-center justify-center my-auto px-6 h-44">
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_banner)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                 </svg>
 
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editBanner(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                 </svg>
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteBanner(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_banner)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                                 </svg>
@@ -353,7 +358,7 @@ const BannPage = () => {
                         {(pagInicio > 2) ? (
                             <>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(1, itemsPorPagina, bannerTitle)}>1</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle)}>1</Link>
                                 </li>
                                 <li>
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
@@ -367,7 +372,7 @@ const BannPage = () => {
                                 </li>
                             ) : (
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(item, itemsPorPagina, bannerTitle)}>{item}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
                         ))}
@@ -377,7 +382,7 @@ const BannPage = () => {
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
                                 </li>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getBanners(paginas, itemsPorPagina, bannerTitle)}>{paginas}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle)}>{paginas}</Link>
                                 </li>
                             </>
                         ) : (<span></span>)}
@@ -475,7 +480,7 @@ const BannPage = () => {
                     </div>
                 ) : modalState.delete ? (
                     <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                        <h1>¿Esta seguro de eliminar el banner?</h1>
+                        <h1>¿Esta seguro de eliminar el articulo?</h1>
                         <div>
                             <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={confirmOp}>Confirmar</button>
                             <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
