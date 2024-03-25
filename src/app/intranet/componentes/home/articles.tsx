@@ -19,9 +19,8 @@ const Articles = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", -1);
+        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", -1, "asc");
         const articlesList: Article[] = articlesRes.data;
-        // console.log(articlesRes);
         setArticles(articlesList);
     }
 
@@ -40,13 +39,13 @@ const Articles = () =>{
             </div>
         <div className="flex justify-between">
 
-        {/* {articles.map((article, index) => (
+        {articles.map((article, index) => (
 
             <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
                     onClick={()=>{goLink(article.vlink, article.vredireccion)}}>
 
-                <div className="bg-[red] h-52 overflow-hidden rounded-t-xl w-full">
-                    <img src={`/images/${article.vimagen}`}></img>
+                <div className="h-52 overflow-hidden rounded-t-xl w-full">
+                    <img src={`/images/${article.vimagen}`} className="w-full"></img>
                 </div>
                 <div className="ml-6">
 
@@ -62,7 +61,7 @@ const Articles = () =>{
                     <Link href={''} className="global-secondary-text">Ver detalles -{'>'}</Link>
                 </div>
             </div>
-        ))} */}
+        ))} 
         </div>
     </>
 
