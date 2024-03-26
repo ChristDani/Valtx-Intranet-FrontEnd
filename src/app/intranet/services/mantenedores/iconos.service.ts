@@ -26,21 +26,59 @@ export const iconServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1/icono/getIconoId?iid_icono=${id}`)
+        const { data } = await axiosClient.get(`api/v1/icono/getIconoId?iid_icono=${id}`);
+
+        return data;
+
     },
     
-    async create() {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, tipo: string  ) {
         
         tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/iconos');
+        formData.append('iid_icono', id);
+        formData.append('itipo_icono', tipo)
         
-        const res = await axiosClient.post('api/v1/icono/setIcono')
+        const res = await axiosClient.post('api/v1/icono/setIcono', formData)
+
+        return res;
     },
     
-    async update() {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, tipo: string, image?: File) {
         
         tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        if (image != null) {
+            formData.append('image', image);
+        }
+
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/iconos');
+        formData.append('iid_icono', id);
+        formData.append('itipo_icono', tipo)
         
-        const res = await axiosClient.post('api/v1/icono/updateIcono')
+        const res = await axiosClient.post('api/v1/icono/updateIcono', formData)
+
+        return res;
     },
     
     async delete(id:any) {

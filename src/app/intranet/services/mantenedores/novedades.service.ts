@@ -26,21 +26,56 @@ export const novedadesServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1/novedades/getNovedadesId?iid_novedad=${id}`)
+        const { data } = await axiosClient.get(`api/v1/novedades/getNovedadesId?iid_novedad=${id}`)
+
+        return data;
     },
     
-    async create() {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
         
         tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
         
-        const res = await axiosClient.post('api/v1/novedades/setNovedades')
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/novedades');
+        formData.append('iid_novedad', id);
+        
+        const res = await axiosClient.post('api/v1/novedades/setNovedades', formData)
+        
+        return res;
     },
     
-    async update() {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
         
         tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        if (image != null) {
+            formData.append('image', image);
+        }
         
-        const res = await axiosClient.post('api/v1/novedades/updateNovedades')
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/novedades');
+        formData.append('iid_novedad', id);
+        
+        const res = await axiosClient.post('api/v1/novedades/updateNovedades', formData)
+
+        return res;
     },
     
     async delete(id:any) {
