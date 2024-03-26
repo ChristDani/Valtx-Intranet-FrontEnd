@@ -11,12 +11,12 @@ export const eventServices = {
     async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<EventResponseDTO> {
         
         tokenAuth(token);
-        
         const { data } = await axiosClient.post('api/v1/evento/getEventoList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
-            "iid_estado_registro": state, // -1
+            "iid_estado_registro": state,  // -1
+            "dfecha":"",
             "order": orden // asc
         });
         
@@ -27,21 +27,54 @@ export const eventServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1/evento/getEventoId?iid_evento=${id}`)
+        const {data} = await axiosClient.get(`api/v1/evento/getEventoId?iid_evento=${id}`)
+
+        return data;
     },
     
-    async create() {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
         
         tokenAuth(token, 'multipart/form-data');
         
-        const res = await axiosClient.post('api/v1/evento/setEvento')
+        const formData = new FormData();
+
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/eventos');
+        formData.append('iid_evento', id);
+
+        const res = await axiosClient.post('api/v1/evento/setEvento', formData)
     },
     
-    async update() {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string,image?: File)  {
         
         tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        if(image !=null){
+            formData.append('image', image);
+        }
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/eventos');
+        formData.append('iid_evento', id);
         
-        const res = await axiosClient.post('api/v1/evento/updateEvento')
+        const res = await axiosClient.post('api/v1/evento/updateEvento', formData);
+
+        return res;
+
     },
     
     async delete(id:any) {
