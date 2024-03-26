@@ -112,20 +112,18 @@ const LinksPage = () =>{
     const getOneItem = async (id: number) => {
         const onlyOneItem = await linkServices.getOne(id);
 
-        // const edittttt = onlyOneItem.data
-
-        // edittttt.map((item: any) => (
-        //     setEditId(item.iid_banner),
-        //     setEditTitle(item.vtitulo),
-        //     setEditDesc(item.vtextobreve),
-        //     setEditLink(item.vlink),
-        //     setEditImage(item.vimagen),
-        //     setEditOrden(item.iorden),
-        //     setEditState(item.iid_estado_registro),
-        //     setRedirecction(item.vredireccion),
-        //     setFecha(item.dfecha),
-        //     formatFech(item.dfecha)
-        // ))
+        onlyOneItem.data.map((item: any) => (
+             setEditId(item.iid_enlace),
+             setEditTitle(item.vtitulo),
+             setEditDesc(item.vtextobreve),
+             setEditLink(item.vlink),
+             setEditImage(item.vimagen),
+             setEditOrden(item.iorden),
+             setEditState(item.iid_estado_registro),
+             setRedirecction(item.vredireccion),
+             setFecha(item.dfecha),
+             formatFech(item.dfecha)
+        ))
     }
 
     const itemDetails = (e: any, id: number) => {
@@ -150,7 +148,7 @@ const LinksPage = () =>{
 
         if (modalState.create) {
             if (editImage != null) {
-                // const res = await linkServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
+                const res = await linkServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
                 getData(currentPage, itemsPorPagina, searchTitle)
                 closeModal()
             } else {
@@ -158,9 +156,9 @@ const LinksPage = () =>{
             }
         } else if (modalState.update) {
             if (editImage != null) {
-                // const res = await linkServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, editImage)
+                const res = await linkServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, editImage)
             } else {
-                // const res = await linkServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
+                const res = await linkServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
             }
             getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
@@ -274,7 +272,7 @@ const LinksPage = () =>{
                         {
                             datInfo.IsSuccess ? (
                                 dataList.map((item: any) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_enlace}>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {item.vtitulo}
                                         </th>
@@ -290,19 +288,19 @@ const LinksPage = () =>{
                                         <td className="px-6 py-4 text-center">
                                             {item.vdescripcion_estado}
                                         </td>
-                                        <td className="px-6 py-4 text-center flex items-center gap-3 h-22">
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_banner)}>
+                                        <td className="flex gap-3 items-center justify-center my-auto px-6 h-44">
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_enlace)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                 </svg>
 
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_enlace)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                 </svg>
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_enlace)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                                 </svg>
@@ -347,13 +345,13 @@ const LinksPage = () =>{
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item) => (
+                        {pagesToShow.map((item,key) => (
                             (currentPage == item) ? (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
@@ -417,8 +415,8 @@ const LinksPage = () =>{
                                 </div>
                             </div> */}
                             <div className="mb-5 hidden">
-                                <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
+                                <label htmlFor="iid_enlace" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                <input type="text" name="iid_enlace" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
@@ -471,7 +469,7 @@ const LinksPage = () =>{
                 ) : (
                     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                         <Link href={editLink} target={redirecction}>
-                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/banners/${editImage}`} alt=""></img>
+                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/enlaces/${editImage}`} alt=""></img>
                         </Link>
                         <hr />
                         <div className="px-5 py-3">

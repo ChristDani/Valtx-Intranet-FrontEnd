@@ -11,7 +11,7 @@ export const linkServices = {
         
         tokenAuth(token);
         
-        const { data } = await axiosClient.post('api/v1//', {
+        const { data } = await axiosClient.post('api/v1/enlaces/getEnlaceList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,27 +26,56 @@ export const linkServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1//=${id}`)
+        const {data} = await axiosClient.get(`api/v1/enlaces/getEnlaceId?iid_enlace=${id}`);
+        return data;
+
     },
     
-    async create() {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string ) {
         
         tokenAuth(token, 'multipart/form-data');
+        const formData = new FormData()
         
-        const res = await axiosClient.post('api/v1//')
+        formData.append('image', image);
+        formData.append('vtitulo', titulo); 
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/enlaces');
+        formData.append('iid_enlace', id);
+
+        const res = await axiosClient.post('api/v1/enlaces/setEnlace',formData);
+        return res
     },
     
-    async update() {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string,image?: File) {
         
         tokenAuth(token, 'multipart/form-data');
-        
-        const res = await axiosClient.post('api/v1//')
+        const formData = new FormData();
+        if(image !=null){
+            formData.append('image', image)
+        }
+
+        formData.append('vtitulo', titulo); 
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/enlaces');
+        formData.append('iid_enlace', id);
+        const res = await axiosClient.post('api/v1/enlaces/updateEnlace', formData);
+        return res;
     },
     
     async delete(id:any) {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1//=${id}`)
+        const res = await axiosClient.post(`api/v1/enlaces/delEnlaceId?iid_enlace=${id}`)
     }
 }
