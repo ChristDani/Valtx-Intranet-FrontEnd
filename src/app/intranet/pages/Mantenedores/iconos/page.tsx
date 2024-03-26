@@ -37,6 +37,7 @@ const IcoPage = () =>{
     const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
     const [redirecction, setRedirecction] = useState('');
+    const [tipoIcono, setTipoIcono] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
@@ -112,20 +113,21 @@ const IcoPage = () =>{
     const getOneItem = async (id: number) => {
         const onlyOneItem = await iconServices.getOne(id);
 
-        // const edittttt = onlyOneItem.data
+        const edittttt = onlyOneItem.data
 
-        // edittttt.map((item: any) => (
-        //     setEditId(item.iid_banner),
-        //     setEditTitle(item.vtitulo),
-        //     setEditDesc(item.vtextobreve),
-        //     setEditLink(item.vlink),
-        //     setEditImage(item.vimagen),
-        //     setEditOrden(item.iorden),
-        //     setEditState(item.iid_estado_registro),
-        //     setRedirecction(item.vredireccion),
-        //     setFecha(item.dfecha),
-        //     formatFech(item.dfecha)
-        // ))
+        edittttt.map((item: any) => (
+            setEditId(item.iid_icono),
+            setEditTitle(item.vtitulo),
+            setEditDesc(item.vtextobreve),
+            setEditLink(item.vlink),
+            setEditImage(item.vimagen),
+            setEditOrden(item.iorden),
+            setTipoIcono(item.itipo_icono),
+            setEditState(item.iid_estado_registro),
+            setRedirecction(item.vredireccion),
+            setFecha(item.dfecha),
+            formatFech(item.dfecha)
+        ))
     }
 
     const itemDetails = (e: any, id: number) => {
@@ -150,7 +152,7 @@ const IcoPage = () =>{
 
         if (modalState.create) {
             if (editImage != null) {
-                // const res = await iconServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
+                await iconServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono);
                 getData(currentPage, itemsPorPagina, searchTitle)
                 closeModal()
             } else {
@@ -158,9 +160,9 @@ const IcoPage = () =>{
             }
         } else if (modalState.update) {
             if (editImage != null) {
-                // const res = await iconServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, editImage)
+                const res = await iconServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono,editImage)
             } else {
-                // const res = await iconServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
+                const res = await iconServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono)
             }
             getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
@@ -179,6 +181,7 @@ const IcoPage = () =>{
         setEditDesc('')
         setEditLink('')
         setEditImage(null)
+        setTipoIcono('')
         setEditState('1')
         setEditOrden('')
     }
@@ -265,6 +268,9 @@ const IcoPage = () =>{
                                 Estado
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
+                                Tipo Icono
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
                                 Acción
                             </th>
                         </tr>
@@ -274,7 +280,7 @@ const IcoPage = () =>{
                         {
                             datInfo.IsSuccess ? (
                                 dataList.map((item: any) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_icono}>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {item.vtitulo}
                                         </th>
@@ -290,19 +296,22 @@ const IcoPage = () =>{
                                         <td className="px-6 py-4 text-center">
                                             {item.vdescripcion_estado}
                                         </td>
-                                        <td className="px-6 py-4 text-center flex items-center gap-3 h-22">
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_banner)}>
+                                        <td className="px-6 py-4 text-center">
+                                            {item.vdescripcion_tipo_icono}
+                                        </td>
+                                        <td className="flex gap-3 items-center justify-center my-auto px-6 h-44">
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_icono)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                                 </svg>
 
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_icono)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                                                 </svg>
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_banner)}>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_icono)}>
                                                 <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
                                                 </svg>
@@ -312,7 +321,7 @@ const IcoPage = () =>{
                                 ))
                             ) : (
                                 <tr className="bg-white border-b hover:bg-gray-50">
-                                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                                    <th scope="row" colSpan={7} className="px-6 py-4 font-medium text-gray-900 text-center">
                                         Lo sentimos, aún no se han registrado datos!
                                     </th>
                                 </tr>
@@ -347,13 +356,13 @@ const IcoPage = () =>{
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item) => (
+                        {pagesToShow.map((item, i) => (
                             (currentPage == item) ? (
-                                <li>
+                                <li key={i}>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li>
+                                <li key={i}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
@@ -390,35 +399,9 @@ const IcoPage = () =>{
                 {modalState.create || modalState.update ? (
                     <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                         <form onSubmit={confirmOp}>
-                            {/* <div className="mb-5">
-                                <>
-                                    <button onClick={handleButtonClick}>Select image</button>
-                                    <input type="file" onChange={handleImageChange} ref={fileInputRef} className="d-none" />
-                                    {imageSrc && (
-                                        <img src={imageSrc} alt="Preview" id="fotoPerfileditmuestra" />
-                                    )}
-                                    {!imageSrc && (
-                                        <img src='' alt="Default" id="fotoPerfilmuestra" />
-                                    )}
-                                </>
-                            </div>
-                            <div className="mb-5">
-                                <div className="flex items-center justify-center w-full">
-                                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                            </svg>
-                                            <p className="mb-2 text-sm text-gray-500 text-center"><span className="font-semibold">Click to upload</span></p>
-                                            <p className="text-xs text-gray-500">SVG, PNG or JPG (MAX. 800x400px)</p>
-                                        </div>
-                                    </label>
-                                    <input id="dropzone-file" type="file" className="hidden"></input>
-                                </div>
-                            </div> */}
                             <div className="mb-5 hidden">
-                                <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
+                                <label htmlFor="iid_icono" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                <input type="text" name="iid_icono" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
@@ -437,6 +420,18 @@ const IcoPage = () =>{
                                 <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange}></input>
                             </div>
 
+                            <div className="mb-5">
+                                <label htmlFor="countries" className="uppercase block mb-2 text-sm font-medium text-gray-900">Tipo Icono</label>
+                                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setTipoIcono(e.target.value)}>
+                                    {modalState.update ? (
+                                        <option value={tipoIcono} selected hidden>{tipoIcono == '1' ? 'Primario' : 'Secundario'}</option>
+                                    ) : (
+                                        <option value="0" selected hidden>Seleccione</option>
+                                    )}
+                                    <option value="1">Primario</option>
+                                    <option value="2">Secundario</option>
+                                </select>
+                            </div>
                             <div className="mb-5">
                                 <label htmlFor="countries" className="uppercase block mb-2 text-sm font-medium text-gray-900">estado</label>
                                 <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setEditState(e.target.value)}>
@@ -471,13 +466,14 @@ const IcoPage = () =>{
                 ) : (
                     <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                         <Link href={editLink} target={redirecction}>
-                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/banners/${editImage}`} alt=""></img>
+                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/iconos/${editImage}`} alt=""></img>
                         </Link>
                         <hr />
                         <div className="px-5 py-3">
                             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                             <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                             <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
+                            <p className="mb-1 font-normal text-gray-700">Tipo Icono: {tipoIcono == '1' ? 'Primario': 'Secundario'}</p>
                             <p className="mb-1 font-normal text-gray-700">Estado: {editState == '1' ? 'Activo' : 'Inactivo'}</p>
                             <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
                         </div>
