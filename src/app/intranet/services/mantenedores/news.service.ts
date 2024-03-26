@@ -8,46 +8,81 @@ import { NoticiasResponseDTO } from '../../interfaces/news.response.dto';
 const token = getCookie('token') || '';
 
 export const newsServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<NoticiasResponseDTO> {
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<NoticiasResponseDTO> {
 
         tokenAuth(token);
 
         const { data } = await axiosClient.post('api/v1/valtx-news/getValtxNewsList', {
-            "inumero_pagina": pageNumber-1, // 0
+            "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
             "iid_estado_registro": state, // -1
             "order": orden // asc
         });
-        
+
         return data;
     },
-    
-    async getOne(id:any) {
+
+    async getOne(id: any) {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/valtx-news/getValtxNewsId?iid_news=${id}`)
-    },
-    
-    async create() {
+        const { data } = await axiosClient.get(`api/v1/valtx-news/getValtxNewsId?iid_news=${id}`);
 
-        tokenAuth(token, 'multipart/form-data');
-        
-        const res = await axiosClient.post('api/v1/valtx-news/setValtxNews')
+        return data;
     },
-    
-    async update() {
+
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
 
         tokenAuth(token, 'multipart/form-data');
 
-        const res = await axiosClient.post('api/v1/valtx-news/updateValtxNews')
+        const formData = new FormData()
+
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/valtx-news');
+        formData.append('iid_news', id);
+
+        const res = await axiosClient.post('api/v1/valtx-news/setValtxNews', formData)
+
+        return res;
     },
-    
-    async delete(id:any) {
+
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
+
+        tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        if (image != null) {
+            formData.append('image', image);
+        }
+
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/valtx-news');
+        formData.append('iid_news', id);
+
+        const res = await axiosClient.post('api/v1/valtx-news/updateValtxNews', formData)
+
+        return res;
+    },
+
+    async delete(id: any) {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/valtx-news/delValtxNewsId?iid_news=${id}`)
+        const res = await axiosClient.post(`api/v1/valtx-news/delValtxNewsId?iid_news=${id}`);
     }
 }

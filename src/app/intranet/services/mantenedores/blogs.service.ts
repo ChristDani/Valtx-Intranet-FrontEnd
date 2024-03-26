@@ -27,27 +27,64 @@ export const blogServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/blogs/getBlogId?iid_blog=${id}`)
+        const { data } = await axiosClient.get(`api/v1/blogs/getBlogId?iid_blog=${id}`)
+
+        return data;
     },
 
-    async create() {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, idCategory: string) {
 
         tokenAuth(token, 'multipart/form-data');
 
-        const res = await axiosClient.post('api/v1/blogs/setBlog')
+        const formData = new FormData()
+
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/blogs');
+        formData.append('iid_blog', id);
+        formData.append('iid_categoria', idCategory);
+
+        const res = await axiosClient.post('api/v1/blogs/setBlog', formData);
+
+        return res;
     },
 
-    async update() {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, idCategory: string, image?: File) {
 
         tokenAuth(token, 'multipart/form-data');
 
-        const res = await axiosClient.post('api/v1/blogs/updateBlog')
+        const formData = new FormData()
+
+        if (image != null) {
+            formData.append('image', image);
+        }
+
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/blogs');
+        formData.append('iid_blog', id);
+        formData.append('iid_categoria', idCategory);
+
+        const res = await axiosClient.post('api/v1/blogs/updateBlog', formData)
+
+        return res;
     },
 
     async delete(id: any) {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/blogs/delBlogId?iid_blog=${id}`)
+        const res = await axiosClient.post(`api/v1/blogs/delBlogId?iid_blog=${id}`);
     }
 }

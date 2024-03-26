@@ -1,82 +1,88 @@
 'use client'
-import axios, { AxiosRequestConfig } from 'axios'
 import axiosClient from '../axios.service';
 import { getCookie } from '../get-cookie.service';
 import tokenAuth from '../token.service';
 import { Documentation, DocumentationResponseDTO } from '../../interfaces/documentacion.response.dto';
 
-
 const token = getCookie('token') || '';
 
-tokenAuth(token);
-
 export const documentacionServices = {
-    async getList(pageNumber:number, itemsPerPage:number, titulo:string, state:number, orden: string): Promise<DocumentationResponseDTO> {
-        
+
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<DocumentationResponseDTO> {
+
         tokenAuth(token);
-        
+
         const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
-            "inumero_pagina": pageNumber-1, // 0
+            "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
             "iid_estado_registro": state, // -1
-            "order" : orden // asc
+            "order": orden // asc
         });
 
         return data;
     },
-    
-    async getOne(id:any) {
-        const res = await axiosClient.post(`api/v1/documentacion/getDocumId?iid_documentacion=${id}`)
-    },
-    
-    async create(document: Documentation, image?: File) {
 
-        tokenAuth(token,'multipart/form-data');
-
-        const formData = new FormData();
-        if(image) formData.append('image', image);
-        formData.append('iid_documentacion', '0');
-        formData.append('vtitulo', document.vtitulo);
-        formData.append('vtextobreve', document.vtextobreve);
-        formData.append('vlink', document.vlink);
-        formData.append('vredireccion', document.vredireccion);
-        formData.append('iorden', document.iorden.toString()); 
-        formData.append('dfecha', '');
-        formData.append('iid_estado_registro', document.iid_estado_registro.toString());
-        formData.append('storage', '/documentacion');
-        formData.append('vdescripcion_estado', document.vdescripcion_estado);
-        
-
-
-        const res = await axiosClient.post('api/v1/documentacion/setDocum', formData);
-    },
-    
-    async update(document: Documentation, image?: File) {
-
-        tokenAuth(token,'multipart/form-data');
-
-        const formData = new FormData();
-        if(image) formData.append('image', image);
-        formData.append('iid_documentacion', document.iid_documentacion.toString());
-        formData.append('vtitulo', document.vtitulo);
-        formData.append('vtextobreve', document.vtextobreve);
-        formData.append('vlink', document.vlink);
-        formData.append('vredireccion', document.vredireccion);
-        formData.append('iorden', document.iorden.toString()); 
-        formData.append('dfecha', '');
-        formData.append('iid_estado_registro', document.iid_estado_registro.toString());
-        formData.append('storage', '/documentacion');
-        formData.append('vdescripcion_estado', document.vdescripcion_estado);
-
-        const res = await axiosClient.post('api/v1/documentacion/updateDocum', formData);
-    },
-    
-    async delete(id:any) {
+    async getOne(id: any) {
 
         tokenAuth(token);
 
+        const { data } = await axiosClient.get(`api/v1/documentacion/getDocumId?iid_documentacion=${id}`);
 
-        const res = await axiosClient.post(`api/v1/documentacion/delDocumId?iid_documentacion=${id}`)
+        return data;
+    },
+
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
+
+        tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData()
+
+        formData.append('image', image);
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/documentacion');
+        formData.append('iid_documentacion', id);
+
+        const res = await axiosClient.post('api/v1/documentacion/setDocum', formData);
+
+        return res;
+    },
+
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
+
+        tokenAuth(token, 'multipart/form-data');
+
+        const formData = new FormData();
+
+        if (image != null) {
+            formData.append('image', image);
+        }
+        
+        formData.append('vtitulo', titulo);
+        formData.append('vtextobreve', descripcion);
+        formData.append('vlink', link);
+        formData.append('vredireccion', '_blank');
+        formData.append('iorden', orden);
+        formData.append('dfecha', '');
+        formData.append('iid_estado_registro', estado);
+        formData.append('storage', '/documentacion');
+        formData.append('iid_documentacion', id);
+
+        const res = await axiosClient.post('api/v1/documentacion/updateDocum', formData);
+
+        return res;
+    },
+
+    async delete(id: any) {
+
+        tokenAuth(token);
+
+        const res = await axiosClient.post(`api/v1/documentacion/delDocumId?iid_documentacion=${id}`);
     }
 }

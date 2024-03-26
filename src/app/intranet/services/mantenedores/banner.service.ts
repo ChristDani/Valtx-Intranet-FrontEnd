@@ -8,7 +8,6 @@ const token = getCookie('token') || '';
 
 export const bannerServices = {
 
-
     async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<BannerResponseDTO> {
 
         tokenAuth(token);
@@ -18,11 +17,10 @@ export const bannerServices = {
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
             "iid_estado_registro": state, // -1
-            "order" : orden // asc
+            "order": orden // asc
         });
 
         return data;
-
     },
 
     async getOne(id: any) {
@@ -39,7 +37,7 @@ export const bannerServices = {
         tokenAuth(token, 'multipart/form-data');
 
         const formData = new FormData()
-        
+
         formData.append('image', image);
         formData.append('vtitulo', titulo);
         formData.append('vtextobreve', descripcion);
@@ -57,7 +55,7 @@ export const bannerServices = {
     },
 
     async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
-        
+
         tokenAuth(token, 'multipart/form-data');
 
         const formData = new FormData()
@@ -79,13 +77,12 @@ export const bannerServices = {
         const res = await axiosClient.post(`api/v1/banner/updateBanner`, formData)
 
         return res;
-
     },
 
     async delete(id: any) {
-        
+
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/banner/delBannerId?iid_banner=${id}`)
+        const res = await axiosClient.post(`api/v1/banner/delBannerId?iid_banner=${id}`);
     }
 }

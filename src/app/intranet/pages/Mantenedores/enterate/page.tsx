@@ -114,14 +114,14 @@ const EnteratePage = () =>{
         onlyOneItem.data.map((item: any) => (
             setEditId(item.iid_enterate),
             setEditTitle(item.vtitulo),
-             setEditDesc(item.vtextobreve),
-             setEditLink(item.vlink),
-             setEditImage(item.vimagen),
-             setEditOrden(item.iorden),
-             setEditState(item.iid_estado_registro),
-             setRedirecction(item.vredireccion),
-             setFecha(item.dfecha),
-             formatFech(item.dfecha)
+            setEditDesc(item.vtextobreve),
+            setEditLink(item.vlink),
+            setEditImage(item.vimagen),
+            setEditOrden(item.iorden),
+            setEditState(item.iid_estado_registro),
+            setRedirecction(item.vredireccion),
+            setFecha(item.dfecha),
+            formatFech(item.dfecha)
          ))
     }
 
@@ -414,8 +414,8 @@ const EnteratePage = () =>{
                                 </div>
                             </div> */}
                             <div className="mb-5 hidden">
-                                <label htmlFor="iid_enterate" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                <input type="text" name="iid_enterate" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
+                                <label htmlFor="idItem" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                <input type="text" name="idItem" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>

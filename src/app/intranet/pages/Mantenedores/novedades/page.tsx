@@ -5,7 +5,7 @@ import { novedadesServices } from '../../../services/mantenedores/novedades.serv
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 
-const NovedadesPage = () =>{
+const NovedadesPage = () => {
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -138,7 +138,7 @@ const NovedadesPage = () =>{
         openModal()
         getOneItem(id)
     }
-    
+
     const deleteItem = async (e: any, id: number) => {
         setModalState({ create: false, update: false, delete: true })
         getOneItem(id)
@@ -218,8 +218,8 @@ const NovedadesPage = () =>{
         setCurrentPage(page)
         getData(page, itemsPorPagina, searchTitle)
     }
-    
-    return(
+
+    return (
 
         <div className="mt-2 pt-4 ml-8 pb-8">
             <h1 className="uppercase font-bold">Mantenedor de Novedades</h1>
@@ -353,7 +353,7 @@ const NovedadesPage = () =>{
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li  key={i}>
+                                <li key={i}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
@@ -417,8 +417,8 @@ const NovedadesPage = () =>{
                                 </div>
                             </div> */}
                             <div className="mb-5 hidden">
-                                <label htmlFor="iid_banner" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                <input type="text" name="iid_banner" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
+                                <label htmlFor="idItem" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
+                                <input type="text" name="idItem" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
                             </div>
                             <div className="mb-5">
                                 <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
