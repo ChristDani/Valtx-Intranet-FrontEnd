@@ -71,7 +71,7 @@ export const Enterate = () =>{
                 <span className="flex absolute align-middle h-full justify-center  w-full">
                     <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>
                 </span>
-                {item.vimagen && <img src={`/images/${item.vimagen}`} />}
+                {item.vimagen && <img className="h-full w-full" src={`/images/${item.vimagen}`} />}
             </div> ))}
 
             </div>

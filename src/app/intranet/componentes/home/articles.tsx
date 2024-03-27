@@ -39,7 +39,7 @@ const Articles = () =>{
             </div>
         <div className="flex justify-between">
 
-        {articles.map((article, index) => (
+        {articles? articles.map((article, index) => (
 
             <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
                     onClick={()=>{goLink(article.vlink, article.vredireccion)}}>
@@ -58,10 +58,10 @@ const Articles = () =>{
                 </div>
                 
                 <div className="flex mt-9 justify-end mr-3 mb-3">
-                    <Link href={''} className="global-secondary-text">Ver detalles -{'>'}</Link>
+                    <Link href={''} className="global-secondary-text">Leer más -{'>'}</Link>
                 </div>
             </div>
-        ))} 
+        )): null} 
         </div>
     </>
 
