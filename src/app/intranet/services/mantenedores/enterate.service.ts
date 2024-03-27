@@ -11,7 +11,7 @@ export const enterateServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/enterate/getEnterateList', {
+        const { data } = await axiosClient.post('enterate/getEnterateList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,7 +26,7 @@ export const enterateServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/enterate/getEnterateId?iid_enterate=${id}`)
+        const { data } = await axiosClient.get(`enterate/getEnterateId?iid_enterate=${id}`)
 
         return data;
     },
@@ -48,7 +48,7 @@ export const enterateServices = {
         formData.append('storage', '/enterate');
         formData.append('iid_enterate', id);
         
-        const res = await axiosClient.post('api/v1/enterate/setEnterate', formData);
+        const res = await axiosClient.post('enterate/setEnterate', formData);
 
         return res;
             
@@ -72,7 +72,7 @@ export const enterateServices = {
         formData.append('storage', '/enterate');
         formData.append('iid_enterate', id);
 
-        const res = await axiosClient.post('api/v1/enterate/updateEnterate', formData)
+        const res = await axiosClient.post('enterate/updateEnterate', formData)
 
         return res
     },
@@ -81,6 +81,6 @@ export const enterateServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/enterate/delEnterateId?iid_enterate=${id}`)
+        const res = await axiosClient.post(`enterate/delEnterateId?iid_enterate=${id}`)
     }
 }

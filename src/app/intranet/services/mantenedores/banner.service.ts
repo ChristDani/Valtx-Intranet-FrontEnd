@@ -12,7 +12,7 @@ export const bannerServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/banner/getBannerList', {
+        const { data } = await axiosClient.post('banner/getBannerList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -27,7 +27,7 @@ export const bannerServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/banner/getBannerId?iid_banner=${id}`);
+        const { data } = await axiosClient.get(`banner/getBannerId?iid_banner=${id}`);
 
         return data;
     },
@@ -49,7 +49,7 @@ export const bannerServices = {
         formData.append('storage', '/banners');
         formData.append('iid_banner', id);
 
-        const res = await axiosClient.post('api/v1/banner/setBanner', formData)
+        const res = await axiosClient.post('banner/setBanner', formData)
 
         return res;
     },
@@ -74,7 +74,7 @@ export const bannerServices = {
         formData.append('storage', '/banners');
         formData.append('iid_banner', id);
 
-        const res = await axiosClient.post(`api/v1/banner/updateBanner`, formData)
+        const res = await axiosClient.post(`banner/updateBanner`, formData)
 
         return res;
     },
@@ -83,6 +83,6 @@ export const bannerServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/banner/delBannerId?iid_banner=${id}`);
+        const res = await axiosClient.post(`banner/delBannerId?iid_banner=${id}`);
     }
 }

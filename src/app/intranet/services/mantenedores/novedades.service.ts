@@ -11,7 +11,7 @@ export const novedadesServices = {
         
         tokenAuth(token);
         
-        const { data } = await axiosClient.post('api/v1/novedades/getNovedadesList', {
+        const { data } = await axiosClient.post('novedades/getNovedadesList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,7 +26,7 @@ export const novedadesServices = {
         
         tokenAuth(token);
         
-        const { data } = await axiosClient.get(`api/v1/novedades/getNovedadesId?iid_novedad=${id}`)
+        const { data } = await axiosClient.get(`novedades/getNovedadesId?iid_novedad=${id}`)
 
         return data;
     },
@@ -48,7 +48,7 @@ export const novedadesServices = {
         formData.append('storage', '/novedades');
         formData.append('iid_novedad', id);
         
-        const res = await axiosClient.post('api/v1/novedades/setNovedades', formData)
+        const res = await axiosClient.post('novedades/setNovedades', formData)
         
         return res;
     },
@@ -73,7 +73,7 @@ export const novedadesServices = {
         formData.append('storage', '/novedades');
         formData.append('iid_novedad', id);
         
-        const res = await axiosClient.post('api/v1/novedades/updateNovedades', formData)
+        const res = await axiosClient.post('novedades/updateNovedades', formData)
 
         return res;
     },
@@ -82,6 +82,6 @@ export const novedadesServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1/novedades/delNovedadesId?iid_novedad=${id}`)
+        const res = await axiosClient.post(`novedades/delNovedadesId?iid_novedad=${id}`)
     }
 }

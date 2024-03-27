@@ -11,7 +11,7 @@ export const linkServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/enlaces/getEnlaceList', {
+        const { data } = await axiosClient.post('enlaces/getEnlaceList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,7 +26,7 @@ export const linkServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/enlaces/getEnlaceId?iid_enlace=${id}`);
+        const { data } = await axiosClient.get(`enlaces/getEnlaceId?iid_enlace=${id}`);
         return data;
 
     },
@@ -47,7 +47,7 @@ export const linkServices = {
         formData.append('storage', '/enlaces');
         formData.append('iid_enlace', id);
 
-        const res = await axiosClient.post('api/v1/enlaces/setEnlace', formData);
+        const res = await axiosClient.post('enlaces/setEnlace', formData);
         return res
     },
 
@@ -68,7 +68,7 @@ export const linkServices = {
         formData.append('iid_estado_registro', estado);
         formData.append('storage', '/enlaces');
         formData.append('iid_enlace', id);
-        const res = await axiosClient.post('api/v1/enlaces/updateEnlace', formData);
+        const res = await axiosClient.post('enlaces/updateEnlace', formData);
         return res;
     },
 
@@ -76,6 +76,6 @@ export const linkServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/enlaces/delEnlaceId?iid_enlace=${id}`)
+        const res = await axiosClient.post(`enlaces/delEnlaceId?iid_enlace=${id}`)
     }
 }

@@ -1,12 +1,16 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { blogServices } from '../../../services/mantenedores/blogs.service';
+import { parametrosServices } from '../../../services/parametros.service'
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 
 const BlogPage = () => {
 
+    // parametros
+    const [categoriesList, setCategoriesList] = useState([]);
+    const [statesList, setStatesList] = useState([]);
     // data
     const [dataList, setDataList] = useState([]);
     const [datInfo, setDataInfo] = useState<any>([]);
@@ -58,8 +62,22 @@ const BlogPage = () => {
     };
 
     useEffect(() => {
-        getData(currentPage, itemsPorPagina, searchTitle)
+        getData(currentPage, itemsPorPagina, searchTitle);
+        getCategories();
+        getStates();
     }, [])
+
+    const getCategories = async () => {
+        const { data } = await parametrosServices.getCategories()
+
+        setCategoriesList(data)
+    }
+
+    const getStates = async () => {
+        const { data } = await parametrosServices.getStates()
+
+        setStatesList(data)
+    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
@@ -150,7 +168,7 @@ const BlogPage = () => {
 
         if (modalState.create) {
             if (editImage != null) {
-                const res = await blogServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId, '1');
+                const res = await blogServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId, editCategory);
                 getData(currentPage, itemsPorPagina, searchTitle)
                 closeModal()
             } else {
@@ -456,18 +474,18 @@ const BlogPage = () => {
                                 </select>
                             </div>
 
-                            {/* <div className="mb-5">
+                            <div className="mb-5">
                                 <label htmlFor="categoryItem" className="uppercase block mb-2 text-sm font-medium text-gray-900">categoría</label>
                                 <select id="categoryItem" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setEditCategory(e.target.value)}>
                                     {modalState.update ? (
-                                        <option value={editCategory} selected hidden>{editCategory == '1' ? 'Activo' : 'Inactivo'}</option>
+                                        <option value={editCategory} selected hidden>{editCategory == '1' ? 'Desarrollo de Software' : 'Inteligencia Artificial'}</option>
                                     ) : (
                                         <option value="1" selected hidden>Activo</option>
                                     )}
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
+                                    <option value="1">Desarrollo de Software</option>
+                                    <option value="2">Inteligencia Artificial</option>
                                 </select>
-                            </div> */}
+                            </div>
 
                             <div className="mb-5">
                                 <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>

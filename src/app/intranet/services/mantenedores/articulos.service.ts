@@ -11,7 +11,7 @@ export const articulosServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/articulos/getArticuloList', {
+        const { data } = await axiosClient.post('articulos/getArticuloList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,7 +26,7 @@ export const articulosServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/articulos/getArticuloId?iid_articulo=${id}`);
+        const { data } = await axiosClient.get(`articulos/getArticuloId?iid_articulo=${id}`);
 
         return data;
     },
@@ -48,7 +48,7 @@ export const articulosServices = {
         formData.append('storage', '/articulos');
         formData.append('iid_articulo', id);
 
-        const res = await axiosClient.post('api/v1/articulos/setArticulo', formData);
+        const res = await axiosClient.post('articulos/setArticulo', formData);
 
         return res;
     },
@@ -73,7 +73,7 @@ export const articulosServices = {
         formData.append('storage', '/articulos');
         formData.append('iid_articulo', id);
 
-        const res = await axiosClient.post('api/v1/articulos/updateArticulo', formData);
+        const res = await axiosClient.post('articulos/updateArticulo', formData);
 
         return res;
     },
@@ -82,6 +82,6 @@ export const articulosServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/articulos/delArticuloId?iid_articulo=${id}`);
+        const res = await axiosClient.post(`articulos/delArticuloId?iid_articulo=${id}`);
     }
 }

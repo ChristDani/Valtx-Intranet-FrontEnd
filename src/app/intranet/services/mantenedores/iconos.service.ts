@@ -11,7 +11,7 @@ export const iconServices = {
         
         tokenAuth(token);
         
-        const { data } = await axiosClient.post('api/v1/icono/getIconoList', {
+        const { data } = await axiosClient.post('icono/getIconoList', {
             "inumero_pagina": pageNumber-1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -26,7 +26,7 @@ export const iconServices = {
         
         tokenAuth(token);
         
-        const { data } = await axiosClient.get(`api/v1/icono/getIconoId?iid_icono=${id}`);
+        const { data } = await axiosClient.get(`icono/getIconoId?iid_icono=${id}`);
 
         return data;
 
@@ -50,7 +50,7 @@ export const iconServices = {
         formData.append('iid_icono', id);
         formData.append('itipo_icono', tipo)
         
-        const res = await axiosClient.post('api/v1/icono/setIcono', formData)
+        const res = await axiosClient.post('icono/setIcono', formData)
 
         return res;
     },
@@ -76,7 +76,7 @@ export const iconServices = {
         formData.append('iid_icono', id);
         formData.append('itipo_icono', tipo)
         
-        const res = await axiosClient.post('api/v1/icono/updateIcono', formData)
+        const res = await axiosClient.post('icono/updateIcono', formData)
 
         return res;
     },
@@ -85,6 +85,6 @@ export const iconServices = {
         
         tokenAuth(token);
         
-        const res = await axiosClient.post(`api/v1/icono/delIconoId?iid_icono=${id}`)
+        const res = await axiosClient.post(`icono/delIconoId?iid_icono=${id}`)
     }
 }

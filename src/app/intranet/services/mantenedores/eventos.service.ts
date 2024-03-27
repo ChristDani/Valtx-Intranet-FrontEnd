@@ -11,7 +11,7 @@ export const eventServices = {
     async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<EventResponseDTO> {
 
         tokenAuth(token);
-        const { data } = await axiosClient.post('api/v1/evento/getEventoList', {
+        const { data } = await axiosClient.post('evento/getEventoList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -27,7 +27,7 @@ export const eventServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/evento/getEventoId?iid_evento=${id}`)
+        const { data } = await axiosClient.get(`evento/getEventoId?iid_evento=${id}`)
 
         return data;
     },
@@ -49,7 +49,7 @@ export const eventServices = {
         formData.append('storage', '/eventos');
         formData.append('iid_evento', id);
 
-        const res = await axiosClient.post('api/v1/evento/setEvento', formData)
+        const res = await axiosClient.post('evento/setEvento', formData)
     },
 
     async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
@@ -71,7 +71,7 @@ export const eventServices = {
         formData.append('storage', '/eventos');
         formData.append('iid_evento', id);
 
-        const res = await axiosClient.post('api/v1/evento/updateEvento', formData);
+        const res = await axiosClient.post('evento/updateEvento', formData);
 
         return res;
 
@@ -81,6 +81,6 @@ export const eventServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/evento/delEventoId?iid_evento=${id}`)
+        const res = await axiosClient.post(`evento/delEventoId?iid_evento=${id}`)
     }
 }

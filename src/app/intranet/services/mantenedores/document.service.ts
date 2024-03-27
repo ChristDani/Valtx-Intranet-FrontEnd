@@ -12,7 +12,7 @@ export const documentacionServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/documentacion/getDocumList', {
+        const { data } = await axiosClient.post('documentacion/getDocumList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -27,7 +27,7 @@ export const documentacionServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/documentacion/getDocumId?iid_documentacion=${id}`);
+        const { data } = await axiosClient.get(`documentacion/getDocumId?iid_documentacion=${id}`);
 
         return data;
     },
@@ -49,7 +49,7 @@ export const documentacionServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_documentacion', id);
 
-        const res = await axiosClient.post('api/v1/documentacion/setDocum', formData);
+        const res = await axiosClient.post('documentacion/setDocum', formData);
 
         return res;
     },
@@ -74,7 +74,7 @@ export const documentacionServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_documentacion', id);
 
-        const res = await axiosClient.post('api/v1/documentacion/updateDocum', formData);
+        const res = await axiosClient.post('documentacion/updateDocum', formData);
 
         return res;
     },
@@ -83,6 +83,6 @@ export const documentacionServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/documentacion/delDocumId?iid_documentacion=${id}`);
+        const res = await axiosClient.post(`documentacion/delDocumId?iid_documentacion=${id}`);
     }
 }

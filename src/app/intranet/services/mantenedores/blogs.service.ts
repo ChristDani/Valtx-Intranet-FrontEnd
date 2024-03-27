@@ -12,7 +12,7 @@ export const blogServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.post('api/v1/blogs/getBlogList', {
+        const { data } = await axiosClient.post('blogs/getBlogList', {
             "inumero_pagina": pageNumber - 1, // 0
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
@@ -27,7 +27,7 @@ export const blogServices = {
 
         tokenAuth(token);
 
-        const { data } = await axiosClient.get(`api/v1/blogs/getBlogId?iid_blog=${id}`)
+        const { data } = await axiosClient.get(`blogs/getBlogId?iid_blog=${id}`)
 
         return data;
     },
@@ -50,7 +50,7 @@ export const blogServices = {
         formData.append('iid_blog', id);
         formData.append('iid_categoria', idCategory);
 
-        const res = await axiosClient.post('api/v1/blogs/setBlog', formData);
+        const res = await axiosClient.post('blogs/setBlog', formData);
 
         return res;
     },
@@ -76,7 +76,7 @@ export const blogServices = {
         formData.append('iid_blog', id);
         formData.append('iid_categoria', idCategory);
 
-        const res = await axiosClient.post('api/v1/blogs/updateBlog', formData)
+        const res = await axiosClient.post('blogs/updateBlog', formData)
 
         return res;
     },
@@ -85,6 +85,6 @@ export const blogServices = {
 
         tokenAuth(token);
 
-        const res = await axiosClient.post(`api/v1/blogs/delBlogId?iid_blog=${id}`);
+        const res = await axiosClient.post(`blogs/delBlogId?iid_blog=${id}`);
     }
 }
