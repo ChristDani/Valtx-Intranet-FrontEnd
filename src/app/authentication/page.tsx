@@ -5,6 +5,7 @@ import { loginService } from './services/login.service';
 import { useRouter } from 'next/navigation';
 import ModalComponent from "../intranet/componentes/mantenedores/modal";
 import { IoWarningOutline } from "react-icons/io5";
+import Image from "next/image";
 
 export default function AuthenticationPage() {
 
@@ -44,48 +45,65 @@ export default function AuthenticationPage() {
 
     return (
         <>
-            <div className="flex flex-col justify-center min-h-full px-6 py-12 lg:px-8">
-                <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    {/**<img className="mx-auto h-10 w-auto" src="" alt="valtx"></img> */}
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 global-main-text">Valtx</h2>
+        <div className="grid grid-cols-2 h-screen max-md:grid-cols-1">
+            <div className=" flex items-center justify-center max-md:hidden">
+                <Image src='/icons/logoconexion.png' height="700" width="500" alt="" />
+            </div>
+            <div className="flex flex-col justify-center min-h-full px-6 lg:px-8 bg-white">
+                <div className="sm:mx-auto sm:w-full sm:max-w-sm space-y-2">
+                    <h2 className="text-center text-3xl font-bold text-gray-900">Te damos la bienvenida</h2>
+                    <p className="text-center text-xs text-gray-400">Inicia sesión con tu cuenta</p>
+                    <div className="w-14 h-2 mx-auto border-2 border-sky-400 bg-sky-400 rounded"></div>
                 </div>
                 {/** Form container */}
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" action="#" method="POST" onSubmit={onSubmit}>
                         <div>
-                            <label className="block font-medium text-sm leading-6 text-gray-900">Documento:</label>
-                            <div className="mt-2">
+                        <label className= "relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Usuario</label>
+                            <div>
                                 <input required id="document" name="document" type="text" autoComplete="email"
-                                    className="block w-full rounded-md border-0 px-3 py-1.5 text-gray-900 
-                    shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 
-                    focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="block w-full 
+                                    rounded-md px-3 py-1.5 h-12 text-gray-900 shadow-sm ring-1 ring-inset 
+                                    ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                                    focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={onInputChange}
                                 ></input>
                             </div>
                             <br></br>
                             <div className="flex items-center justify-between">
-                                <label className="block text-sm font-medium leading-6 text-gray-900">Constraseña:</label>
+                                <label className="relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Constraseña</label>
                             </div>
-                            <div className="mt-2">
+                            <div className="">
                                 <input required id="password" name="password" type="password"
                                     autoComplete="current-password" className="block w-full 
-                    rounded-md border-0 px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset 
-                    ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
-                    focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    rounded-md px-3 py-1.5 h-12 text-gray-900 shadow-sm ring-1 ring-inset 
+                                    ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
+                                    focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     onChange={onInputChange}
                                 ></input>
                             </div>
                         </div>
-
-                        <div>
-                            <button type="submit" className="flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-[#284488] focus-visible:outline global-main-button">Ingresar</button>
+                        <div className="flex text-sm justify-end gap-1">
+                            <p>¿Olvidaste tu contraseña?</p>
+                            <a href="/authentication/pages/recover-password" className="font-bold text-sky-400 underline">Recuperarlo aquí</a>
                         </div>
-                        <div className="flex text-sm justify-end">
-                            <a href="/authentication/pages/recover-password" className="font-semibold global-main-text">Recuperar contraseña</a>
+                        <div className="flex flex-row gap-1">
+                            <input type="checkbox" name="" id="" className=""/>
+                            <p className=" text-gray-500 text-sm">*Recordar el usuario en este dispositivo</p>
+                        </div>
+                        <div>
+                            <button type="submit" className="w-full rounded-md h-14 font-semibold text-white shadow-sm hover:bg-[#284488] focus-visible:outline global-main-button">Ingresar</button>
                         </div>
                     </form>
                 </div>
+                
+                <div className="mt-0 mb-4 w-96 mx-auto">
+                    <hr />
+                    <p className=" text-xs mt-4">© Todos los derechos reservados</p>
+                </div>
             </div>
+        </div>
+            
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <div className="flex justify-center flex-col items-center max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <IoWarningOutline className="text-[red] h-28 w-28" />
