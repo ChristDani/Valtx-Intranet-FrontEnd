@@ -490,7 +490,7 @@ const ArticPage = () => {
                                 <div className="mb-5 flex">
                                     <div className="flex-auto w-28 relative">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
-                                        <input type="text" name="iorden" className="bg-white border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
+                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
                                     </div>
                                     <div className="flex-auto w-full relative">
                                         <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Título</label>
@@ -509,15 +509,17 @@ const ArticPage = () => {
                                     <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
                                     <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
-                                <div className="flex">
-                                    <div className="mb-5 flex-auto relative">
-                                        <label htmlFor="countries" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                        <select id="countries" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            {modalState.update ? (
-                                                <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
-                                            ) : (
-                                                <option value="1" selected hidden>Activo</option>
-                                            )}
+                                <div className="flex justify-start gap-4">
+                                    <div className="mb-5 relative">
+                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
+                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
+                                            {
+                                                modalState.update ? (
+                                                    <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                                ) : (
+                                                    <option value="1" selected hidden>Activo</option>
+                                                )
+                                            }
                                             <option value="1">Activo</option>
                                             <option value="0">Inactivo</option>
                                         </select>
