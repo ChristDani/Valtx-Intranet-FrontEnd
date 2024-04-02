@@ -27,7 +27,7 @@ const IcoPage = () => {
     const [pagInicio, setPagInicio] = useState(1);
     const [pagFinal, setPagFinal] = useState(5);
     const [pagesToShow, setPagesToShow] = useState<number[]>([]);
-    const [itemsPorPagina, setItems] = useState(1);
+    const [itemsPorPagina, setItems] = useState(10);
     // busqueda
     const [searchTitle, setSearchTitle] = useState("");
 
