@@ -4,6 +4,7 @@ import { bannerServices } from '../../../services/mantenedores/banner.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
+import axios from "axios";
 
 const BannPage = () => {
 
@@ -49,7 +50,6 @@ const BannPage = () => {
     const openModal = () => {
         setModalIsOpen(true);
     };
-
     const closeModal = () => {
         cleanData()
         setModalState({ create: false, update: false, delete: false })
@@ -236,13 +236,24 @@ const BannPage = () => {
     const handleButtonClick = () => {
         fileInputRef.current.click();
     };
-
+    const capitalize= (text: String)=>{
+        const first = text.charAt(0);
+        const rest = text.slice(1).toLowerCase();
+        return first + rest
+    }
     return (
 
         <div className="mt-2 pt-4 ml-8 pb-8">
-            <h1 className="uppercase font-bold">Mantenedor de Banners</h1>
-            <div className="max-w flex flex-wrap items-center justify-between">
-                <div>
+            <div className="flex items-center gap-3">
+                <h1 className="">Mantenedores</h1>
+                <svg className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/>
+                </svg>
+                <h1 className=" font-bold">Banners</h1>
+            </div>
+            <hr className="mt-2"/>
+            <div className="max-w mt-4 flex flex-wrap items-center justify-between">
+                {/*<div>
                     <label htmlFor="numberOfItems">Mostrar </label>
                     <select name="numberOfItems" id="numberOfItems" onChange={(e) => getData(1, Number(e.target.value), searchTitle)}>
                         <option value="10">10</option>
@@ -251,12 +262,20 @@ const BannPage = () => {
                         <option value="100">100</option>
                     </select>
                     <label htmlFor="numberOfItems"> Registros</label>
+                </div>*/}
+                <div className="mb-5 w-96 relative flex ">
+                    <input type="text" name="itemtitle" className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400" placeholder="Buscar por título" value={searchTitle} onInput={(e: any) => searchData(e.target.value)}></input>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z" stroke="#7D7E8A" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
                 </div>
-                <div className="mb-5">
-                    <input type="text" name="itemtitle" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="buscar por titulo" value={searchTitle} onInput={(e: any) => searchData(e.target.value)}></input>
-                </div>
-                <button className="relative inline-flex cursor-pointer items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-300 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200" onClick={createItem}>
-                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white rounded-md group-hover:bg-opacity-0">
+                <button className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500" onClick={createItem}>
+                    <svg className="text-gray-800  dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5"/>
+                    </svg>
+                    <span className=" text-white font-bold">
                         Agregar
                     </span>
                 </button>
@@ -268,6 +287,9 @@ const BannPage = () => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-center">
+                                Orden
+                            </th>
+                            <th scope="col" className="px-6 py-3 text-center">
                                 Titulo
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
@@ -275,9 +297,6 @@ const BannPage = () => {
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Imagen
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Orden
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Estado
@@ -291,38 +310,57 @@ const BannPage = () => {
                         {/* Replace the following <tr> elements with your actual product data */}
                         {
                             datInfo.IsSuccess ? (
-                                dataList.map((item: any) => (
+                                dataList.map((item: any, key) => (
                                     <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                        <th scope="row" className="px-6 py-4 text-center">
+                                            {item.iorden}
+                                        </th>
                                         <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {item.vtitulo}
                                         </th>
-                                        <td className="px-6 py-4 text-center">
+                                        <td className="px-6 py-4 text-center ">
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <img className="rounded-lg h-36 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
                                         </td>
-                                        <td className="px-6 py-4 text-center">
-                                            {item.iorden}
+                                        <td className='px-6 py-4'>
+                                            <div className={`flex items-center justify-center  font-bold w-24 h-10 rounded-xl ${item.vdescripcion_estado === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700':'bg-rose-200 text-rose-800'}`}>
+                                                {
+                                                    capitalize(item.vdescripcion_estado)
+                                                }
+                                            </div>
                                         </td>
-                                        <td className="px-6 py-4 text-center">
-                                            {item.vdescripcion_estado}
-                                        </td>
-                                        <td className="flex gap-3 items-center justify-center my-auto px-6 h-44">
+                                        <td className="flex gap-4 items-center justify-center my-auto px-6 h-44">
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_banner)}>
-                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587"/>
+                                                </svg>
+                                            </Link>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g clip-path="url(#clip0_191_168)">
+                                                        <path d="M2.81326 15.4667L1.54659 20.9333C1.50289 21.1332 1.50439 21.3403 1.55097 21.5394C1.59756 21.7386 1.68805 21.9249 1.81583 22.0846C1.94362 22.2444 2.10547 22.3735 2.28957 22.4627C2.47368 22.5519 2.67537 22.5988 2.87992 22.6C2.97524 22.6096 3.07128 22.6096 3.16659 22.6L8.66659 21.3334L19.2266 10.8133L13.3333 4.93335L2.81326 15.4667Z" fill="#31BAFF"/>
+                                                        <path d="M22.5466 5.54667L18.6133 1.61333C18.3547 1.35604 18.0048 1.21161 17.64 1.21161C17.2752 1.21161 16.9252 1.35604 16.6666 1.61333L14.48 3.8L20.3666 9.68667L22.5533 7.5C22.6813 7.37139 22.7826 7.2188 22.8516 7.05098C22.9205 6.88315 22.9557 6.70338 22.955 6.52195C22.9544 6.34052 22.918 6.161 22.848 5.99365C22.7779 5.82629 22.6755 5.6744 22.5466 5.54667Z" fill="#31BAFF"/>
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_191_168">
+                                                        <rect width="24" height="24" fill="white"/>
+                                                        </clipPath>
+                                                    </defs>
                                                 </svg>
 
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
-                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                                </svg>
-                                            </Link>
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_banner)}>
-                                                <svg className="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g clip-path="url(#clip0_191_172)">
+                                                        <path d="M20 5C20.2652 5 20.5196 5.10536 20.7071 5.29289C20.8946 5.48043 21 5.73478 21 6C21 6.26522 20.8946 6.51957 20.7071 6.70711C20.5196 6.89464 20.2652 7 20 7H19L18.997 7.071L18.064 20.142C18.0281 20.6466 17.8023 21.1188 17.4321 21.4636C17.0619 21.8083 16.5749 22 16.069 22H7.93C7.42414 22 6.93707 21.8083 6.56688 21.4636C6.1967 21.1188 5.97092 20.6466 5.935 20.142L5.002 7.072C5.00048 7.04803 4.99982 7.02402 5 7H4C3.73478 7 3.48043 6.89464 3.29289 6.70711C3.10536 6.51957 3 6.26522 3 6C3 5.73478 3.10536 5.48043 3.29289 5.29289C3.48043 5.10536 3.73478 5 4 5H20ZM14 2C14.2652 2 14.5196 2.10536 14.7071 2.29289C14.8946 2.48043 15 2.73478 15 3C15 3.26522 14.8946 3.51957 14.7071 3.70711C14.5196 3.89464 14.2652 4 14 4H10C9.73478 4 9.48043 3.89464 9.29289 3.70711C9.10536 3.51957 9 3.26522 9 3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2H14Z" fill="#EA5065"/>
+                                                    </g>
+                                                    <defs>
+                                                        <clipPath id="clip0_191_172">
+                                                        <rect width="24" height="24" fill="white"/>
+                                                        </clipPath>
+                                                    </defs>
                                                 </svg>
                                             </Link>
                                         </td>
@@ -365,13 +403,13 @@ const BannPage = () => {
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item) => (
+                        {pagesToShow.map((item, key) => (
                             (currentPage == item) ? (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
