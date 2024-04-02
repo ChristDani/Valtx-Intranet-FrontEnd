@@ -4,8 +4,17 @@ import { iconServices } from '../../../services/mantenedores/iconos.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
+import { usePathname } from "next/navigation";
+
+
 
 const IcoPage = () =>{
+
+    // obtener la ruta
+    const pathName = usePathname()
+    const resul = pathName.split('/')
+    const pathFinal = resul[resul.length - 1]
+    
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -397,70 +406,84 @@ const IcoPage = () =>{
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 {modalState.create || modalState.update ? (
-                    <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                        <form onSubmit={confirmOp}>
+                    <div className="bg-white m-auto p-6 w-[700px]">
+                        <div className="flex justify-between">
+                            <div className="capitalize">
+                                Mantenedores › {pathFinal} › <strong>{modalState.create ? 'Agregar' : 'Actualizar'}</strong>
+                            </div>
+                            <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
+                                <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <hr/>
+                        <form onSubmit={confirmOp} className="mt-5">
                             <div className="mb-5 hidden">
-                                <label htmlFor="idItem" className="uppercase block mb-2 text-sm font-medium text-gray-900">ID</label>
-                                <input type="text" name="idItem" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editId}></input>
+                                <label htmlFor="idItem" >ID</label>
+                                <input type="text" name="idItem"  value={editId}></input>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="vtitulo" className="uppercase block mb-2 text-sm font-medium text-gray-900">titulo</label>
-                                <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editTitle} onInput={(e: any) => setEditTitle(e.target.value)}></input>
+                            <div className="mb-5 flex">
+                                <div className="flex-auto w-28 relative">
+                                    <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
+                                    <input type="text" name="iorden" className="bg-white border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => setEditOrden(e.target.value)}></input>
+                                </div>
+                                <div className="flex-auto w-full relative">
+                                    <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Título</label>
+                                    <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editTitle} onInput={(e: any) => setEditTitle(e.target.value)}></input>
+                                </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="vtextobreve" className="uppercase block mb-2 text-sm font-medium text-gray-900">Descripción</label>
-                                <input required type="text" name="vtextobreve" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></input>
+                            <div  className="mb-5 relative">
+                                <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
+                                <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="vlink" className="uppercase block mb-2 text-sm font-medium text-gray-900">link</label>
-                                <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
+                            <div className="mb-5  relative">
+                                <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
+                                <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="vimagen" className="uppercase block mb-2 text-sm font-medium text-gray-900">imagen</label>
-                                <input type="file" name="vimagen" className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none" onChange={handleFileChange}></input>
+                            <div className="mb-5  relative">
+                                <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
+                                <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                             </div>
-
-                            <div className="mb-5">
-                                <label htmlFor="countries" className="uppercase block mb-2 text-sm font-medium text-gray-900">Tipo Icono</label>
-                                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setTipoIcono(e.target.value)}>
-                                    {modalState.update ? (
-                                        <option value={tipoIcono} selected hidden>{tipoIcono == '1' ? 'Primario' : 'Secundario'}</option>
-                                    ) : (
-                                        <option value="0" selected hidden>Seleccione</option>
-                                    )}
-                                    <option value="1">Primario</option>
-                                    <option value="2">Secundario</option>
-                                </select>
+                            <div className="flex">
+                                <div className="mb-5 flex-auto relative">
+                                    <label htmlFor="countries"  className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo Icono</label>
+                                    <select id="countries" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setTipoIcono(e.target.value)}>
+                                        {modalState.update ? (
+                                            <option value={tipoIcono} selected hidden>{tipoIcono == '1' ? 'Primario' : 'Secundario'}</option>
+                                        ) : (
+                                            <option value="0" selected hidden>Seleccione</option>
+                                        )}
+                                        <option value="1">Primario</option>
+                                        <option value="2">Secundario</option>
+                                    </select>
+                                </div>
+                                <div className="mb-5 flex-auto relative">
+                                    <label htmlFor="countries" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
+                                    <select id="countries" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
+                                        {modalState.update ? (
+                                            <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                        ) : (
+                                            <option value="1" selected hidden>Activo</option>
+                                        )}
+                                        <option value="1">Activo</option>
+                                        <option value="0">Inactivo</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div className="mb-5">
-                                <label htmlFor="countries" className="uppercase block mb-2 text-sm font-medium text-gray-900">estado</label>
-                                <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onChange={(e) => setEditState(e.target.value)}>
-                                    {modalState.update ? (
-                                        <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
-                                    ) : (
-                                        <option value="1" selected hidden>Activo</option>
-                                    )}
-                                    <option value="1">Activo</option>
-                                    <option value="0">Inactivo</option>
-                                </select>
-                            </div>
-
-                            <div className="mb-5">
-                                <label htmlFor="iorden" className="uppercase block mb-2 text-sm font-medium text-gray-900">orden</label>
-                                <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={editOrden} onInput={(e: any) => setEditOrden(e.target.value)}></input>
-                            </div>
-                            <div>
-                                <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800">Confirmar</button>
-                                <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
+                            <div className="text-right">
+                                <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
                             </div>
                         </form>
                     </div>
                 ) : modalState.delete ? (
                     <div className="max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                        <h1>¿Esta seguro de eliminar el articulo?</h1>
-                        <div>
-                            <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={confirmOp}>Confirmar</button>
-                            <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
+                        <h1>¿Está seguro que desea eliminar el articulo?</h1>
+                        <br/>
+                        <div className="text-center">
+                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
                         </div>
                     </div>
                 ) : (
