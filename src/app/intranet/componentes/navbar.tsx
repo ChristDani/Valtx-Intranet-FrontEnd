@@ -57,7 +57,7 @@ export default function Navbar() {
             </div>
             <div className="flex items-center">
                 <FaRegUserCircle className="w-10 h-10 bg-[#0C3587] rounded-full mr-4" />
-                 <h3 className="text-[#0C3587] mr-2">Hola, <br></br> <b>{localStorage.getItem("userName")} {localStorage.getItem("userFirstLastName")} {localStorage.getItem("userSecondLastName")}</b></h3>  
+                <h3 className="text-[#0C3587] mr-2">Hola, <br></br> <b>{localStorage.getItem("userName")} {localStorage.getItem("userFirstLastName")} {localStorage.getItem("userSecondLastName")}</b></h3>  
                 <div className="relative flex pt-4 h-[50px] rounded-md">
                     {/** DropDown */}
                     {
@@ -78,15 +78,14 @@ export default function Navbar() {
 
         {/** Modal para confirmar Logout */}
         <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
-
-        <div className="flex justify-center flex-col max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <h1>¿Está seguro de cerrar sesión?</h1>
-                    <div className="flex justify-center items-center mt-4">
-                        <button type="submit" className="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800" onClick={confirmLogout}>Salir</button>
-                        <button type="button" className="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900" onClick={closeModal}>Cancelar</button>
-                    </div>
-                </div>
-
+        <div className="justify-center flex-col w-[400px]  mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
+            <h1 className=''><strong>Cerrar sesión</strong></h1>
+            <p className='text-xs mt-2'>¿Quieres salir de tu banca por internet?</p>
+            <div className="flex mt-5 justify-end">
+                <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 w-20 hover:bg-[#0C3587] hover:text-white"  onClick={closeModal}>No</button>
+                <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 w-20 hover:text-white hover:bg-[#0e0c87]" onClick={confirmLogout}>Si</button>
+            </div>
+        </div>
     </ModalComponent>
     </div>
 
