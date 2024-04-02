@@ -49,7 +49,7 @@ export default function AuthenticationPage() {
             <div className=" flex items-center justify-center max-md:hidden">
                 <Image src='/icons/logoconexion.png' height="700" width="500" alt="" />
             </div>
-            <div className="flex flex-col justify-center min-h-full px-6 lg:px-8 bg-white">
+            <div className="flex flex-col justify-center bg-white">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm space-y-2">
                     <h2 className="text-center text-3xl font-bold text-gray-900">Te damos la bienvenida</h2>
                     <p className="text-center text-xs text-gray-400">Inicia sesión con tu cuenta</p>
@@ -59,7 +59,7 @@ export default function AuthenticationPage() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6" action="#" method="POST" onSubmit={onSubmit}>
                         <div>
-                        <label className= "relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Usuario</label>
+                            <label className= "relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Usuario</label>
                             <div>
                                 <input required id="document" name="document" type="text" autoComplete="email"
                                     className="block w-full 
@@ -70,9 +70,7 @@ export default function AuthenticationPage() {
                                 ></input>
                             </div>
                             <br></br>
-                            <div className="flex items-center justify-between">
-                                <label className="relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Constraseña</label>
-                            </div>
+                            <label className="relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Constraseña</label>
                             <div className="">
                                 <input required id="password" name="password" type="password"
                                     autoComplete="current-password" className="block w-full 
@@ -87,19 +85,18 @@ export default function AuthenticationPage() {
                             <p>¿Olvidaste tu contraseña?</p>
                             <a href="/authentication/pages/recover-password" className="font-bold text-sky-400 underline">Recuperarlo aquí</a>
                         </div>
-                        <div className="flex flex-row gap-1">
-                            <input type="checkbox" name="" id="" className=""/>
+                        <div className="flex items-center gap-1">
+                            <input type="checkbox" name="" id="" className=" appearance-none w-3 h-3 bg-[#e7e7e7] rounded-full checked:bg-[#284388f3] checked:ring-2"/>
                             <p className=" text-gray-500 text-sm">*Recordar el usuario en este dispositivo</p>
                         </div>
                         <div>
                             <button type="submit" className="w-full rounded-md h-14 font-semibold text-white shadow-sm hover:bg-[#284488] focus-visible:outline global-main-button">Ingresar</button>
                         </div>
                     </form>
-                </div>
-                
-                <div className="mt-0 mb-4 w-96 mx-auto">
+                </div>    
+                <div className=" relative top-20 mb-2 w-96 mx-auto">
                     <hr />
-                    <p className=" text-xs mt-4">© Todos los derechos reservados</p>
+                    <p className=" text-xs">© Todos los derechos reservados</p>
                 </div>
             </div>
         </div>
