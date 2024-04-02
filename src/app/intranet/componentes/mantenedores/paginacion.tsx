@@ -6,7 +6,7 @@ const Paginacion = ({ pagInicio, currentPage, pagFinal, totalPages, previusPage,
     return (
         <>
             {(totalPages > 1) ? (
-                <nav className="w-full">
+                <nav className="flex justify-end mt-3 w-full">
                     <ul className="flex items-center -space-x-px h-8 text-sm">
                         {(currentPage != pagInicio) ? (
                             <li>

@@ -4,6 +4,7 @@ import { bannerServices } from '../../../services/mantenedores/banner.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
+import Paginacion from '../../../componentes/mantenedores/paginacion'
 
 const BannPage = () => {
 
@@ -342,8 +343,11 @@ const BannPage = () => {
             </div>
 
             {/* paginacion */}
+
+            {/* <Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion> */}
+
             {(paginas > 1) ? (
-                <nav className="w-full">
+                <nav className="flex justify-end mt-3 w-full">
                     <ul className="flex items-center -space-x-px h-8 text-sm">
                         {(currentPage != pagInicio) ? (
                             <li>
