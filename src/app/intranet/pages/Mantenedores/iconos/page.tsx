@@ -12,8 +12,16 @@ const IcoPage = () =>{
 
     // obtener la ruta
     const pathName = usePathname()
-    const resul = pathName.split('/')
-    const pathFinal = resul[resul.length - 1]
+    const [pathFinal, setPathFinal] = useState('')
+    
+
+    const obtenerPath = ( path: string ) => {
+        const resul = pathName.split('/')
+        setPathFinal(resul[resul.length - 1])
+        return pathFinal
+    };
+
+    
     
 
     // data
@@ -57,6 +65,7 @@ const IcoPage = () =>{
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     const openModal = () => {
+        obtenerPath(pathName)
         setModalIsOpen(true);
     };
 
