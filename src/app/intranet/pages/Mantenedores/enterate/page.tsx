@@ -35,7 +35,8 @@ const EnteratePage = () => {
     const [modalState, setModalState] = useState({
         create: false,
         update: false,
-        delete: false
+        delete: false,
+        uploadVideo: false
     })
 
     // edición
@@ -46,12 +47,17 @@ const EnteratePage = () => {
     const [editOrden, setEditOrden] = useState('');
     const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
+    const [editVideo, setEditVideo] = useState(null);
     const [redirecction, setRedirecction] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
     const handleFileChange = (e: any) => {
         setEditImage(e.target.files[0]);
+    };
+
+    const handleFileChangeVideo = (e: any) => {
+        setEditVideo(e.target.files[0]);
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -62,7 +68,7 @@ const EnteratePage = () => {
 
     const closeModal = () => {
         cleanData()
-        setModalState({ create: false, update: false, delete: false })
+        setModalState({ create: false, update: false, delete: false, uploadVideo: false })
         setModalIsOpen(false);
     };
 
@@ -90,7 +96,7 @@ const EnteratePage = () => {
     }
 
     const createItem = async () => {
-        setModalState({ create: true, update: false, delete: false })
+        setModalState({ create: true, update: false, delete: false, uploadVideo: false })
         openModal()
     }
 
@@ -141,13 +147,23 @@ const EnteratePage = () => {
     }
 
     const editItem = (e: any, id: number) => {
-        setModalState({ create: false, update: true, delete: false })
+        setModalState({ create: false, update: true, delete: false, uploadVideo: false })
         openModal()
         getOneItem(id)
     }
 
+    const updloadVideo = (e: any) => {
+        setModalState({ create: false, update: true, delete: false, uploadVideo: true })
+        
+    }
+    
+    const withoutVideo = (e:any) => {
+        setModalState({ create: false, update: true, delete: false, uploadVideo: false })
+
+    }
+
     const deleteItem = async (e: any, id: number) => {
-        setModalState({ create: false, update: false, delete: true })
+        setModalState({ create: false, update: false, delete: true, uploadVideo: false })
         getOneItem(id)
         openModal()
     }
@@ -169,11 +185,16 @@ const EnteratePage = () => {
             } else {
                 const res = await enterateServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
             }
+            if (editVideo != null) {
+                const res = await enterateServices.uploadVideo(editVideo, editId)
+            } else {
+                alert('Debe ingresar un video')
+            }
             getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
         } else if (modalState.delete) {
             const res = await enterateServices.delete(editId);
-            getData(currentPage, itemsPorPagina, searchTitle)
+            getData(1, itemsPorPagina, searchTitle)
             closeModal()
         } else {
             alert('detalles')
@@ -493,6 +514,17 @@ const EnteratePage = () => {
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
                                     <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
                                 </div>
+                                {
+                                    modalState.uploadVideo ? (
+                                        <div className="mb-5  relative">
+                                            <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
+                                            <input type="file" name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChangeVideo}></input>
+                                        </div>
+                                    ) : (
+                                        <></>
+                                    )
+                                }
+
                                 <div className="mb-5  relative">
                                     <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
                                     <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
@@ -515,6 +547,13 @@ const EnteratePage = () => {
                                 </div>
                                 <div className="text-right">
                                     <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                    {
+                                        modalState.update ? (
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={modalState.uploadVideo ? withoutVideo : updloadVideo}>{ modalState.uploadVideo ? 'Cancelar video' : 'Subir video' }</button>
+                                        ) : (
+                                            <></>
+                                        )
+                                    }
                                     <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
                                 </div>
                             </form>
