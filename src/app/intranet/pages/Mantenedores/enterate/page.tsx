@@ -307,7 +307,7 @@ const EnteratePage = () => {
                         {
                             datInfo.IsSuccess ? (
                                 dataList.map((item: any, key) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
+                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_enterate}>
                                         <th scope="row" className="px-6 py-4 text-center">
                                             {item.iorden}
                                         </th>
