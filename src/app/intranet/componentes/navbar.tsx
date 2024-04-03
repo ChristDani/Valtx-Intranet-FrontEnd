@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import ModalComponent from './mantenedores/modal';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { PerfilesService } from '../services/administration/perfiles.service';
-
+import Link from 'next/link';
 export default function Navbar() {
     const router = useRouter();
     const [nombre, setNombre] = useState('');
@@ -52,8 +52,11 @@ export default function Navbar() {
     return (
 
         <div className="flex items-center h-16 justify-between my-6 mr-4 text-white top-0 w-full">
-            <div className="relative flex">
-                <Image src='/icons/logoconexion.png' alt={''} height={200} width={200}></Image>
+            <div className="relative flex"> 
+                <Link className="" href="/intranet">
+                    <Image src='/icons/logoconexion.png' alt={''} height={200} width={200}></Image>
+                </Link>
+                
             </div>
             <div className="flex items-center">
                 <FaRegUserCircle className="w-10 h-10 bg-[#0C3587] rounded-full mr-4" />

@@ -22,7 +22,8 @@ const TopNews = () =>{
             const newsL: Noticias[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setNewsList(newsL);
-
+            console.log(newsL[0].vimagen);
+            
         }catch(e){
 
         }
@@ -33,7 +34,7 @@ const TopNews = () =>{
         window.open(vlink, redireccion);
       }
 
-
+      
     return(
         
         <div className="flex flex-col">
@@ -44,11 +45,11 @@ const TopNews = () =>{
             <div className="flex flex-row w-full h-64">
 
                 <div className="w-1/2 h-[100%] p-4 pl-0" onClick={()=>{goLink(newsList[0].vlink, newsList[0].vredireccion)}}>
-                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer" style={{ backgroundImage: `url(/images/${newsList[0].vimagen})`}}></div> : null}
+                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${newsList[0].vimagen}`}/></div> : null}
                 </div>
 
                 <div className="w-1/2 h-[100%] p-4 pr-0" onClick={()=>{goLink(newsList[1].vlink, newsList[1].vredireccion)}}>
-                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer" style={{ backgroundImage: `url(/images/${newsList[1].vimagen})`}}></div> : null}
+                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${newsList[1].vimagen}`}/></div> : null}
                 </div>
 
             </div>
