@@ -6,7 +6,7 @@ import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
 
-const NewsPage = () =>{
+const NewsPage = () => {
 
     //obtener la ruta
     const pathName = usePathname()
@@ -86,7 +86,7 @@ const NewsPage = () =>{
 
     const searchData = (title: string) => {
         setSearchTitle(title)
-        getData(currentPage, itemsPorPagina, title)
+        getData(1, itemsPorPagina, title)
     }
 
     const createItem = async () => {
@@ -146,7 +146,7 @@ const NewsPage = () =>{
         openModal()
         getOneItem(id)
     }
-    
+
     const deleteItem = async (e: any, id: number) => {
         setModalState({ create: false, update: false, delete: true })
         getOneItem(id)
@@ -236,8 +236,9 @@ const NewsPage = () =>{
     const validarOrder = (e: any) => {
         e.value = e.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
         setEditOrden(e.value);
-    } 
-    return(
+    }
+
+    return (
 
         <div className="mt-2 pt-4 ml-8 pb-8">
             <div className="flex items-center gap-3">
@@ -249,7 +250,7 @@ const NewsPage = () =>{
             </div>
             <hr className="mt-2" />
             <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-            <div className="mb-5 w-96 relative flex ">
+                <div className="mb-5 w-96 relative flex ">
                     <input type="text" name="itemtitle" className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400" placeholder="Buscar por título" value={searchTitle} onInput={(e: any) => searchData(e.target.value)}></input>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -530,7 +531,7 @@ const NewsPage = () =>{
                         ) : (
                             <>
                                 <Link href={editLink} target={redirecction}>
-                                    <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/banners/${editImage}`} alt=""></img>
+                                    <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/valtx-news/${editImage}`} alt=""></img>
                                 </Link>
                                 <hr />
                                 <div className="px-5 py-3">
