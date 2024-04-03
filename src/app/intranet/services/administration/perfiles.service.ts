@@ -12,8 +12,7 @@ export const PerfilesService = {
         
         tokenAuth(token);
 
-        const res = await axios.get(`api/v1/perfil/getPerfilId?id=${id}`);
-
+        const res = await axios.get(`perfil/getPerfilId?id=${id}`);
         return res;
     },
     
