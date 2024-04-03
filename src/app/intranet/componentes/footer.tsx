@@ -1,10 +1,52 @@
 'use client'
+
+import { useEffect, useState } from "react";
+import { Icons, IconsResponseDTO } from "../interfaces/icons.response.dto";
+import { iconServices } from "../services/mantenedores/iconos.service";
+import { Links, LinksResponseDTO } from "../interfaces/links.response.dto";
+import { linkServices } from "../services/mantenedores/enlaces.service";
+
 export const Footer = () =>{
+
+    const [iconList, setIconList] = useState<Icons[]>([]);
+    const [linkList, setLinkList] = useState<Links[]>([]);
 
     const goToLink = (vlink: string) =>{
         if(vlink == null || vlink == '') return;
         window.open(vlink);
-      }
+    }
+
+    useEffect(()=> {
+        getIcons()
+        getEnlaces()
+    },[])
+
+    const getIcons = async () => {
+        try {
+            
+            const icons: IconsResponseDTO = await iconServices.getListPorTipo(1,10,"",-1,2,"asc");
+            const iconsL: Icons[] = icons.data;
+            iconsL.sort((a: any, b:any) => a.iorden - b.iorden);
+            setIconList(iconsL);
+            
+
+        } catch (error) {
+            
+        }
+    }
+
+    const getEnlaces = async () => {
+        try {
+            const links: LinksResponseDTO = await linkServices.getList(1,10,"",-1,"asc");
+            const linksL: Links[] = links.data;
+            linksL.sort((a:any, b:any) => a.iorden - b.iorden);
+            setLinkList(linksL)
+            
+        } catch (error) {
+            
+        }
+    }
+
 
 
     return(
@@ -20,23 +62,17 @@ export const Footer = () =>{
 
                     {/** contenido */}
                     <div className="flex mt-4">
+                        {
+                            linkList.map((link) => (
+                                <div key={link.iid_enlace}
+                                    className="h-16 w-20 bg-gray-300 rounded-xl mr-2 cursor-pointer"
+                                    onClick={()=>{goToLink(link.vlink)}}
+                                >
+                                    <img src={`/images/${link.vimagen}`} alt={link.vtitulo}/>
+                                </div>
+                            ))
+                        }
 
-                        <div className="h-16 w-20 bg-gray-300 rounded-xl mr-2">
-                            <img src="/icons/sistemas-apoyo/1.png"
-                                    className="h-[100%] m-auto w-[100%]"></img>
-                        </div>
-                        <div className="h-16 w-20 bg-gray-300 rounded-xl mr-2">
-                             <img src="/icons/sistemas-apoyo/2.png"
-                                    className="h-[100%] m-auto w-[100%]"></img>
-                        </div>
-                        <div className="h-16 w-20 bg-gray-300 rounded-xl mr-2">
-                             <img src="/icons/sistemas-apoyo/3.png"
-                                    className="h-[100%] m-auto w-[100%]"></img>
-                        </div>
-                        <div className="h-16 w-20 bg-gray-300 rounded-xl mr-2">
-                             <img src="/icons/sistemas-apoyo/4.png"
-                                    className="h-[100%] m-auto w-[100%]"></img>
-                        </div>
                     </div>
 
                 </div>
@@ -50,7 +86,6 @@ export const Footer = () =>{
 
                     {/** contenido */}
                     <div className="flex mt-4">
-
                         <div className="flex h-16 justify-center w-20 bg-white rounded-xl mr-2 bg-contain">
                             <img src="https://www.valtx.pe/img/nosotros/certificaciones-ISO-1.png"
                                 className="h-[80%] m-auto w-[80%]"></img>
@@ -77,30 +112,19 @@ export const Footer = () =>{
                     {/** contenido */}
                     <div className="flex mt-4">
 
-                        <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
-                            style={{backgroundImage:'url(icons/social-media/1.png)'}}
-                            onClick={()=>{goToLink('https://www.facebook.com/ValtxPeru?locale=ms_MY')}}>
-                                <img src="/icons/social-media/1.png"
-                                className="h-[80%] m-auto w-[80%]"></img>
-                        </div>
-                        <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
-                            style={{backgroundImage:'url(icons/social-media/2.png)'}}
-                            onClick={()=>{goToLink('https://www.valtx.pe')}}>
-                                <img src="/icons/social-media/2.png"
-                                    className="h-[80%] m-auto w-[80%]"></img>
-                        </div>
-                        <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
-                            style={{backgroundImage:'url(icons/social-media/3.png)'}}
-                            onClick={()=>{goToLink('https://www.youtube.com/@valtx4640')}}>
-                                    <img src="/icons/social-media/6.png"
-                                    className="h-[80%] m-auto w-[80%]"></img>
-                        </div>
-                        <div className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
-                            style={{backgroundImage:'url(icons/social-media/3.png)'}}
-                            onClick={()=>{goToLink('https://www.youtube.com/@valtx4640')}}>
-                                    <img src="/icons/social-media/3.png"
-                                    className="h-[80%] m-auto w-[80%]"></img>
-                        </div>
+                        {
+                            iconList.map((icon) => (
+                                <div key={icon.iid_icono}
+                                    className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
+                                    onClick={()=>{goToLink(icon.vlink)}}
+                                    >
+                                    <img src={`/images/${icon.vimagen}`}
+                                        alt={icon.vtitulo}
+                                    />
+                                </div>
+                            ))
+                        }
+
                     </div>
 
                 </div>
