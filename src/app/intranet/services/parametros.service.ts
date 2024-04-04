@@ -35,5 +35,12 @@ export const parametrosServices = {
         const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=4`);
 
         return data;
+    },
+
+    async getRepositoriesTypes() {
+
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=5`);
+
+        return data;
     }
 }
