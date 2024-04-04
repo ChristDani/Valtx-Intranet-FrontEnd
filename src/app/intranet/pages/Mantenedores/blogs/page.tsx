@@ -6,7 +6,6 @@ import { parametrosServices } from '../../../services/parametros.service'
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
-import { stat } from "fs";
 
 const BlogPage = () => {
 
@@ -361,7 +360,7 @@ const BlogPage = () => {
                                                             state.iid_tabla_detalle == item.iid_estado_registro ? (
                                                                 <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
                                                                     {
-                                                                        capitalize(state.vvalor_texto_corto)
+                                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
                                                                     }
                                                                 </div>
                                                             ) : (
@@ -575,7 +574,7 @@ const BlogPage = () => {
                                                         }
                                                     </>
                                                 ) : (
-                                                    <option value="1" selected hidden>Activo</option>
+                                                    <option value="0" selected hidden>Selecione</option>
                                                 )
                                             }
 
