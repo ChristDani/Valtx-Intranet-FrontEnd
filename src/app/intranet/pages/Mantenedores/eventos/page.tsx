@@ -237,6 +237,15 @@ const EventPage = () => {
         setEditOrden(e.value);
     }
 
+    const getCurrentDate = () => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
+
     return (
 
         <>
@@ -494,9 +503,9 @@ const EventPage = () => {
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
                                     <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
                                 </div>
-                                <div className="mb-5  relative">
+                                <div className="mb-5 relative hidden">
                                     <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
-                                    <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
+                                    <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
@@ -512,6 +521,12 @@ const EventPage = () => {
                                             <option value="1">Activo</option>
                                             <option value="0">Inactivo</option>
                                         </select>
+                                    </div>
+                                    <div className="mb-5 relative">
+                                        <label htmlFor="fecha" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Fecha</label>
+                                        <input type="date" name="fecha" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" min={getCurrentDate()} value={getCurrentDate()}
+                                        /*onInput={(e: any) => setEditLink(e.target.value)}*/
+                                        ></input>
                                     </div>
                                 </div>
                                 <div className="text-right">

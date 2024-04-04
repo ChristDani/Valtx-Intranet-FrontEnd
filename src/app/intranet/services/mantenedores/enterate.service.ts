@@ -48,9 +48,9 @@ export const enterateServices = {
         formData.append('storage', '/enterate');
         formData.append('iid_enterate', id);
 
-        const res = await axiosClient.post('enterate/setEnterate', formData);
+        const { data } = await axiosClient.post('enterate/setEnterate', formData);
 
-        return res;
+        return data.codigo;
 
     },
 
@@ -61,7 +61,7 @@ export const enterateServices = {
         const formData = new FormData();
 
         formData.append('image', video);
-        formData.append('storage', '/upload');
+        formData.append('storage', '/enterate');
         formData.append('iid_enterate', id);
 
         const res = await axiosClient.post('enterate/setEnterateVideo', formData);

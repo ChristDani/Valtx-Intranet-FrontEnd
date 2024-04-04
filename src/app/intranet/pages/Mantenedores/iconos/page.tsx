@@ -47,7 +47,7 @@ const IcoPage = () => {
     const [editState, setEditState] = useState('1');
     const [editImage, setEditImage] = useState(null);
     const [redirecction, setRedirecction] = useState('');
-    const [tipoIcono, setTipoIcono] = useState('');
+    const [tipoIcono, setTipoIcono] = useState('2');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
@@ -76,7 +76,7 @@ const IcoPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await iconServices.getList(page, items, titulo, -1, 'asc');
+        const itemsList: any = await iconServices.getList(page, items, titulo, -1, -1, 'asc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);
@@ -509,7 +509,7 @@ const IcoPage = () => {
                                                 modalState.update ? (
                                                     <option value={tipoIcono} selected hidden>{tipoIcono == '1' ? 'Primario' : 'Secundario'}</option>
                                                 ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
+                                                    <option value="2" selected hidden>Secundario</option>
                                                 )
                                             }
                                             <option value="1">Primario</option>

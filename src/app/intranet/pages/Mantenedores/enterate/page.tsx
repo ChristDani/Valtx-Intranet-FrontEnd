@@ -153,13 +153,20 @@ const EnteratePage = () => {
     }
 
     const updloadVideo = (e: any) => {
-        setModalState({ create: false, update: true, delete: false, uploadVideo: true })
-        
-    }
-    
-    const withoutVideo = (e:any) => {
-        setModalState({ create: false, update: true, delete: false, uploadVideo: false })
+        modalState.create
+            ?
+            setModalState({ create: true, update: false, delete: false, uploadVideo: true })
+            :
+            setModalState({ create: false, update: true, delete: false, uploadVideo: true })
 
+    }
+
+    const withoutVideo = (e: any) => {
+        modalState.create
+            ?
+            setModalState({ create: true, update: false, delete: false, uploadVideo: false })
+            :
+            setModalState({ create: false, update: true, delete: false, uploadVideo: false });
     }
 
     const deleteItem = async (e: any, id: number) => {
@@ -174,6 +181,13 @@ const EnteratePage = () => {
         if (modalState.create) {
             if (editImage != null) {
                 const res = await enterateServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
+                if (modalState.uploadVideo) {
+                    if (editVideo != null) {
+                        const res = await enterateServices.uploadVideo(editVideo, editId)
+                    } else {
+                        alert('Debe ingresar un video')
+                    }
+                }
                 getData(currentPage, itemsPorPagina, searchTitle)
                 closeModal()
             } else {
@@ -514,20 +528,32 @@ const EnteratePage = () => {
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
                                     <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
                                 </div>
+                                <div className="mb-5 relative">
+                                    <img src="/images/enterate/1712175809479-VALTX4-_.jpg">
+
+                                    </img>
+                                </div>
                                 {
                                     modalState.uploadVideo ? (
+                                        <>
                                         <div className="mb-5  relative">
                                             <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
                                             <input type="file" name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChangeVideo}></input>
                                         </div>
+                                        <div className="mb-5 relative">
+                                            <video src="#">
+
+                                            </video>
+                                        </div>
+                                        </>
                                     ) : (
                                         <></>
                                     )
                                 }
 
-                                <div className="mb-5  relative">
+                                <div className="mb-5 relative hidden">
                                     <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
-                                    <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
+                                    <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
@@ -548,8 +574,8 @@ const EnteratePage = () => {
                                 <div className="text-right">
                                     <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
                                     {
-                                        modalState.update ? (
-                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={modalState.uploadVideo ? withoutVideo : updloadVideo}>{ modalState.uploadVideo ? 'Cancelar video' : 'Subir video' }</button>
+                                        modalState.create || modalState.update ? (
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={modalState.uploadVideo ? withoutVideo : updloadVideo}>{modalState.uploadVideo ? 'Cancelar video' : modalState.create ? 'Subir video' : 'Actualizar video'}</button>
                                         ) : (
                                             <></>
                                         )
