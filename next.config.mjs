@@ -28,6 +28,10 @@ const nextConfig = {
         source: '/images/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
         destination: 'http://localhost:4000/public/:path*', // Especifica la URL del backend
       },
+      {
+        source: '/videos/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
+        destination: 'http://localhost:4000/public/enterate/videos/:path*', // Especifica la URL del backend
+      },
     ];
   },
 };

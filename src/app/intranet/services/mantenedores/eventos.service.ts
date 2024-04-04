@@ -8,7 +8,7 @@ import { EventResponseDTO } from '../../interfaces/event.response.dto';
 const token = getCookie('token') || '';
 
 export const eventServices = {
-    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<EventResponseDTO> {
+    async getList(pageNumber: number, itemsPerPage: number, titulo: string, state: number, fecha: string, orden: string): Promise<EventResponseDTO> {
 
         tokenAuth(token);
         const { data } = await axiosClient.post('evento/getEventoList', {
@@ -16,7 +16,7 @@ export const eventServices = {
             "itotal_pagina": itemsPerPage, // 10
             "vtitulo": titulo, // ""
             "iid_estado_registro": state,  // -1
-            "dfecha": "",
+            "dfecha": fecha, // ""
             "order": orden // asc
         });
 

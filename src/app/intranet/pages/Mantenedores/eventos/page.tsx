@@ -75,7 +75,7 @@ const EventPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await eventServices.getList(page, items, titulo, -1, 'asc');
+        const itemsList: any = await eventServices.getList(page, items, titulo, -1, "", 'asc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);

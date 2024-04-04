@@ -19,7 +19,7 @@ const VideoModal = ({ onClose, videoUrl }) => {
                 >X</span>
 
           <video width={700} height={700} controls autoPlay>
-              <source src={videoUrl} type="video/mp4"></source>
+              <source src={`/videos/${videoUrl}`} type="video/mp4"></source>
           </video>
         </div>
 
