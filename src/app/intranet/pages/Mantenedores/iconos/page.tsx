@@ -626,8 +626,36 @@ const IcoPage = () => {
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                                     <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                                     <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Tipo Icono: {tipoIcono == '1' ? 'Primario' : 'Secundario'}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {editState == '1' ? 'Activo' : 'Inactivo'}</p>
+                                    <p className="mb-1 font-normal text-gray-700">Tipo Icono: {
+                                        iconsList.map((icon: any) => (
+                                            <>
+                                                {
+                                                    icon.iid_tabla_detalle == tipoIcono ? (
+                                                        icon.vvalor_texto_corto != null ? capitalize(icon.vvalor_texto_corto) : ''
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    </p>
+                                    <p className="mb-1 font-normal text-gray-700">Estado: {
+                                        statesList.map((state: any) => (
+                                            <>
+                                                {
+                                                    state.iid_tabla_detalle == editState ? (
+                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    </p>
                                     <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
                                 </div>
                             </>

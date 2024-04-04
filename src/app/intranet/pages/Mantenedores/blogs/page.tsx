@@ -22,7 +22,7 @@ const BlogPage = () => {
     // parametros
     const [categoriesList, setCategoriesList] = useState([]);
     const [statesList, setStatesList] = useState([]);
-    
+
     // data
     const [dataList, setDataList] = useState([]);
     const [datInfo, setDataInfo] = useState<any>([]);
@@ -648,7 +648,36 @@ const BlogPage = () => {
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                                     <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                                     <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {editState == '1' ? 'Activo' : 'Inactivo'}</p>
+                                    <p className="mb-1 font-normal text-gray-700">Categoría: {
+                                        categoriesList.map((category: any) => (
+                                            <>
+                                                {
+                                                    category.iid_tabla_detalle == editCategory ? (
+                                                        category.vvalor_texto_corto
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    </p>
+                                    <p className="mb-1 font-normal text-gray-700">Estado: {
+                                        statesList.map((state: any) => (
+                                            <>
+                                                {
+                                                    state.iid_tabla_detalle == editState ? (
+                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
+                                            </>
+                                        ))
+                                    }
+                                    </p>
                                     <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
                                 </div>
                             </>
