@@ -8,14 +8,22 @@ import ModalComponent from './mantenedores/modal';
 import { FaRegUserCircle } from 'react-icons/fa';
 import { PerfilesService } from '../services/administration/perfiles.service';
 import Link from 'next/link';
+import { Icons, IconsResponseDTO } from '../interfaces/icons.response.dto';
+import { iconServices } from '../services/mantenedores/iconos.service';
+
+
 export default function Navbar() {
+
+    
     const router = useRouter();
     const [nombre, setNombre] = useState('');
     const [opened, setOpened] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [iconList, setIconList] = useState<Icons[]>([]);
 
     useEffect(()=>{
         validatePerfil();
+        getIcons();
     }, []);
 
     const validatePerfil = async () =>{
@@ -49,13 +57,35 @@ export default function Navbar() {
 
     };
 
+    const getIcons = async () => {
+        try {
+            
+            const icons: IconsResponseDTO = await iconServices.getListPorTipo(1,10,"",-1,1,"asc");
+            const iconsL: Icons[] = icons.data;
+
+            if (iconsL.length > 0) {
+                const primerIcono = iconsL[0]; // Obtener el primer elemento del array
+                setIconList([primerIcono]); // Establecer el estado con un array que contiene solo el primer icono
+            } else {
+                console.log("La lista de iconos está vacía.");
+            }
+            
+        } catch (error) {
+            
+        }
+    }
+
     return (
 
         <div className="flex items-center h-16 justify-between my-6 mr-4 text-white top-0 w-full">
             <div className="relative flex"> 
-                <Link className="" href="/intranet">
-                    <Image src='/icons/logoconexion.png' alt={''} height={200} width={200}></Image>
-                </Link>
+                {
+                    iconList.map((icon) => (
+                        <Link key={icon.iid_icono} href={icon.vlink}>
+                            <img src={`/images/${icon.vimagen}`} alt={icon.vtitulo} height={200} width={200} />
+                        </Link>
+                    ))
+                }
                 
             </div>
             <div className="flex items-center">

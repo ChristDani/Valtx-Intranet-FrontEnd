@@ -22,9 +22,9 @@ export const iconServices = {
 
         return data;
     },
-
-    async getOne(id: any) {
-
+    
+    async getOne(id:any) {
+        
         tokenAuth(token);
 
         const { data } = await axiosClient.get(`icono/getIconoId?iid_icono=${id}`);
