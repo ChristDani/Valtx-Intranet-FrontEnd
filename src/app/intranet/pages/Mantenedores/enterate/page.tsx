@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { enterateServices } from "@/app/intranet/services/mantenedores/enterate.service";
+import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -17,6 +18,9 @@ const EnteratePage = () => {
         setPathFinal(resul[resul.length - 1])
         return pathFinal
     };
+
+    // parametros
+    const [statesList, setStatesList] = useState([]);
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -75,7 +79,14 @@ const EnteratePage = () => {
     useEffect(() => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
+        getStates;
     }, [])
+
+    const getStates = async () => {
+        const { data } = await parametrosServices.getStates()
+
+        setStatesList(data)
+    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
@@ -199,10 +210,12 @@ const EnteratePage = () => {
             } else {
                 const res = await enterateServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
             }
-            if (editVideo != null) {
-                const res = await enterateServices.uploadVideo(editVideo, editId)
-            } else {
-                alert('Debe ingresar un video')
+            if(modalState.uploadVideo) {
+                if (editVideo != null) {
+                    const res = await enterateServices.uploadVideo(editVideo, editId)
+                } else {
+                    alert('Debe ingresar un video')
+                }
             }
             getData(currentPage, itemsPorPagina, searchTitle)
             closeModal()
@@ -348,11 +361,24 @@ const EnteratePage = () => {
                                             <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
                                         </td>
                                         <td className='px-6 py-4'>
-                                            <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${item.vdescripcion_estado === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                                {
-                                                    capitalize(item.vdescripcion_estado)
-                                                }
-                                            </div>
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        {
+                                                            state.iid_tabla_detalle == item.iid_estado_registro ? (
+                                                                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                                                    {
+                                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                                    }
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
+                                            }
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_enterate)}>
@@ -529,22 +555,22 @@ const EnteratePage = () => {
                                     <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
                                 </div>
                                 <div className="mb-5 relative">
-                                    <img src="/images/enterate/1712175809479-VALTX4-_.jpg">
+                                    {/* <img src="/images/enterate/1712175809479-VALTX4-_.jpg">
 
-                                    </img>
+                                    </img> */}
                                 </div>
                                 {
                                     modalState.uploadVideo ? (
                                         <>
-                                        <div className="mb-5  relative">
-                                            <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
-                                            <input type="file" name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChangeVideo}></input>
-                                        </div>
-                                        <div className="mb-5 relative">
-                                            <video src="#">
+                                            <div className="mb-5  relative">
+                                                <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
+                                                <input type="file" name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChangeVideo}></input>
+                                            </div>
+                                            <div className="mb-5 relative">
+                                                <video src="/videos/1712184160245-Semana 1 - My daily routine.mp4">
 
-                                            </video>
-                                        </div>
+                                                </video>
+                                            </div>
                                         </>
                                     ) : (
                                         <></>
@@ -561,13 +587,34 @@ const EnteratePage = () => {
                                         <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                                    <>
+                                                        {
+                                                            statesList.map((state: any) => (
+                                                                <>
+                                                                    {
+                                                                        state.iid_tabla_detalle == editState ? (
+                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
-                                                    <option value="1" selected hidden>Activo</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
+
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                 </div>

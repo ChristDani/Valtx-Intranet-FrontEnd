@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { documentacionServices } from '../../../services/mantenedores/document.service';
-import { parametrosServices } from '../../../services/parametros.service'
+import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -21,6 +21,7 @@ const DocuPage = () => {
 
     // parametros
     const [statesList, setStatesList] = useState([]);
+    const [repositoriesList, setRepositoriesList] = useState([]);
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -74,12 +75,19 @@ const DocuPage = () => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
+        getRepositories;
     }, [])
 
     const getStates = async () => {
         const { data } = await parametrosServices.getStates()
 
         setStatesList(data)
+    }
+
+    const getRepositories = async () => {
+        const { data } = await parametrosServices.getRepositoriesTypes()
+
+        setRepositoriesList(data)
     }
 
     const getData = async (page: number, items: number, titulo: string) => {

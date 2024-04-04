@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { iconServices } from '../../../services/mantenedores/iconos.service';
+import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -17,6 +18,10 @@ const IcoPage = () => {
         setPathFinal(resul[resul.length - 1])
         return pathFinal
     };
+
+    // parametros
+    const [iconsList, setIconsList] = useState([]);
+    const [statesList, setStatesList] = useState([]);
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -70,7 +75,21 @@ const IcoPage = () => {
     useEffect(() => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
+        getStates();
+        getIcons();
     }, [])
+
+    const getStates = async () => {
+        const { data } = await parametrosServices.getStates()
+
+        setStatesList(data)
+    }
+
+    const getIcons = async () => {
+        const { data } = await parametrosServices.getIconsTypes()
+
+        setIconsList(data)
+    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
@@ -323,15 +342,39 @@ const IcoPage = () => {
                                         </td>
                                         <td className="px-6 py-4 text-start">
                                             {
-                                                capitalize(item.vdescripcion_tipo_icono)
+                                                iconsList.map((icon: any) => (
+                                                    <>
+                                                        {
+                                                            icon.iid_tabla_detalle == item.itipo_icono ? (
+                                                                icon.vvalor_texto_corto != null ? capitalize(icon.vvalor_texto_corto) : ''
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
                                             }
                                         </td>
                                         <td className='px-6 py-4'>
-                                            <div className={`flex items-center justify-center font-bold min-w-24 h-10 rounded-xl ${item.vdescripcion_estado === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                                {
-                                                    capitalize(item.vdescripcion_estado)
-                                                }
-                                            </div>
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        {
+                                                            state.iid_tabla_detalle == item.iid_estado_registro ? (
+                                                                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                                                    {
+                                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                                    }
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
+                                            }
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_icono)}>
@@ -493,13 +536,34 @@ const IcoPage = () => {
                                         <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                                    <>
+                                                        {
+                                                            statesList.map((state: any) => (
+                                                                <>
+                                                                    {
+                                                                        state.iid_tabla_detalle == editState ? (
+                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
-                                                    <option value="1" selected hidden>Activo</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
+
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                     <div className="mb-5 relative">
@@ -507,13 +571,33 @@ const IcoPage = () => {
                                         <select id="typeIcon" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setTipoIcono(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={tipoIcono} selected hidden>{tipoIcono == '1' ? 'Primario' : 'Secundario'}</option>
+                                                    <>
+                                                        {
+                                                            iconsList.map((icon: any) => (
+                                                                <>
+                                                                    {
+                                                                        icon.iid_tabla_detalle == tipoIcono ? (
+                                                                            <option value={icon.iid_tabla_detalle} selected hidden>{capitalize(icon.vvalor_texto_corto)}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
-                                                    <option value="2" selected hidden>Secundario</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
-                                            <option value="1">Primario</option>
-                                            <option value="2">Secundario</option>
+                                            {
+                                                iconsList.map((icon: any) => (
+                                                    <>
+                                                        <option value={icon.iid_tabla_detalle}>{capitalize(icon.vvalor_texto_corto)}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                 </div>

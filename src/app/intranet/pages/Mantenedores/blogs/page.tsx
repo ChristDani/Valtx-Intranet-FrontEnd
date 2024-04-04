@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { blogServices } from '../../../services/mantenedores/blogs.service';
-import { parametrosServices } from '../../../services/parametros.service'
+import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -22,6 +22,7 @@ const BlogPage = () => {
     // parametros
     const [categoriesList, setCategoriesList] = useState([]);
     const [statesList, setStatesList] = useState([]);
+    
     // data
     const [dataList, setDataList] = useState([]);
     const [datInfo, setDataInfo] = useState<any>([]);

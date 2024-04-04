@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { articulosServices } from '../../../services/mantenedores/articulos.service';
-import { parametrosServices } from '../../../services/parametros.service'
+import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
