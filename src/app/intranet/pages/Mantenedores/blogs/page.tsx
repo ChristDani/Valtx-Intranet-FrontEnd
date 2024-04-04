@@ -6,6 +6,7 @@ import { parametrosServices } from '../../../services/parametros.service'
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
+import { stat } from "fs";
 
 const BlogPage = () => {
 
@@ -337,14 +338,40 @@ const BlogPage = () => {
                                             <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
                                         </td>
                                         <td className="px-6 py-4 text-start">
-                                            {item.vdescripcion_categoria}
+                                            {
+                                                categoriesList.map((category: any) => (
+                                                    <>
+                                                        {
+                                                            category.iid_tabla_detalle == item.iid_categoria ? (
+                                                                category.vvalor_texto_corto
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
+                                            }
                                         </td>
                                         <td className='px-6 py-4'>
-                                            <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${item.vdescripcion_estado === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                                {
-                                                    capitalize(item.vdescripcion_estado)
-                                                }
-                                            </div>
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        {
+                                                            state.iid_tabla_detalle == item.iid_estado_registro ? (
+                                                                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                                                    {
+                                                                        capitalize(state.vvalor_texto_corto)
+                                                                    }
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
+                                            }
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_blog)}>
@@ -531,27 +558,68 @@ const BlogPage = () => {
                                         <select id="stateIitem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                                    <>
+                                                        {
+                                                            statesList.map((state: any) => (
+                                                                <>
+                                                                    {
+                                                                        state.iid_tabla_detalle == editState ? (
+                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
                                                     <option value="1" selected hidden>Activo</option>
                                                 )
                                             }
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
+
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                     <div className="mb-5 relative">
-                                        <label htmlFor="categoryItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo Icono</label>
+                                        <label htmlFor="categoryItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Categoría</label>
                                         <select id="categoryItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditCategory(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={editCategory} selected hidden>{editCategory == '1' ? 'Desarrollo de Software' : 'Inteligencia Artificial'}</option>
+                                                    <>
+                                                        {
+                                                            categoriesList.map((category: any) => (
+                                                                <>
+                                                                    {
+                                                                        category.iid_tabla_detalle == editCategory ? (
+                                                                            <option value={category.iid_tabla_detalle} selected hidden>{category.vvalor_texto_corto}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
-                                                    <option value="1" selected hidden>Activo</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
-                                            <option value="1">Desarrollo de Software</option>
-                                            <option value="2">Inteligencia Artificial</option>
+                                            {
+                                                categoriesList.map((category: any) => (
+                                                    <>
+                                                        <option value={category.iid_tabla_detalle}>{category.vvalor_texto_corto}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                 </div>

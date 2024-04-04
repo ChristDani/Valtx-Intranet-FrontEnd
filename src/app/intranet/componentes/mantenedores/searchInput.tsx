@@ -13,17 +13,18 @@ const customStyles = {
   },
 };
 
-const searInput = ({ isOpen, closeModal, children }) => {
-  return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
-    >
-      {children}
-    </Modal>
-  );
-};
+// const searInput = ({ isOpen, closeModal, children }) => {
+//   return (
+//     // <Modal
+//     //   isOpen={isOpen}
+//     //   onRequestClose={closeModal}
+//     //   style={customStyles}
+//     //   contentLabel="Example Modal"
+//     // >
+//     //   {children}
+//     // </Modal>
+//     <></>
+//   );
+// };
 
-export default searInput;
+// export default searInput;
