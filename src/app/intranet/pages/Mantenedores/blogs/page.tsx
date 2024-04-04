@@ -574,7 +574,7 @@ const BlogPage = () => {
                                                         }
                                                     </>
                                                 ) : (
-                                                    <option value="0" selected hidden>Selecione</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
 
