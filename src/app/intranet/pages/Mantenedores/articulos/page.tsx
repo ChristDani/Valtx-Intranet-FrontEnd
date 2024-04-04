@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { articulosServices } from '../../../services/mantenedores/articulos.service';
+import { parametrosServices } from '../../../services/parametros.service'
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -17,6 +18,9 @@ const ArticPage = () => {
         setPathFinal(resul[resul.length - 1])
         return pathFinal
     };
+
+    // parametros
+    const [statesList, setStatesList] = useState([]);
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -69,7 +73,14 @@ const ArticPage = () => {
     useEffect(() => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
+        getStates();
     }, [])
+
+    const getStates = async () => {
+        const { data } = await parametrosServices.getStates()
+
+        setStatesList(data)
+    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
@@ -316,11 +327,24 @@ const ArticPage = () => {
                                             <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
                                         </td>
                                         <td className='px-6 py-4'>
-                                            <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${item.vdescripcion_estado === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                                {
-                                                    capitalize(item.vdescripcion_estado)
-                                                }
-                                            </div>
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        {
+                                                            state.iid_tabla_detalle == item.iid_estado_registro ? (
+                                                                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                                                    {
+                                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                                    }
+                                                                </div>
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
+                                                    </>
+                                                ))
+                                            }
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_articulo)}>
@@ -507,13 +531,34 @@ const ArticPage = () => {
                                         <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
                                             {
                                                 modalState.update ? (
-                                                    <option value={editState} selected hidden>{editState == '1' ? 'Activo' : 'Inactivo'}</option>
+                                                    <>
+                                                        {
+                                                            statesList.map((state: any) => (
+                                                                <>
+                                                                    {
+                                                                        state.iid_tabla_detalle == editState ? (
+                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                        ) : (
+                                                                            <>
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ))
+                                                        }
+                                                    </>
                                                 ) : (
-                                                    <option value="1" selected hidden>Activo</option>
+                                                    <option value="0" selected hidden>Seleccione</option>
                                                 )
                                             }
-                                            <option value="1">Activo</option>
-                                            <option value="0">Inactivo</option>
+
+                                            {
+                                                statesList.map((state: any) => (
+                                                    <>
+                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                    </>
+                                                ))
+                                            }
                                         </select>
                                     </div>
                                 </div>
