@@ -24,7 +24,7 @@ export const Footer = () =>{
     const getIcons = async () => {
         try {
             
-            const icons: IconsResponseDTO = await iconServices.getListPorTipo(1,10,"",-1,2,"asc");
+            const icons: IconsResponseDTO = await iconServices.getList(1,10,"",-1,2,"asc");
             const iconsL: Icons[] = icons.data;
             iconsL.sort((a: any, b:any) => a.iorden - b.iorden);
             setIconList(iconsL);

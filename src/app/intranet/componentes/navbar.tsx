@@ -60,7 +60,7 @@ export default function Navbar() {
     const getIcons = async () => {
         try {
             
-            const icons: IconsResponseDTO = await iconServices.getListPorTipo(1,10,"",-1,1,"asc");
+            const icons: IconsResponseDTO = await iconServices.getList(1,10,"",-1,1,"asc");
             const iconsL: Icons[] = icons.data;
 
             if (iconsL.length > 0) {
