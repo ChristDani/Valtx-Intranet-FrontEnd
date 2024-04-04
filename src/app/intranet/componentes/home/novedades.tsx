@@ -1,40 +1,55 @@
 'use client'
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { novedadesServices } from "../../services/mantenedores/novedades.service";
-
+interface novedad{
+    iid_novedad: number,
+    vtitulo: string,
+    vtextobreve: string,
+    vimagen: string,
+    vlink: string,
+    vdescripcion_estado: string
+}
 export const Novedades = () =>{
 
+    const [novedades, setNovedades] = useState<novedad>();
+    const getData= async () => {
+        const {data} = await novedadesServices.getList(1,10,"",-1,"asc");
+        const list: any = data.reverse((item:novedad)=>{
+            if(item.vdescripcion_estado==='ACTIVO'){
+                return item
+            }
+        });
+        setNovedades(list[0]);
+    }
+
+    useEffect(()=>{
+        getData();
+    },[])
+
+    
     return(
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
-                <h1 className="text-lg global-main-text"> Novedades </h1>
+                <h1 className="text-lg global-main-text"> Novedades  s</h1>
                 <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
 
             {/** Contenido */}
-            <div className="flex w-full h-96 bg-white rounded-2xl mt-3">
-            <div className=" h-full w-2/3">
-                        {/** Header */}
-                        <div className="bg-[#31BAFF] h-44 p-4 rounded-br-full rounded-tl-lg w-full">
-                           <h1 className="flex text-5xl text-white justify-center"> Conoce al nuevo Gerente Comercial </h1>
-                        </div>
-                        {/** Content */}
-                        <div className="p-4 pr-10">
-                            <h3 className="text-xl"><b>José Antonio Becerra</b></h3>
-                            <h3><b>Master of Business Administration (MBA) por la Pontificia Universidad Católica del Perú</b></h3>
-                            <br></br>
-                            <p className="text-lg">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Asperiores, soluta amet.</p>
-                        </div>
-                </div>
-                <div className="h-full  w-1/3">
-                        <div className="flex h-60 pt-4 justify-center w-full">
-                            <div className="h-[80%] w-[60%] rounded-full bg-cover border-2 border-[#31BAFF]"
-                                style={{ backgroundImage: `url(gerente.png)` }}>
+            {
+            <div className=" relative flex w-full h-96 bg-white rounded-2xl mt-3">
+            <img className="w-full" src={`/images/${novedades?.vimagen}`}/>
+            <div className="absolute h-full w-1/2 text-white">
+                            <div className="bg-[#31BAFF] h-44 p-6 rounded-br-full rounded-tl-lg w-full">
+                                <h1 className="flex text-5xl font-bold justify-center"> {novedades?.vtitulo}</h1>
                             </div>
-                        </div>
+                            <div className="p-4 pr-10">
+                                <h3><b>{novedades?.vtextobreve}</b></h3>
+                            </div>
+            
                 </div>
             </div>
+            } 
         </div>
     );
 }
