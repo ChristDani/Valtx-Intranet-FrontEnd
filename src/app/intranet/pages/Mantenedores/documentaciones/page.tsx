@@ -160,6 +160,8 @@ const DocuPage = () => {
             setFecha(item.dfecha),
             formatFech(item.dfecha)
         ))
+        console.log(onlyOneItem.data);
+        
     }
 
     const itemDetails = (e: any, id: number) => {
