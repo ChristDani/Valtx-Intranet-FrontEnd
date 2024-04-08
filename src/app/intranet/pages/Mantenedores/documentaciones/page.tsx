@@ -51,13 +51,26 @@ const DocuPage = () => {
     const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
     const [editState, setEditState] = useState('1');
-    const [editImage, setEditImage] = useState(null);
+    const [Image, setImage] = useState(null);
+    const [editImage, setEditImage] = useState('');
+    const [nameImage, setNameImage] = useState('');
+    const [srcImage, setSrcImage] = useState<any>(null);
     const [redirecction, setRedirecction] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
-    const handleFileChange = (e: any) => {
-        setEditImage(e.target.files[0]);
+    const cambiarImagen = (e: any) => {
+        const file = e.target.files[0];
+        const name = e.target.files[0].name;
+        setImage(file);
+        setNameImage(name);
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setSrcImage(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -154,6 +167,7 @@ const DocuPage = () => {
             setEditDesc(item.vtextobreve),
             setEditLink(item.vlink),
             setEditImage(item.vimagen),
+            setNameImage(item.vimagen),
             setEditOrden(item.iorden),
             setEditState(item.iid_estado_registro),
             setRedirecction(item.vredireccion),
@@ -183,28 +197,24 @@ const DocuPage = () => {
         e.preventDefault();
 
         if (modalState.create) {
-            if (editImage != null) {
-                const res = await documentacionServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
-                getData(currentPage, itemsPorPagina, searchTitle)
-                closeModal()
+            if (Image != null) {
+                const res = await documentacionServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
             } else {
                 alert('debe elegir una imagen')
             }
         } else if (modalState.update) {
-            if (editImage != null) {
-                const res = await documentacionServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, editImage)
+            if (Image != null) {
+                const res = await documentacionServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, Image)
             } else {
                 const res = await documentacionServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
             }
-            getData(currentPage, itemsPorPagina, searchTitle)
-            closeModal()
         } else if (modalState.delete) {
             const res = await documentacionServices.delete(editId);
-            getData(currentPage, itemsPorPagina, searchTitle)
-            closeModal()
         } else {
             alert('detalles')
         }
+        getData(1, itemsPorPagina, searchTitle)
+        closeModal()
     }
 
     const cleanData = () => {
@@ -212,7 +222,10 @@ const DocuPage = () => {
         setEditTitle('')
         setEditDesc('')
         setEditLink('')
-        setEditImage(null)
+        setEditImage('')
+        setImage(null)
+        setSrcImage(null)
+        setNameImage('')
         setEditState('1')
         setEditOrden('')
     }
@@ -282,15 +295,27 @@ const DocuPage = () => {
         setEditOrden(e.value);
     }
 
-    const [show,setShow]=useState({
+    const imageRef = useRef<any>(null)
+
+    const openInputImage = () => {
+        imageRef.current.click();
+    };
+
+    const deleteImage = () => {
+        setImage(null)
+        setSrcImage(null)
+        setNameImage(editImage)
+    };
+
+    const [show, setShow] = useState({
         state: false,
         id_doc: 0
     });
 
-    const showDataFiles = (e, id)=>{
+    const showDataFiles = (e: any, id: number) => {
         setShow({
-            state : true,
-            id_doc : id
+            state: true,
+            id_doc: id
         })
         openModal()
     }
@@ -396,10 +421,10 @@ const DocuPage = () => {
                                                     <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587" />
                                                 </svg>
                                             </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => showDataFiles(e,item.iid_documentacion)}>
-                                                <svg  width="20" height="20" className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                <path fill-rule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
-                                                <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z"/>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => showDataFiles(e, item.iid_documentacion)}>
+                                                <svg width="20" height="20" className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path fill-rule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
+                                                    <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z" />
                                                 </svg>
                                             </Link>
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_documentacion)}>
@@ -509,28 +534,28 @@ const DocuPage = () => {
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 {
-                    show.state ? (<ManagerDoc close={closeModal} idDoc={show.id_doc}/>):(
+                    show.state ? (<ManagerDoc close={closeModal} idDoc={show.id_doc} />) : (
 
-                <div className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
-                    <div className="flex justify-between">
-                        <div className="capitalize">
-                            Mantenedores › {pathFinal} › <strong>{modalState.create ? 'Agregar' : modalState.update ? 'Actualizar' : modalState.delete ? 'Eliminar' : 'Detalles'}</strong>
-                        </div>
-                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
-                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </div>
-                    <hr />
-                    {
-                        modalState.create || modalState.update ? (
-                            <form onSubmit={confirmOp} className="mt-5">
-                                <div className="mb-5 hidden">
-                                    <label htmlFor="idItem" >ID</label>
-                                    <input type="text" name="idItem" value={editId}></input>
+                        <div className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
+                            <div className="flex justify-between">
+                                <div className="capitalize">
+                                    Mantenedores › {pathFinal} › <strong>{modalState.create ? 'Agregar' : modalState.update ? 'Actualizar' : modalState.delete ? 'Eliminar' : 'Detalles'}</strong>
                                 </div>
-                                {/* <div className="mb-5">
+                                <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
+                                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <hr />
+                            {
+                                modalState.create || modalState.update ? (
+                                    <form onSubmit={confirmOp} className="mt-5">
+                                        <div className="mb-5 hidden">
+                                            <label htmlFor="idItem" >ID</label>
+                                            <input type="text" name="idItem" value={editId}></input>
+                                        </div>
+                                        {/* <div className="mb-5">
                                 <>
                                     <button onClick={handleButtonClick}>Select image</button>
                                     <input type="file" onChange={handleImageChange} ref={fileInputRef} className="d-none" />
@@ -556,113 +581,165 @@ const DocuPage = () => {
                                     <input id="dropzone-file" type="file" className="hidden"></input>
                                 </div>
                             </div> */}
-                            <div className="mb-5 flex">
-                                    <div className="flex-auto w-28 relative">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
-                                    </div>
-                                    <div className="flex-auto w-full relative">
-                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Título</label>
-                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editTitle} onInput={(e: any) => setEditTitle(e.target.value)}></input>
-                                    </div>
-                                </div>
-                                <div className="mb-5 relative">
-                                    <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
-                                    <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
-                                </div>
-                                <div className="mb-5  relative">
-                                    <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
-                                </div>
-                                <div className="mb-5  relative">
-                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
-                                    <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
-                                </div>
-                                <div className="flex justify-start gap-4">
-                                    <div className="mb-5 relative">
-                                        <label htmlFor="countries" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                        <select id="countries" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
+                                        <div className="mb-5 flex">
+                                            <div className="flex-auto w-28 relative">
+                                                <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
+                                                <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
+                                            </div>
+                                            <div className="flex-auto w-full relative">
+                                                <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Título</label>
+                                                <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editTitle} onInput={(e: any) => setEditTitle(e.target.value)}></input>
+                                            </div>
+                                        </div>
+                                        <div className="mb-5 relative">
+                                            <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
+                                            <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
+                                        </div>
+                                        <div className="mb-5  relative">
+                                            <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
+                                            <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
+                                        </div>
+                                        <div className="mb-5 hidden relative">
+                                            <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
+                                            <input type="file" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                        </div>
+                                        <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                            <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
                                             {
-                                                modalState.update ? (
+                                                Image != null || editImage != '' ? (
                                                     <>
-                                                        {
-                                                            statesList.map((state: any) => (
-                                                                <>
-                                                                    {
-                                                                        state.iid_tabla_detalle == editState ? (
-                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
+                                                        <div className="flex justify-center items-center h-44 bg-red-200 text-red-600 w-[20%] rounded-s-lg cursor-pointer hover:bg-red-100 hover:text-red-300" onClick={deleteImage}>
+                                                            <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                            </svg>
+                                                        </div>
                                                     </>
                                                 ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
+                                                    <>
+                                                    </>
                                                 )
                                             }
-
                                             {
+                                                Image != null ? (
+                                                    <>
+                                                        <img className="max-h-44 max-w-[60%] mx-auto relative" src={srcImage}></img>
+                                                        <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                                    </>
+                                                ) : editImage != '' ? (
+                                                    <>
+                                                        <img className="max-h-44 max-w-[60%] mx-auto relative" src={`/images/documentacion/${editImage}`}></img>
+                                                        <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <div className="flex justify-center items-center h-44 bg-yellow-200 text-yellow-800 w-[60%] cursor-pointer hover:bg-yellow-100 hover:text-yellow-400" onClick={openInputImage}>
+                                                            <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
+                                                            </svg>
+                                                        </div>
+                                                    </>
+                                                )
+                                            }
+                                            {
+                                                Image != null || editImage != '' ? (
+                                                    <>
+                                                        <div className="flex justify-center items-center h-44 bg-blue-200 text-blue-600 w-[20%] rounded-r-lg cursor-pointer hover:bg-blue-100 hover:text-blue-300" onClick={openInputImage}>
+                                                            <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4" />
+                                                            </svg>
+                                                        </div>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                    </>
+                                                )
+                                            }
+                                        </div>
+                                        <div className="flex justify-start gap-4">
+                                            <div className="mb-5 relative">
+                                                <label htmlFor="countries" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
+                                                <select id="countries" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
+                                                    {
+                                                        modalState.update ? (
+                                                            <>
+                                                                {
+                                                                    statesList.map((state: any) => (
+                                                                        <>
+                                                                            {
+                                                                                state.iid_tabla_detalle == editState ? (
+                                                                                    <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                                ) : (
+                                                                                    <>
+                                                                                    </>
+                                                                                )
+                                                                            }
+                                                                        </>
+                                                                    ))
+                                                                }
+                                                            </>
+                                                        ) : (
+                                                            <option value="0" selected hidden>Seleccione</option>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        statesList.map((state: any) => (
+                                                            <>
+                                                                <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                            </>
+                                                        ))
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="text-right">
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
+                                        </div>
+                                    </form>
+                                ) : modalState.delete ? (
+                                    <div className="mt-5">
+                                        <h1>¿Está seguro que desea eliminar este elemento?</h1>
+                                        <p>- {editTitle}</p>
+                                        <br />
+                                        <div className="text-end">
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <Link href={editLink} target={redirecction}>
+                                            <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/documentacion/${editImage}`} alt=""></img>
+                                        </Link>
+                                        <hr />
+                                        <div className="px-5 py-3">
+                                            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
+                                            <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
+                                            <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
+                                            <p className="mb-1 font-normal text-gray-700">Estado: {
                                                 statesList.map((state: any) => (
                                                     <>
-                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
+                                                        {
+                                                            state.iid_tabla_detalle == editState ? (
+                                                                state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                                            ) : (
+                                                                <>
+                                                                </>
+                                                            )
+                                                        }
                                                     </>
                                                 ))
                                             }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
-                                </div>
-                            </form>
-                        ) : modalState.delete ? (
-                            <div className="mt-5">
-                                <h1>¿Está seguro que desea eliminar este elemento?</h1>
-                                <p>- {editTitle}</p>
-                                <br />
-                                <div className="text-end">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <Link href={editLink} target={redirecction}>
-                                    <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/documentacion/${editImage}`} alt=""></img>
-                                </Link>
-                                <hr />
-                                <div className="px-5 py-3">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
-                                    <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {
-                                        statesList.map((state: any) => (
-                                            <>
-                                                {
-                                                    state.iid_tabla_detalle == editState ? (
-                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
-                                                    ) : (
-                                                        <>
-                                                        </>
-                                                    )
-                                                }
-                                            </>
-                                        ))
-                                    }
-                                    </p>
-                                    <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
-                                </div>
-                            </>
-                        )
-                    }
-                </div>    
-            )
-            }
+                                            </p>
+                                            <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
+                                        </div>
+                                    </>
+                                )
+                            }
+                        </div>
+                    )
+                }
             </ModalComponent>
         </>
     );

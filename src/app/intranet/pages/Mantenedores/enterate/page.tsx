@@ -47,21 +47,46 @@ const EnteratePage = () => {
     const [editId, setEditId] = useState('0');
     const [editTitle, setEditTitle] = useState('');
     const [editDesc, setEditDesc] = useState('');
-    const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
     const [editState, setEditState] = useState('1');
-    const [editImage, setEditImage] = useState(null);
-    const [editVideo, setEditVideo] = useState(null);
+    const [Image, setImage] = useState(null);
+    const [editImage, setEditImage] = useState('');
+    const [nameImage, setNameImage] = useState('');
+    const [srcImage, setSrcImage] = useState<any>(null);
+    const [Video, setVideo] = useState(null);
+    const [editVideo, setEditVideo] = useState('');
+    const [nameVideo, setNameVideo] = useState('');
+    const [srcVideo, setSrcVideo] = useState<any>(null);
     const [redirecction, setRedirecction] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
-    const handleFileChange = (e: any) => {
-        setEditImage(e.target.files[0]);
+    const cambiarImagen = (e: any) => {
+        const file = e.target.files[0];
+        const name = e.target.files[0].name;
+        setImage(file);
+        setNameImage(name);
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setSrcImage(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     };
 
-    const handleFileChangeVideo = (e: any) => {
-        setEditVideo(e.target.files[0]);
+    const cambiarVideo = (e: any) => {
+        const file = e.target.files[0];
+        const name = e.target.files[0].name;
+        setVideo(file);
+        setNameVideo(name);
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setSrcVideo(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -79,7 +104,7 @@ const EnteratePage = () => {
     useEffect(() => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
-        getStates;
+        getStates();
     }, [])
 
     const getStates = async () => {
@@ -142,8 +167,10 @@ const EnteratePage = () => {
             setEditId(item.iid_enterate),
             setEditTitle(item.vtitulo),
             setEditDesc(item.vtextobreve),
-            setEditLink(item.vlink),
+            setEditVideo(item.vlink),
+            setNameVideo(item.vlink),
             setEditImage(item.vimagen),
+            setNameImage(item.vimagen),
             setEditOrden(item.iorden),
             setEditState(item.iid_estado_registro),
             setRedirecction(item.vredireccion),
@@ -178,6 +205,9 @@ const EnteratePage = () => {
             setModalState({ create: true, update: false, delete: false, uploadVideo: false })
             :
             setModalState({ create: false, update: true, delete: false, uploadVideo: false });
+
+        setVideo(null)
+        setSrcVideo(null)
     }
 
     const deleteItem = async (e: any, id: number) => {
@@ -190,50 +220,52 @@ const EnteratePage = () => {
         e.preventDefault();
 
         if (modalState.create) {
-            if (editImage != null) {
-                const res = await enterateServices.create(editImage, editTitle, editDesc, editLink, editOrden, editState, editId);
+            if (Image != null) {
+                const { codigo } = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
                 if (modalState.uploadVideo) {
-                    if (editVideo != null) {
-                        const res = await enterateServices.uploadVideo(editVideo, editId)
+                    if (Video != null) {
+                        const res = await enterateServices.uploadVideo(Video, codigo)
                     } else {
                         alert('Debe ingresar un video')
                     }
                 }
-                getData(currentPage, itemsPorPagina, searchTitle)
-                closeModal()
             } else {
                 alert('debe elegir una imagen')
             }
         } else if (modalState.update) {
-            if (editImage != null) {
-                const res = await enterateServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, editImage)
+            if (Image != null) {
+                const res = await enterateServices.update(editTitle, editDesc, editOrden, editState, editId, Image)
             } else {
-                const res = await enterateServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
+                const res = await enterateServices.update(editTitle, editDesc, editOrden, editState, editId)
             }
             if (modalState.uploadVideo) {
-                if (editVideo != null) {
-                    const res = await enterateServices.uploadVideo(editVideo, editId)
+                if (Video != null) {
+                    const res = await enterateServices.uploadVideo(Video, editId)
                 } else {
                     alert('Debe ingresar un video')
                 }
             }
-            getData(currentPage, itemsPorPagina, searchTitle)
-            closeModal()
         } else if (modalState.delete) {
             const res = await enterateServices.delete(editId);
-            getData(1, itemsPorPagina, searchTitle)
-            closeModal()
         } else {
             alert('detalles')
         }
+        getData(1, itemsPorPagina, searchTitle)
+        closeModal()
     }
 
     const cleanData = () => {
         setEditId('0')
         setEditTitle('')
         setEditDesc('')
-        setEditLink('')
-        setEditImage(null)
+        setEditImage('')
+        setImage(null)
+        setSrcImage(null)
+        setNameImage('')
+        setEditVideo('')
+        setVideo(null)
+        setSrcVideo(null)
+        setNameVideo('')
         setEditState('1')
         setEditOrden('')
     }
@@ -283,6 +315,30 @@ const EnteratePage = () => {
     const validarOrder = (e: any) => {
         e.value = e.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
         setEditOrden(e.value);
+    }
+
+    const imageRef = useRef<any>(null)
+
+    const openInputImage = () => {
+        imageRef.current.click();
+    };
+
+    const deleteImage = () => {
+        setImage(null)
+        setSrcImage(null)
+        setNameImage(editImage)
+    };
+
+    const videoRef = useRef<any>(null)
+
+    const openInputVideo = () => {
+        videoRef.current.click();
+    };
+
+    const deleteVideo = () => {
+        setVideo(null)
+        setSrcVideo(null)
+        setNameVideo(editVideo)
     }
 
     return (
@@ -510,32 +566,6 @@ const EnteratePage = () => {
                                     <label htmlFor="idItem" >ID</label>
                                     <input type="text" name="idItem" value={editId}></input>
                                 </div>
-                                {/* <div className="mb-5">
-                                <>
-                                    <button onClick={handleButtonClick}>Select image</button>
-                                    <input type="file" onChange={handleImageChange} ref={fileInputRef} className="d-none" />
-                                    {imageSrc && (
-                                        <img src={imageSrc} alt="Preview" id="fotoPerfileditmuestra" />
-                                    )}
-                                    {!imageSrc && (
-                                        <img src='' alt="Default" id="fotoPerfilmuestra" />
-                                    )}
-                                </>
-                            </div>
-                            <div className="mb-5">
-                                <div className="flex items-center justify-center w-full">
-                                    <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                            <svg className="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                            </svg>
-                                            <p className="mb-2 text-sm text-gray-500 text-center"><span className="font-semibold">Click to upload</span></p>
-                                            <p className="text-xs text-gray-500">SVG, PNG or JPG (MAX. 800x400px)</p>
-                                        </div>
-                                    </label>
-                                    <input id="dropzone-file" type="file" className="hidden"></input>
-                                </div>
-                            </div> */}
                                 <div className="mb-5 flex">
                                     <div className="flex-auto w-28 relative">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
@@ -550,37 +580,154 @@ const EnteratePage = () => {
                                     <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
                                     <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                 </div>
-                                <div className="mb-5  relative">
+                                <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChange}></input>
+                                    <input type="file" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
-                                <div className="mb-5 relative">
-                                    {/* <img src="/images/enterate/1712175809479-VALTX4-_.jpg">
-
-                                    </img> */}
+                                <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                    <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
+                                    {
+                                        Image != null || editImage != '' ? (
+                                            <>
+                                                <div className="flex justify-center items-center h-44 bg-red-200 text-red-600 w-[20%] rounded-s-lg cursor-pointer hover:bg-red-100 hover:text-red-300" onClick={deleteImage}>
+                                                    <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                    </svg>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        Image != null ? (
+                                            <>
+                                                <img className="max-h-44 max-w-[60%] mx-auto relative" src={srcImage}></img>
+                                                <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                            </>
+                                        ) : editImage != '' ? (
+                                            <>
+                                                <img className="max-h-44 max-w-[60%] mx-auto relative" src={`/images/enterate/${editImage}`}></img>
+                                                <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <div className="flex justify-center items-center h-44 bg-yellow-200 text-yellow-800 w-[60%] cursor-pointer hover:bg-yellow-100 hover:text-yellow-400" onClick={openInputImage}>
+                                                    <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
+                                                    </svg>
+                                                </div>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        Image != null || editImage != '' ? (
+                                            <>
+                                                <div className="flex justify-center items-center h-44 bg-blue-200 text-blue-600 w-[20%] rounded-r-lg cursor-pointer hover:bg-blue-100 hover:text-blue-300" onClick={openInputImage}>
+                                                    <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4" />
+                                                    </svg>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                            </>
+                                        )
+                                    }
                                 </div>
                                 {
                                     modalState.uploadVideo ? (
                                         <>
-                                            <div className="mb-5  relative">
+                                            <div className="mb-5 hidden relative">
                                                 <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
-                                                <input type="file" name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={handleFileChangeVideo}></input>
+                                                <input type="file" ref={videoRef} name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarVideo}></input>
                                             </div>
-                                            <div className="mb-5 relative">
-                                                <video src="/videos/1712184160245-Semana 1 - My daily routine.mp4">
-
-                                                </video>
+                                            <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                                <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Video</label>
+                                                {
+                                                    Video != null || editVideo != '' ? (
+                                                        <>
+                                                            <div className="flex justify-center items-center h-44 bg-red-200 text-red-600 w-[20%] rounded-s-lg cursor-pointer hover:bg-red-100 hover:text-red-300" onClick={deleteVideo}>
+                                                                <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                                                </svg>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
+                                                {
+                                                    Video != null /*|| editVideo != ''*/ ? (
+                                                        <>
+                                                            <iframe
+                                                                className="max-h-44 max-w-[60%] mx-auto relative"
+                                                                src={`${srcVideo}?autoplay=false`}
+                                                                title={nameVideo}
+                                                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowFullScreen
+                                                            ></iframe>
+                                                            {/* <video className="max-h-44 max-w-[60%] mx-auto relative" controls>
+                                                                {
+                                                                    Video != null ? (
+                                                                        <>
+                                                                            <source src={srcVideo} type="video/mp4"></source>
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            <source src={`/videos/${editVideo}`} type="video/mp4"></source>
+                                                                        </>
+                                                                    )
+                                                                }
+                                                            </video> */}
+                                                            <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
+                                                        </>
+                                                    ) : editVideo != '' ? (
+                                                        <>
+                                                            <iframe
+                                                                className="max-h-44 max-w-[60%] mx-auto relative"
+                                                                src={`/videos/${editVideo}?autoplay=false`}
+                                                                title={nameVideo}
+                                                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                allowFullScreen
+                                                            ></iframe>
+                                                            {/* <video className="max-h-44 max-w-[60%] mx-auto relative" controls>
+                                                            </video> */}
+                                                            <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <div className="flex justify-center items-center h-44 bg-yellow-200 text-yellow-800 w-[60%] cursor-pointer hover:bg-yellow-100 hover:text-yellow-400" onClick={openInputVideo}>
+                                                                <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
+                                                                </svg>
+                                                            </div>
+                                                        </>
+                                                    )
+                                                }
+                                                {
+                                                    Video != null || editVideo != '' ? (
+                                                        <>
+                                                            <div className="flex justify-center items-center h-44 bg-blue-200 text-blue-600 w-[20%] rounded-r-lg cursor-pointer hover:bg-blue-100 hover:text-blue-300" onClick={openInputVideo}>
+                                                                <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4" />
+                                                                </svg>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                        </>
+                                                    )
+                                                }
                                             </div>
                                         </>
                                     ) : (
-                                        <></>
+                                        <>
+                                        </>
                                     )
                                 }
-
-                                <div className="mb-5 relative hidden">
-                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
-                                    <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
-                                </div>
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
@@ -642,9 +789,7 @@ const EnteratePage = () => {
                             </div>
                         ) : (
                             <>
-                                <Link href={editLink} target={redirecction}>
-                                    <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/enterate/${editImage}`} alt=""></img>
-                                </Link>
+                                <img className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`/images/enterate/${editImage}`} alt=""></img>
                                 <hr />
                                 <div className="px-5 py-3">
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
@@ -671,7 +816,7 @@ const EnteratePage = () => {
                         )
                     }
                 </div>
-            </ModalComponent>
+            </ModalComponent >
         </>
 
     );

@@ -31,7 +31,7 @@ export const enterateServices = {
         return data;
     },
 
-    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
+    async create(image: File, titulo: string, descripcion: string, orden: string, estado: string, id: string) {
 
         tokenAuth(token, 'multipart/form-data');
 
@@ -40,7 +40,6 @@ export const enterateServices = {
         formData.append('image', image);
         formData.append('vtitulo', titulo);
         formData.append('vtextobreve', descripcion);
-        formData.append('vlink', link);
         formData.append('vredireccion', '_blank');
         formData.append('iorden', orden);
         formData.append('dfecha', '');
@@ -69,7 +68,7 @@ export const enterateServices = {
         return res;
     },
 
-    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
+    async update(titulo: string, descripcion: string, orden: string, estado: string, id: string, image?: File) {
 
         tokenAuth(token, 'multipart/form-data');
         const formData = new FormData();
@@ -79,7 +78,6 @@ export const enterateServices = {
 
         formData.append('vtitulo', titulo);
         formData.append('vtextobreve', descripcion);
-        formData.append('vlink', link);
         formData.append('vredireccion', '_blank');
         formData.append('iorden', orden);
         formData.append('dfecha', '');
