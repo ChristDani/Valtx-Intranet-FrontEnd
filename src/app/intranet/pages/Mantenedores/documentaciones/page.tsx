@@ -6,6 +6,7 @@ import { parametrosServices } from '../../../services/parametros.service';
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
+import ManagerDoc from "./ManagerDocument";
 
 const DocuPage = () => {
 
@@ -69,6 +70,10 @@ const DocuPage = () => {
         cleanData()
         setModalState({ create: false, update: false, delete: false })
         setModalIsOpen(false);
+        setShow({
+            state: false,
+            id_doc: 0
+        })
     };
 
     useEffect(() => {
@@ -277,6 +282,19 @@ const DocuPage = () => {
         setEditOrden(e.value);
     }
 
+    const [show,setShow]=useState({
+        state: false,
+        id_doc: 0
+    });
+
+    const showDataFiles = (e, id)=>{
+        setShow({
+            state : true,
+            id_doc : id
+        })
+        openModal()
+    }
+
     return (
 
         <>
@@ -376,6 +394,12 @@ const DocuPage = () => {
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_documentacion)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587" />
+                                                </svg>
+                                            </Link>
+                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => showDataFiles(e,item.iid_documentacion)}>
+                                                <svg  width="20" height="20" className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                                <path fill-rule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                                                <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z"/>
                                                 </svg>
                                             </Link>
                                             <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_documentacion)}>
@@ -484,6 +508,9 @@ const DocuPage = () => {
 
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+                {
+                    show.state ? (<ManagerDoc close={closeModal} idDoc={show.id_doc}/>):(
+
                 <div className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
                     <div className="flex justify-between">
                         <div className="capitalize">
@@ -529,7 +556,7 @@ const DocuPage = () => {
                                     <input id="dropzone-file" type="file" className="hidden"></input>
                                 </div>
                             </div> */}
-                                <div className="mb-5 flex">
+                            <div className="mb-5 flex">
                                     <div className="flex-auto w-28 relative">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
                                         <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
@@ -633,7 +660,9 @@ const DocuPage = () => {
                             </>
                         )
                     }
-                </div>
+                </div>    
+            )
+            }
             </ModalComponent>
         </>
     );
