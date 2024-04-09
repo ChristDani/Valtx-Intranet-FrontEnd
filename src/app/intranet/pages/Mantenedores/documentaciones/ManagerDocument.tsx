@@ -37,7 +37,7 @@ const ManagerDoc = ({close, idDoc}) => {
     const [editDoc, setEditDoc] = useState(null); //vdocumento
     const [editCabecera, setEditCabecera] = useState(''); //iid_cabecera
     const [editIdDoc, setIdDoc] = useState(idDoc); //iid_documentación
-    const [editState, setEditState] = useState('1');
+    const [editState, setEditState] = useState('');
 
     //Tipos repositorios
     const [repositriesList, setRepositoriesList]= useState([]);
@@ -69,12 +69,10 @@ const ManagerDoc = ({close, idDoc}) => {
             setEditCabecera(item.iid_tabla_cabecera), // idcabecera
             setIdDoc(item.iid_documentacion), // iddoc
             setEditTitle(item.vtitulo),
-            setEditDoc(item.vdocumento)
+            setEditDoc(item.vdocumento),
+            setEditState(item.iid_estado_registro),
+            setNameDoc(nombredoc(item.vdocumento))
         ))
-        console.log(onlyOneItem.data);
-        
-        
-        
     }
 
     const editItem = (e: any, id: number) => {
@@ -93,7 +91,7 @@ const ManagerDoc = ({close, idDoc}) => {
             if (editDoc != null) {
               const res = await repositorioServices.create(editDoc,editTitle,editCabecera,editState,editId,editIdDoc);
             } else {
-                alert('Debe elegir un Documento')
+                alert('Debe llenar todos los campos')
             }
         } else if (state === 'update') {
             if (editDoc != null) {
@@ -103,8 +101,8 @@ const ManagerDoc = ({close, idDoc}) => {
             }
         }
         getData()
-        setState('create')
         cleanData()
+        setState('create')
     }
 
     const cleanData = () => {
@@ -112,7 +110,9 @@ const ManagerDoc = ({close, idDoc}) => {
         setEditCabecera('0'),
         setIdDoc('0'),
         setEditTitle(''),
-        setEditDoc(null)
+        setEditDoc(null),
+        setNameDoc(''),
+        setState('create')
     }
 
     const nombredoc=(doc:string)=>{
@@ -124,12 +124,13 @@ const ManagerDoc = ({close, idDoc}) => {
         const rest = text.slice(1).toLowerCase();
         return first + rest
     }
+
+    const [nameDoc,setNameDoc] = useState('');
     const handleFileChange = (e: any) => {
         setEditDoc(e.target.files[0]);
-    };
-
-    const nameFileInput=(e:any)=>{
-        console.log(e.target.files[0].name);
+        if(e.target.files[0].name !== null){
+            setNameDoc(e.target.files[0].name)
+        }
     }
 
     useEffect(() => {
@@ -138,17 +139,10 @@ const ManagerDoc = ({close, idDoc}) => {
         repositoriesTipos();
     }, [])
 
-    console.log({
-        editId,
-        editCabecera,
-        editIdDoc,
-        editTitle,
-        editDoc
-    });
     return (
 
         <>  
-        <div className="flex flex-col m-auto bg-white rounded-xl p-4">
+        <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-full ">
             <div className="flex flex-row justify-between items-center">
             <div className="mt-4 ml-5">
                 Mantenedores › {pathFinal} › <strong>Repositorio</strong>
@@ -169,7 +163,7 @@ const ManagerDoc = ({close, idDoc}) => {
                             <th scope="col" className="px-6 py-3 text-center">
                                 Titulo
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center">
+                            <th scope="col" className="px-6 py-3 w-64 text-center">
                                 Archivo
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
@@ -183,7 +177,7 @@ const ManagerDoc = ({close, idDoc}) => {
                             datInfo.IsSuccess ? (
                                 dataList.map((item: any) => (
                                     <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_documentacion}>
-                                        <th scope="row" className=" text-center text-gray-900">
+                                        <th scope="row" className="p-4 text-center text-gray-900">
                                             {item.vtitulo}
                                         </th>
                                         <td className="px-6 py-1 text-start ">
@@ -244,8 +238,9 @@ const ManagerDoc = ({close, idDoc}) => {
             </div>
             <form onSubmit={confirmOp}>
                 <div className="flex flex-col justify-center">
-                    <select name="" id="" className="m-4" onChange={(e)=>setEditCabecera(e.target.value)}>
-                            <option value="0">Selecciona una Categoria</option>
+                    <span className="text-center font-bold">{state === 'create'? 'Registra un Repositorio':'Actualizar Repositorio'}</span>
+                    <select required name="" id="" className="m-4 rounded-md shadow-lg h-8 ring-2 ring-slate-300" onChange={(e)=>setEditCabecera(e.target.value)}>
+                            <option value="0">Selecciona una categoria</option>
                         {
                             repositriesList.map((tipo: any)=>(
                                 <>
@@ -256,23 +251,33 @@ const ManagerDoc = ({close, idDoc}) => {
                             ))
                         }
                     </select>
-                    <input className="border-4 rounded-lg m-4" type="text" value={editTitle} placeholder="Titulo Documento" onChange={(e) =>  setEditTitle(e.target.value)}/>
-                    <div className="flex items-center justify-center w-full p-4">
-                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg hover:bg-gray-100 ">
+                    <input required className="border-4 rounded-lg m-4" type="text" value={editTitle} placeholder="Ingrese el titulo del documento" onChange={(e) =>  setEditTitle(e.target.value)}/>
+                    <div className="flex items-center justify-center w-80 p-4 text-center">
+                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg hover:bg-gray-200 ">
                             <div className="flex flex-col items-center justify-center pt-5 pb-6 p-4">
                                 <svg className="w-10 h-10 mb-4 text-dark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                     <path fill-rule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2 2 2 0 0 0 2 2h12a2 2 0 0 0 2-2 2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2V4a2 2 0 0 0-2-2h-7Zm-6 9a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h.5a2.5 2.5 0 0 0 0-5H5Zm1.5 3H6v-1h.5a.5.5 0 0 1 0 1Zm4.5-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.376A2.626 2.626 0 0 0 15 15.375v-1.75A2.626 2.626 0 0 0 12.375 11H11Zm1 5v-3h.375a.626.626 0 0 1 .625.626v1.748a.625.625 0 0 1-.626.626H12Zm5-5a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1h1a1 1 0 1 0 0-2h-2Z" clip-rule="evenodd"/>
                                 </svg>
-                                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click para subir archivo</span> o arrastralo aqui.</p>
-                                <p className="text-xs text-gray-500">PDF .pdf</p>
+                                {
+                                    nameDoc!==''? (
+                                        <>
+                                        <p className="mb-2 text-sm text-gray-500 font-semibold">{nameDoc}</p>
+                                        </>
+                                    ):(
+                                        <>
+                                        <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click para subir archivo{nameDoc}</span> o arrastralo aqui.</p>
+                                        <p className="text-xs text-gray-500">PDF .pdf</p>
+                                        </>
+                                    )
+                                }
                             </div>
-                            <input id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept="application/pdf"/>
+                            <input required id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept="application/pdf"/>
                         </label>
                     </div>
                     <div className="text-right">                
                         <div className=" mt-2 text-right">
-                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={close}>Cancelar</button>
-                            <button type="submit" className="mr-4 text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
+                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={cleanData}>Cancelar</button>
+                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]"
                                 onClick={confirmOp}>
                                 Guardar
                             </button>

@@ -32,7 +32,7 @@ export const eventServices = {
         return data;
     },
 
-    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string) {
+    async create(image: File, titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string,fecha:string) {
 
         tokenAuth(token, 'multipart/form-data');
 
@@ -44,7 +44,7 @@ export const eventServices = {
         formData.append('vlink', link);
         formData.append('vredireccion', '_blank');
         formData.append('iorden', orden);
-        formData.append('dfecha', '');
+        formData.append('dfecha', fecha);
         formData.append('iid_estado_registro', estado);
         formData.append('storage', '/eventos');
         formData.append('iid_evento', id);
@@ -52,7 +52,7 @@ export const eventServices = {
         const res = await axiosClient.post('evento/setEvento', formData)
     },
 
-    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string, image?: File) {
+    async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string,fecha:string, image?: File) {
 
         tokenAuth(token, 'multipart/form-data');
 
@@ -66,7 +66,7 @@ export const eventServices = {
         formData.append('vlink', link);
         formData.append('vredireccion', '_blank');
         formData.append('iorden', orden);
-        formData.append('dfecha', '');
+        formData.append('dfecha', fecha);
         formData.append('iid_estado_registro', estado);
         formData.append('storage', '/eventos');
         formData.append('iid_evento', id);

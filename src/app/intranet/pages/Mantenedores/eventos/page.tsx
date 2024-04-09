@@ -6,6 +6,7 @@ import { parametrosServices } from '../../../services/parametros.service';
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
+import { format } from "path";
 
 const EventPage = () => {
 
@@ -75,6 +76,7 @@ const EventPage = () => {
 
     const openModal = () => {
         setModalIsOpen(true);
+        
     };
 
     const closeModal = () => {
@@ -115,6 +117,7 @@ const EventPage = () => {
 
     const createItem = async () => {
         setModalState({ create: true, update: false, delete: false })
+        setFecha(getCurrentDate)
         openModal()
     }
 
@@ -155,11 +158,19 @@ const EventPage = () => {
             setEditOrden(item.iorden),
             setEditState(item.iid_estado_registro),
             setRedirecction(item.vredireccion),
-            setFecha(item.dfecha),
+            setFecha(obDate(item.dfecha).toString()),
             formatFech(item.dfecha)
         ))
     }
 
+    const obDate=(date:string)=>{
+        const aux = new Date(date)
+        const year = aux.getUTCFullYear();
+        const month = String(aux.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(aux.getUTCDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    }
     const itemDetails = (e: any, id: number) => {
         openModal()
         getOneItem(id)
@@ -182,15 +193,15 @@ const EventPage = () => {
 
         if (modalState.create) {
             if (Image != null) {
-                const res = await eventServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
+                const res = await eventServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId,dfecha);
             } else {
                 alert('debe elegir una imagen')
             }
         } else if (modalState.update) {
             if (Image != null) {
-                const res = await eventServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, Image)
+                const res = await eventServices.update(editTitle, editDesc, editLink, editOrden, editState, editId,dfecha, Image)
             } else {
-                const res = await eventServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
+                const res = await eventServices.update(editTitle, editDesc, editLink, editOrden, editState, editId,dfecha)
             }
         } else if (modalState.delete) {
             const res = await eventServices.delete(editId);
@@ -212,6 +223,7 @@ const EventPage = () => {
         setNameImage('')
         setEditState('1')
         setEditOrden('')
+        setFecha('')
     }
 
     const iniciarPaginacion = (page: number, pages: number) => {
@@ -620,7 +632,8 @@ const EventPage = () => {
                                     </div>
                                     <div className="mb-5 relative">
                                         <label htmlFor="fecha" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Fecha</label>
-                                        <input type="date" name="fecha" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" min={getCurrentDate()} value={getCurrentDate()}
+                                        <input type="date" name="fecha" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" min={getCurrentDate()} value={dfecha}
+                                            onInput={(e: any) => setFecha(e.target.value)}
                                         ></input>
                                     </div>
                                 </div>
