@@ -49,7 +49,7 @@ export const enterateServices = {
 
         const { data } = await axiosClient.post('enterate/setEnterate', formData);
 
-        return data.codigo;
+        return data;
 
     },
 

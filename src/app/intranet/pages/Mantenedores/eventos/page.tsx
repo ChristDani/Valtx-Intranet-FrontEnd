@@ -621,7 +621,6 @@ const EventPage = () => {
                                     <div className="mb-5 relative">
                                         <label htmlFor="fecha" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Fecha</label>
                                         <input type="date" name="fecha" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" min={getCurrentDate()} value={getCurrentDate()}
-                                        /*onInput={(e: any) => setEditLink(e.target.value)}*/
                                         ></input>
                                     </div>
                                 </div>

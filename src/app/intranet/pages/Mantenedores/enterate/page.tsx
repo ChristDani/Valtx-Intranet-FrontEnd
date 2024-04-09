@@ -56,7 +56,6 @@ const EnteratePage = () => {
     const [Video, setVideo] = useState(null);
     const [editVideo, setEditVideo] = useState('');
     const [nameVideo, setNameVideo] = useState('');
-    const [srcVideo, setSrcVideo] = useState<any>(null);
     const [redirecction, setRedirecction] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
@@ -75,17 +74,13 @@ const EnteratePage = () => {
         }
     };
 
-    const cambiarVideo = (e: any) => {
+    const cambiarVideo = async (e: any) => {
         const file = e.target.files[0];
-        const name = e.target.files[0].name;
-        setVideo(file);
-        setNameVideo(name);
-        const reader: any = new FileReader();
-        reader.onloadend = () => {
-            setSrcVideo(reader.result);
-        };
+
         if (file) {
-            reader.readAsDataURL(file);
+            const name = file.name;
+            setVideo(file);
+            setNameVideo(name);
         }
     };
 
@@ -207,7 +202,6 @@ const EnteratePage = () => {
             setModalState({ create: false, update: true, delete: false, uploadVideo: false });
 
         setVideo(null)
-        setSrcVideo(null)
     }
 
     const deleteItem = async (e: any, id: number) => {
@@ -221,10 +215,12 @@ const EnteratePage = () => {
 
         if (modalState.create) {
             if (Image != null) {
-                const { codigo } = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
+                const codigo: any = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
+                const CODIGO = codigo['Codigo'];
+                alert(CODIGO)
                 if (modalState.uploadVideo) {
                     if (Video != null) {
-                        const res = await enterateServices.uploadVideo(Video, codigo)
+                        const res = await enterateServices.uploadVideo(Video, CODIGO)
                     } else {
                         alert('Debe ingresar un video')
                     }
@@ -264,7 +260,6 @@ const EnteratePage = () => {
         setNameImage('')
         setEditVideo('')
         setVideo(null)
-        setSrcVideo(null)
         setNameVideo('')
         setEditState('1')
         setEditOrden('')
@@ -337,7 +332,6 @@ const EnteratePage = () => {
 
     const deleteVideo = () => {
         setVideo(null)
-        setSrcVideo(null)
         setNameVideo(editVideo)
     }
 
@@ -660,41 +654,26 @@ const EnteratePage = () => {
                                                     )
                                                 }
                                                 {
-                                                    Video != null /*|| editVideo != ''*/ ? (
+                                                    Video != null ? (
                                                         <>
                                                             <iframe
                                                                 className="max-h-44 max-w-[60%] mx-auto relative"
-                                                                src={`${srcVideo}?autoplay=false`}
+                                                                src={URL.createObjectURL(Video)}
                                                                 title={nameVideo}
                                                                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                                 allowFullScreen
                                                             ></iframe>
-                                                            {/* <video className="max-h-44 max-w-[60%] mx-auto relative" controls>
-                                                                {
-                                                                    Video != null ? (
-                                                                        <>
-                                                                            <source src={srcVideo} type="video/mp4"></source>
-                                                                        </>
-                                                                    ) : (
-                                                                        <>
-                                                                            <source src={`/videos/${editVideo}`} type="video/mp4"></source>
-                                                                        </>
-                                                                    )
-                                                                }
-                                                            </video> */}
                                                             <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
                                                         </>
                                                     ) : editVideo != '' ? (
                                                         <>
                                                             <iframe
                                                                 className="max-h-44 max-w-[60%] mx-auto relative"
-                                                                src={`/videos/${editVideo}?autoplay=false`}
+                                                                src={`/videos/${editVideo}`}
                                                                 title={nameVideo}
                                                                 allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                                 allowFullScreen
                                                             ></iframe>
-                                                            {/* <video className="max-h-44 max-w-[60%] mx-auto relative" controls>
-                                                            </video> */}
                                                             <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
                                                         </>
                                                     ) : (
@@ -769,7 +748,7 @@ const EnteratePage = () => {
                                     <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
                                     {
                                         modalState.create || modalState.update ? (
-                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={modalState.uploadVideo ? withoutVideo : updloadVideo}>{modalState.uploadVideo ? 'Cancelar video' : modalState.create ? 'Subir video' : 'Actualizar video'}</button>
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={modalState.uploadVideo ? withoutVideo : updloadVideo}>{modalState.uploadVideo ? 'Cancelar video' : modalState.create || editVideo == '' ? 'Subir video' : 'Actualizar video'}</button>
                                         ) : (
                                             <></>
                                         )
