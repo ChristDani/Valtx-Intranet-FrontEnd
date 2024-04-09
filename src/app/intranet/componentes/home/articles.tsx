@@ -37,18 +37,17 @@ const Articles = () =>{
                 <h1 className="text-lg global-main-text"> Nuestro blog </h1>
                 <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
-        <div className="flex justify-between">
+        <div className="flex gap-5">
 
         {articles? articles.map((article, index) => (
 
-            <div className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
+            <div key={index} className="flex flex-col bg-white my-8 rounded-xl w-[32%]"
                     onClick={()=>{goLink(article.vlink, article.vredireccion)}}>
 
                 <div className="h-52 overflow-hidden rounded-t-xl w-full">
                     <img src={`/images/${article.vimagen}`} className="w-full"></img>
                 </div>
                 <div className="ml-6">
-
                     <div className="flex mt-2">
                         <h3 className="font-bold text-xl text-[#00245F]">{article.vtitulo}</h3>
                         <div className="rounded-full h-auto ml-4 bg-sky-500 self-center"></div>
