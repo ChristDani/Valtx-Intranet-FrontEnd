@@ -45,7 +45,7 @@ export const Enterate = () => {
     const getEnterate = async () => {
         try {
 
-            const enterate: EnterateResponseDTO = await enterateServices.getList(1, 2, "", -1, "asc");
+            const enterate: EnterateResponseDTO = await enterateServices.getList(1, 2, "", 3, "asc");
 
             const enterateList: IEnterate[] = enterate.data;
             setItems(enterateList);
