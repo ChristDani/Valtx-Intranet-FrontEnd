@@ -69,7 +69,7 @@ const HomeMainBanner = () =>{
       };
 
     return(
-        <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full relative group'>
+        <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full group'>
         <div
           className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
           style={{ backgroundImage: `url(${`/images/${banners[currentIndex].vimagen}`})` }} 

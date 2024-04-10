@@ -14,7 +14,7 @@ export const Novedades = () =>{
 
     const [novedades, setNovedades] = useState<novedad>();
     const getData= async () => {
-        const {data} = await novedadesServices.getList(1,10,"",-1,"asc");
+        const {data} = await novedadesServices.getList(1,10,"",3,"asc");
         const list: any = data.reverse((item:novedad)=>{
             if(item.vdescripcion_estado==='ACTIVO'){
                 return item
@@ -31,7 +31,7 @@ export const Novedades = () =>{
     return(
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
-                <h1 className="text-lg global-main-text"> Novedades  s</h1>
+                <h1 className="text-lg global-main-text"> Novedades</h1>
                 <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
 

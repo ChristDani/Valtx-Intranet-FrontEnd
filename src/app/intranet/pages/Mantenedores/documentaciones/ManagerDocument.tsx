@@ -15,7 +15,8 @@ interface repositorio {
 }
 
 const ManagerDoc = ({close, idDoc}) => {
-
+    console.log();
+    
     // obtener la ruta
     const pathName = usePathname()
     const [pathFinal, setPathFinal] = useState('')
@@ -37,7 +38,7 @@ const ManagerDoc = ({close, idDoc}) => {
     const [editDoc, setEditDoc] = useState(null); //vdocumento
     const [editCabecera, setEditCabecera] = useState(''); //iid_cabecera
     const [editIdDoc, setIdDoc] = useState(idDoc); //iid_documentación
-    const [editState, setEditState] = useState('');
+    const [editState, setEditState] = useState('3');
 
     //Tipos repositorios
     const [repositriesList, setRepositoriesList]= useState([]);
@@ -51,7 +52,7 @@ const ManagerDoc = ({close, idDoc}) => {
 
     const getData = async () => {
 
-        const docsListItems = await repositorioServices.getList(1, 10, -1, 'desc');
+        const docsListItems = await repositorioServices.getList(1, 10, 3, 'desc');
         const filterId:any = docsListItems.data.filter((item:repositorio)=>{
             if(item.iid_documentacion === idDoc){
                 return item
@@ -102,13 +103,11 @@ const ManagerDoc = ({close, idDoc}) => {
         }
         getData()
         cleanData()
-        setState('create')
     }
 
     const cleanData = () => {
         setEditId('0'),
         setEditCabecera('0'),
-        setIdDoc('0'),
         setEditTitle(''),
         setEditDoc(null),
         setNameDoc(''),

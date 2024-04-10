@@ -337,16 +337,23 @@ const ProfilesPage = () => {
     e.target.checked = !e.target.checked;
   }
 
-
   return (
     <>
+    <div className="flex flex-col">
+    <div className="flex justify-between mt-2">
+              <div className="capitalize">
+                  Administrador › <strong>Perfiles</strong>
+              </div>
+          </div>
+          <hr />
+          
       <div className="max-w mt-4 flex flex-wrap items-center justify-between">
         <div className="mb-5 w-96 relative flex ">
           <input
             type="text"
             name="itemtitle"
             className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
-            placeholder="Buscar por título"
+            placeholder="Buscar por perfil"
             value={searchTitle}
             onInput={(e: any) => searchData(e.target.value)}
           ></input>
@@ -391,13 +398,14 @@ const ProfilesPage = () => {
           <span className=" text-white font-bold">Agregar</span>
         </button>
       </div>
+    </div>
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" className="px-6 py-3 text-center">
-                Nombre
+                Perfil
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Descripción
