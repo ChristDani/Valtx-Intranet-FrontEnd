@@ -1,38 +1,88 @@
-'use client'
+"use client";
 
+import axiosClient from "../axios.service";
 import axios from "../axios.service";
 import { getCookie } from "../get-cookie.service";
 import tokenAuth from "../token.service";
 
-const token = getCookie('token') || '';
+const token = getCookie("token") || "";
 
 export const PerfilesService = {
+  async getList(
+    pageNumber: number,
+    itemsPerPage: number,
+    nombre: string,
+    descripcion: string,
+    state: number
+  ) {
+    tokenAuth(token);
 
-    async getPerfilById(id: string){
-        
-        tokenAuth(token);
+    const { data } = await axiosClient.post("perfil/getPerfilList", {
+      inumero_pagina: pageNumber - 1, // 0
+      itotal_pagina: itemsPerPage, // 10
+      vnombre_perfil: nombre, // ""
+      vdescripcion_perfil: descripcion, // ""
+      iid_estado_registro: state, // -1
+    });
 
-        const res = await axios.get(`perfil/getPerfilId?id=${id}`);
-        return res;
-    },
-    
-    
-    async getOptionsByPerfilId(perfilId: string){
+    return data;
+  },
 
-        tokenAuth(token);
+  async create(titulo: string, descripcion: string, id: string) {
+    tokenAuth(token);
 
-        const res = await axios.post('api/v1/perfil/getPerfilOpcionId', {"iid_perfil": perfilId});
+    const  data  = await axiosClient.post("perfil/setperfil", {
+      "iid_perfil": id,
+      "vnombre_perfil": titulo,
+      "vdescripcion_perfil": descripcion
 
-        return res;
-    },
+    });
 
-    async setPerfil(perfil: any){
+    return data;
+  },
 
-        tokenAuth(token);
+  async update(titulo: string, descripcion: string, id: any) {
+    tokenAuth(token);
 
-        const res = await axios.post('api/v1/perfil/setperfil', perfil);
+    const res = await axiosClient.post("perfil/updateperfil", {
+      iid_perfil: id,
+      vnombre_perfil: titulo,
+      vdescripcion_perfil: descripcion,
+    });
 
-        return res;
-    }
+    return res;
+  },
 
-}
+  async getPerfilById(id: string) {
+    tokenAuth(token);
+
+    const { data } = await axiosClient.get(`perfil/getPerfilId?id=${id}`);
+    return data;
+  },
+
+  async delete(id: any) {
+    tokenAuth(token);
+
+    const res = await axiosClient.post(`perfil/delPerfilId`, {
+        iid_perfil: id
+      });
+  },
+
+  async getOptionsByPerfilId(perfilId: string) {
+    tokenAuth(token);
+
+    const res = await axiosClient.post("perfil/getPerfilOpcionId", {
+      iid_perfil: perfilId,
+    });
+
+    return res;
+  },
+
+  async setPerfil(perfil: any) {
+    tokenAuth(token);
+
+    const res = await axiosClient.post("perfil/setperfil", perfil);
+
+    return res;
+  },
+};
