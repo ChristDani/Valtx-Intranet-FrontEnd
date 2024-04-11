@@ -4,6 +4,7 @@ import { eventServices } from "../../services/mantenedores/eventos.service";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { EventResponseDTO, Evento } from "../../interfaces/event.response.dto";
+import Link from "next/link";
 
 const meses = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -39,7 +40,7 @@ const Events = () => {
         <>
             <div className="flex justify-between align-bottom font-bold mt-4">
                 <h1 className="text-lg global-main-text"> Celebraciones </h1>
-                <span className="cursor-pointer global-secondary-text">Ver todos</span>
+                <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/event">Ver todos</Link>
             </div>
             <ul className="mt-4 w-full bg-white rounded-2xl">
                 {events.map((evento, index) => (

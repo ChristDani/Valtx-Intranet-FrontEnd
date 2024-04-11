@@ -19,7 +19,7 @@ const Articles = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", 3, "asc");
+        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,3, "", 3, "asc");
         const articlesList: Article[] = articlesRes.data;
         setArticles(articlesList);
     }
@@ -35,7 +35,7 @@ const Articles = () =>{
         <>
         <div className="flex justify-between align-bottom font-bold mt-4">
                 <h1 className="text-lg global-main-text"> Nuestro blog </h1>
-                <span className="cursor-pointer global-secondary-text">Ver todos</span>
+                <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/blog">Ver todos</Link>
             </div>
         <div className="flex gap-5">
 

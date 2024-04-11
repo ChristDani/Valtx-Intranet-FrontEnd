@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { novedadesServices } from "../../services/mantenedores/novedades.service";
+import Link from "next/link";
 interface novedad{
     iid_novedad: number,
     vtitulo: string,
@@ -32,7 +33,7 @@ export const Novedades = () =>{
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
                 <h1 className="text-lg global-main-text"> Novedades</h1>
-                <span className="cursor-pointer global-secondary-text">Ver todos</span>
+                <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/novedad">Ver todos</Link>
             </div>
 
             {/** Contenido */}
