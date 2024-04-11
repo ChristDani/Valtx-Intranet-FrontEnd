@@ -12,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 const UsersPage = () => {
   // busqueda
   const [searchTitle, setSearchTitle] = useState("");
-  const [modalIsOpen, setModalIsOpen] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // parametros
   const [statesList, setStatesList] = useState([]);
@@ -34,7 +34,7 @@ const UsersPage = () => {
 
    // modal
    const [modalState, setModalState] = useState({
-    create: true,
+    create: false,
     update: false,
     delete: false
 })

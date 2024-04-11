@@ -9,10 +9,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfilesPage = () => {
-
-  const [select, setSelect] = useState<any[]>([])
-  const [optionId, setOptionId] = useState<any[]>([])
-  const [newOptions, setNewOptions] = useState<any[]>([])
+  const [select, setSelect] = useState<any[]>([]);
+  const [optionId, setOptionId] = useState<any[]>([]);
+  const [newOptions, setNewOptions] = useState<any[]>([]);
 
   // obtener la ruta
   const pathName = usePathname();
@@ -24,8 +23,8 @@ const ProfilesPage = () => {
     return pathFinal;
   };
 
-   // parametros
-   const [statesList, setStatesList] = useState([]);
+  // parametros
+  const [statesList, setStatesList] = useState([]);
 
   // busqueda
   const [searchTitle, setSearchTitle] = useState("");
@@ -96,16 +95,14 @@ const ProfilesPage = () => {
     getOptionsData();
     obtenerPath();
     getStates();
-    
   }, []);
 
   const getStates = async () => {
-      const { data } = await parametrosServices.getStates()
+    const { data } = await parametrosServices.getStates();
 
-      setStatesList(data)        
-  }
+    setStatesList(data);
+  };
 
-  
   const getData = async (page: number, items: number, titulo: string) => {
     setCurrentPage(page);
     setItems(items);
@@ -126,21 +123,14 @@ const ProfilesPage = () => {
         : 1;
     setPages(pages);
     iniciarPaginacion(page, pages);
-
-    
-
-
   };
 
   const getOptionsData = async () => {
-    
-
     const options: any = await optionsServices.getList(1, 20);
     setOptionInfo(options);
     setOptionList(options.data);
 
-    let total = options.TotalRecords
-    
+    let total = options.TotalRecords;
   };
 
   const getOneItem = async (id: any) => {
@@ -182,7 +172,7 @@ const ProfilesPage = () => {
     e.preventDefault();
     openModal();
     getOneItem(id);
-    getOneOptionList(id)
+    getOneOptionList(id);
   };
 
   const editItem = (e: any, id: any) => {
@@ -190,7 +180,7 @@ const ProfilesPage = () => {
     setModalState({ create: false, update: true, delete: false });
     openModal();
     getOneItem(id);
-    getOneOptionList(id)
+    getOneOptionList(id);
   };
 
   const deleteItem = async (e: any, id: any) => {
@@ -205,23 +195,23 @@ const ProfilesPage = () => {
     setEditTitle("");
     setEditDesc("");
     setEditState("1");
-    setSelect([])
-    setOptionId([])
-    setNewOptions([])
+    setSelect([]);
+    setOptionId([]);
+    setNewOptions([]);
   };
 
   const confirmOp = async (e: any) => {
     e.preventDefault();
 
     if (modalState.create) {
-      const datos = await PerfilesService.create(editTitle, editDesc, editId)
-      rellenarId(datos.data.Codigo)
-      const data = await optionsServices.setPefilOptions(select)
+      const datos = await PerfilesService.create(editTitle, editDesc, editId);
+      rellenarId(datos.data.Codigo);
+      const data = await optionsServices.setPefilOptions(select);
       closeModal();
     } else if (modalState.update) {
       await PerfilesService.update(editTitle, editDesc, editId);
-      console.log(newOptions)
-      const data = await optionsServices.setPefilOptions(newOptions)
+      console.log(newOptions);
+      const data = await optionsServices.setPefilOptions(newOptions);
       closeModal();
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
@@ -243,30 +233,27 @@ const ProfilesPage = () => {
     return first + rest;
   };
 
-
-  const rellenarId = (id:any) => {
+  const rellenarId = (id: any) => {
     // Copia del array select
     let updatedSelect = select.slice();
 
     updatedSelect.forEach((obj) => {
-      obj.iid_perfil = id
+      obj.iid_perfil = id;
     });
-    setSelect(updatedSelect)
-    
-  }
+    setSelect(updatedSelect);
+  };
 
-
-    
-    const handleChange = (e:React.ChangeEvent<HTMLInputElement>, id:any) => {
-
-    const {name, checked } = e.target;
-    let valor = checked  ? 1 : 0
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: any) => {
+    const { name, checked } = e.target;
+    let valor = checked ? 1 : 0;
 
     // Copia del array select
     let updatedSelect = select.slice();
 
     // Buscar si el item ya existe en el array
-    let existingItemIndex = updatedSelect.findIndex((item) => item.iid_opcion === id);
+    let existingItemIndex = updatedSelect.findIndex(
+      (item) => item.iid_opcion === id
+    );
 
     // Si el item existe, agregar el valor al array
     if (existingItemIndex !== -1) {
@@ -276,131 +263,118 @@ const ProfilesPage = () => {
       updatedSelect.push({
         iid_perfil_opcion: 0,
         iid_opcion: id,
-        [name]: valor
+        [name]: valor,
       });
     }
 
     // Actualizar el estado select con el nuevo array
     setSelect(updatedSelect);
-
-  
   };
 
+  const getOneOptionList = async (id: any) => {
+    const datos = await optionsServices.getPerfilOpcionId(id);
+    const listOptionsId = datos.data;
+    setOptionId(listOptionsId);
+  };
 
-  const getOneOptionList = async (id: any)  => {
-
-    const datos = await optionsServices.getPerfilOpcionId(id)
-    const listOptionsId = datos.data
-    setOptionId(listOptionsId)
-  }
-
-  const handleChangeEdit = (e:React.ChangeEvent<HTMLInputElement>, id:any) => {
-
+  const handleChangeEdit = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    id: any
+  ) => {
     const { name, checked, value } = e.target;
-    let valor = checked  ? 1 : 0
+    let valor = checked ? 1 : 0;
 
     // Copia del array select
     let updatedItems = optionId.slice();
 
     // Buscar si el item ya existe en el array
-    let existingItemIndex = updatedItems.findIndex((item) => item.iid_opcion === id);
+    let existingItemIndex = updatedItems.findIndex(
+      (item) => item.iid_opcion === id
+    );
 
     // Si el item existe, agregar el valor al array
     if (existingItemIndex !== -1) {
       updatedItems[existingItemIndex][name] = checked;
       updatedItems[existingItemIndex][value] = valor;
-    } 
+    }
 
     // Actualizar el estado con los nuevos valores
     setOptionId(updatedItems);
 
-
     // Copia del array select
     let newListOptions = optionId.slice();
 
-    const newCopyOptions = newListOptions.map(item => ({
-      'iid_perfil_opcion': item.iid_perfil_opcion ? item.iid_perfil_opcion  : 0,
-      'iid_perfil': id,
-      "iid_opcion": item.iid_opcion,
-      "iacceso_crear": item.icrear ? 1 : 0,
-      "iacceso_visualizar":item.ivisualizar ? 1 : 0,
-      "iacceso_actualizar": item.iactualizar ? 1 : 0,
-      "iacceso_eliminar": item.ieliminar ? 1 : 0,
-    }))
+    const newCopyOptions = newListOptions.map((item) => ({
+      iid_perfil_opcion: item.iid_perfil_opcion ? item.iid_perfil_opcion : 0,
+      iid_perfil: id,
+      iid_opcion: item.iid_opcion,
+      iacceso_crear: item.icrear ? 1 : 0,
+      iacceso_visualizar: item.ivisualizar ? 1 : 0,
+      iacceso_actualizar: item.iactualizar ? 1 : 0,
+      iacceso_eliminar: item.ieliminar ? 1 : 0,
+    }));
 
-    console.log(newCopyOptions)
+    console.log(newCopyOptions);
 
-    setNewOptions(newCopyOptions)
-    
+    setNewOptions(newCopyOptions);
   };
 
 
-  const handleClick = (e:any, item:any) => {
-    e.target.checked = !e.target.checked;
-  }
-
   return (
     <>
-    <div className="flex flex-col">
-    <div className="flex justify-between mt-2">
-              <div className="capitalize">
-                  Administrador › <strong>Perfiles</strong>
-              </div>
+      <div className="flex flex-col">
+        <div className="max-w mt-4 flex flex-wrap items-center justify-between">
+          <div className="mb-5 w-96 relative flex ">
+            <input
+              type="text"
+              name="itemtitle"
+              className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
+              placeholder="Buscar por perfil"
+              value={searchTitle}
+              onInput={(e: any) => searchData(e.target.value)}
+            ></input>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z"
+                  stroke="#7D7E8A"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </div>
           </div>
-          <hr />
-          
-      <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-        <div className="mb-5 w-96 relative flex ">
-          <input
-            type="text"
-            name="itemtitle"
-            className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
-            placeholder="Buscar por perfil"
-            value={searchTitle}
-            onInput={(e: any) => searchData(e.target.value)}
-          ></input>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
+          <button
+            className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
+            onClick={createItem}
+          >
             <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
+              className="text-gray-800  dark:text-white"
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              viewBox="0 0 24 24"
             >
               <path
-                d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z"
-                stroke="#7D7E8A"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 12h14m-7 7V5"
               />
             </svg>
-          </div>
+            <span className=" text-white font-bold">Agregar</span>
+          </button>
         </div>
-        <button
-          className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
-          onClick={createItem}
-        >
-          <svg
-            className="text-gray-800  dark:text-white"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M5 12h14m-7 7V5"
-            />
-          </svg>
-          <span className=" text-white font-bold">Agregar</span>
-        </button>
       </div>
-    </div>
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -438,24 +412,25 @@ const ProfilesPage = () => {
                     {capitalize(item.vdescripcion_perfil)}
                   </th>
                   <th scope="row" className="px-6 py-4">
-                  {
-                    statesList.map((state: any) => (
-                        <>
-                            {
-                                state.iid_tabla_detalle == item.iid_estado_registro ? (
-                                    <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                        {
-                                            state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
-                                        }
-                                    </div>
-                                ) : (
-                                    <>
-                                    </>
-                                )
-                            }
-                        </>
-                    ))
-                  }
+                    {statesList.map((state: any) => (
+                      <>
+                        {state.iid_tabla_detalle == item.iid_estado_registro ? (
+                          <div
+                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
+                              state.vvalor_texto_corto === "ACTIVO"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-rose-200 text-rose-800"
+                            }`}
+                          >
+                            {state.vvalor_texto_corto != null
+                              ? capitalize(state.vvalor_texto_corto)
+                              : "Sin estado"}
+                          </div>
+                        ) : (
+                          <></>
+                        )}
+                      </>
+                    ))}
                   </th>
                   <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                     <Link
@@ -547,72 +522,141 @@ const ProfilesPage = () => {
           </tbody>
         </table>
       </div>
-       {/* paginacion */}
+      {/* paginacion */}
 
-            {/* <Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion> */}
+      {/* <Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion> */}
 
-            {(paginas > 1) ? (
-                <nav className="flex justify-end mt-3 w-full">
-                    <ul className="flex items-center -space-x-px h-8 text-sm">
-                        {(currentPage != pagInicio) ? (
-                            <li>
-                                <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
-                                    <span className="sr-only">Previous</span>
-                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-                                    </svg>
-                                </Link>
-                            </li>
-                        ) : (<span></span>)}
-                        {(pagInicio > 2) ? (
-                            <>
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle)}>1</Link>
-                                </li>
-                                <li>
-                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
-                                </li>
-                            </>
-                        ) : (<span></span>)}
-                        {pagesToShow.map((item, key) => (
-                            (currentPage == item) ? (
-                                <li key={key}>
-                                    <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
-                                </li>
-                            ) : (
-                                <li key={key}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
-                                </li>
-                            )
-                        ))}
-                        {(pagFinal < (paginas - 1)) ? (
-                            <>
-                                <li>
-                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
-                                </li>
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle)}>{paginas}</Link>
-                                </li>
-                            </>
-                        ) : (<span></span>)}
-                        {(currentPage != pagFinal) ? (
-                            <li>
-                                <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
-                                    <span className="sr-only">Next</span>
-                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                </Link>
-                            </li>
-                        ) : (<span></span>)}
-                    </ul>
-                </nav>
+      {paginas > 1 ? (
+        <nav className="flex justify-end mt-3 w-full">
+          <ul className="flex items-center -space-x-px h-8 text-sm">
+            {currentPage != pagInicio ? (
+              <li>
+                <Link
+                  href="#"
+                  className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                  onClick={() => previusPage(currentPage - 1)}
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 1 1 5l4 4"
+                    />
+                  </svg>
+                </Link>
+              </li>
             ) : (
-                <span></span>
-            )
-            }
+              <span></span>
+            )}
+            {pagInicio > 2 ? (
+              <>
+                <li>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() => getData(1, itemsPorPagina, searchTitle)}
+                  >
+                    1
+                  </Link>
+                </li>
+                <li>
+                  <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">
+                    ...
+                  </span>
+                </li>
+              </>
+            ) : (
+              <span></span>
+            )}
+            {pagesToShow.map((item, key) =>
+              currentPage == item ? (
+                <li key={key}>
+                  <Link
+                    href="#"
+                    aria-current="page"
+                    className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ) : (
+                <li key={key}>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() => getData(item, itemsPorPagina, searchTitle)}
+                  >
+                    {item}
+                  </Link>
+                </li>
+              )
+            )}
+            {pagFinal < paginas - 1 ? (
+              <>
+                <li>
+                  <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                    ...
+                  </span>
+                </li>
+                <li>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() =>
+                      getData(paginas, itemsPorPagina, searchTitle)
+                    }
+                  >
+                    {paginas}
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <span></span>
+            )}
+            {currentPage != pagFinal ? (
+              <li>
+                <Link
+                  href="#"
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                  onClick={() => nextPage(currentPage + 1)}
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                </Link>
+              </li>
+            ) : (
+              <span></span>
+            )}
+          </ul>
+        </nav>
+      ) : (
+        <span></span>
+      )}
       {/* modal */}
-      <ModalComponent  isOpen={modalIsOpen} closeModal={closeModal}>
+      <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
           className={`bg-white rounded-xl m-auto p-6 min-h-52 ${
             modalState.create || modalState.update
@@ -722,98 +766,156 @@ const ProfilesPage = () => {
                   </select>
                 </div>
               </div>
-              <div className="w-auto">
-                <table className='table-auto bg-gray-50 border border-collapse w-full rounded '>
-                    <thead>
-                        <tr className="bg-gray-300">
-                            <th className="border">Módulo</th>
-                            <th className="border">Opción del Sistema</th>
-                            <th className="border">Ver</th>
-                            <th className="border">Crear</th>
-                            <th className="border">Editar</th>
-                            <th className="border">Borrar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        { modalState.create ? (
-                            optionInfo.IsSuccess ? (
-                                optionList.map((item: any) => (
-                                    <tr key={item.iid_opcion} className="bg-gray-100 hover:bg-gray-50">
-                                        <th>
-                                            {item.vtitulo_modulo}
-                                        </th>
-                                        <td>
-                                            {item.vtitulo}
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='iacceso_visualizar' className="checkbox" value={item.ivisualizar} onChange={(e) => handleChange(e ,item.iid_opcion)} />
-                                                Ver
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='iacceso_crear' value={item.icrear} onChange={(e) => handleChange(e ,item.iid_opcion)} />
-                                                Crear
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='iacceso_actualizar' value={item.iactualizar} onChange={(e) => handleChange(e ,item.iid_opcion)}/>
-                                                Editar
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='iacceso_eliminar' value={item.ieliminar} onChange={(e) => handleChange(e ,item.iid_opcion)}/>
-                                                Eliminar
-                                            </label>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : ''
-                        ) : (
-                            
-                                optionId.map((item: any) => (
-                                    <tr key={item.iid_opcion} className="bg-gray-100 hover:bg-gray-50">
-                                        <th>
-                                            {item.vtitulo_modulo}
-                                        </th>
-                                        <td>
-                                            {item.vtitulo}
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox"  name='ivisualizar' value='iacceso_visualizar' defaultChecked={item.ivisualizar}   onChange={(e) => handleChangeEdit(e ,item.iid_opcion)} />
-                                                Ver
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='icrear' value='iacceso_crear'  defaultChecked={item.icrear}  onChange={(e) => handleChangeEdit(e ,item.iid_opcion)} />
-                                                Crear
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='iactualizar' value='iacceso_actualizar' defaultChecked={item.iactualizar}  onChange={(e) => handleChangeEdit(e ,item.iid_opcion)}/>
-                                                Editar
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label>
-                                                <input type="checkbox" name='ieliminar' value='iacceso_eliminar' defaultChecked={item.ieliminar}  onChange={(e) => handleChangeEdit(e ,item.iid_opcion)}/>
-                                                Eliminar
-                                            </label>
-                                        </td>
-                                    </tr>
-                                ))
-                            
-                        )} 
-                    </tbody>
+              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+                <table className="table-auto bg-gray-50 w-full ">
+                  <thead>
+                    <tr className="bg-gray-300">
+                      <th className="p-4 border">Módulo</th>
+                      <th className="p-4 border">Opción del Sistema</th>
+                      <th className="p-4 border" >Ver</th>
+                      <th className="p-4 border">Crear</th>
+                      <th className="p-4 border">Editar</th>
+                      <th className="p-4 border">Borrar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {modalState.create
+                      ? optionInfo.IsSuccess
+                        ? optionList.map((item: any) => (
+                            <tr
+                              key={item.iid_opcion}
+                              className="bg-gray-100 hover:bg-gray-50"
+                            >
+                              <th className="text-start border-2">{item.vtitulo_modulo}</th>
+                              <td className="text-start border-2">{item.vtitulo}</td>
+                              <td className="border-b-2">
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    name="iacceso_visualizar"
+                                    className=""
+                                    value={item.ivisualizar}
+                                    onChange={(e) =>
+                                      handleChange(e, item.iid_opcion)
+                                    }
+                                  />
+                                    Ver
+                                </label>
+                              </td>
+                              <td className="border-2">
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    name="iacceso_crear"
+                                    className=""
+                                    value={item.icrear}
+                                    onChange={(e) =>
+                                      handleChange(e, item.iid_opcion)
+                                    }
+                                  />
+                                    Crear
+                                </label>
+                              </td>
+                              <td className="border-2"> 
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    name="iacceso_actualizar"
+                                    className=""
+                                    value={item.iactualizar}
+                                    onChange={(e) =>
+                                      handleChange(e, item.iid_opcion)
+                                    }
+                                  />
+                                    Editar
+                                </label>
+                              </td>
+                              <td className="border-2">
+                                <label>
+                                  <input
+                                    type="checkbox"
+                                    name="iacceso_eliminar"
+                                    className=""
+                                    value={item.ieliminar}
+                                    onChange={(e) =>
+                                      handleChange(e, item.iid_opcion)
+                                    }
+                                  />
+                                    Eliminar
+                                </label>
+                              </td>
+                            </tr>
+                          ))
+                        : ""
+                      : optionId.map((item: any) => (
+                          <tr
+                            key={item.iid_opcion}
+                            className="bg-gray-100 hover:bg-gray-50"
+                          >
+                            <th>{item.vtitulo_modulo}</th>
+                            <td>{item.vtitulo}</td>
+                            <td>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="ivisualizar"
+                                  value="iacceso_visualizar"
+                                  defaultChecked={item.ivisualizar}
+                                  onChange={(e) =>
+                                    handleChangeEdit(e, item.iid_opcion)
+                                  }
+                                />
+                                Ver
+                              </label>
+                            </td>
+                            <td>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="icrear"
+                                  value="iacceso_crear"
+                                  defaultChecked={item.icrear}
+                                  onChange={(e) =>
+                                    handleChangeEdit(e, item.iid_opcion)
+                                  }
+                                />
+                                Crear
+                              </label>
+                            </td>
+                            <td>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="iactualizar"
+                                  value="iacceso_actualizar"
+                                  defaultChecked={item.iactualizar}
+                                  onChange={(e) =>
+                                    handleChangeEdit(e, item.iid_opcion)
+                                  }
+                                />
+                                Editar
+                              </label>
+                            </td>
+                            <td>
+                              <label>
+                                <input
+                                  type="checkbox"
+                                  name="ieliminar"
+                                  value="iacceso_eliminar"
+                                  defaultChecked={item.ieliminar}
+                                  onChange={(e) =>
+                                    handleChangeEdit(e, item.iid_opcion)
+                                  }
+                                />
+                                Eliminar
+                              </label>
+                            </td>
+                          </tr>
+                        ))}
+                  </tbody>
                 </table>
               </div>
-              <br/>
+              <br />
               <div className="text-right">
                 <button
                   type="button"
