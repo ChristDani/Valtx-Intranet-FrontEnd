@@ -550,22 +550,28 @@ const confirmOp = async (e: any) => {
                                     <label htmlFor="idItem" >ID</label>
                                     <input type="text" name="idItem" value={editId}></input>
                                 </div>
-                                <div className="mb-5 flex justify-between">
-                                    <div className=" w-auto relative">
+                                <div className="mb-5 flex gap-2">
+                                    <div className="flex-auto relative w-10">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Nombre</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-auto block p-2" value={editNombre} onInput={(e: any) => setEditNombre(e.target.value)}></input>
+                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editNombre} onInput={(e: any) => setEditNombre(e.target.value)}></input>
                                     </div>
-                                    <div className=" w-auto relative">
-                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Paterno</label>
-                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-auto block p-2" value={editApePat} onInput={(e: any) => setEditApePat(e.target.value)}></input>
-                                    </div>
-                                    <div className=" w-auto relative">
-                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Materno</label>
-                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-auto block p-2" value={editApeMat} onInput={(e: any) => setEditApeMat(e.target.value)}></input>
+                                    <div className="flex-auto w-44 relative">
+                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Email</label>
+                                        <input type="email" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editEmail} onInput={(e: any) => setEditEmail(e.target.value)}></input>
                                     </div>
                                 </div>
-                                <div className="mb-5 flex">
-                                    <div className="mb-5 relative">
+                                <div className="mb-5 flex gap-2">
+                                    <div className="flex-auto relative w-14">
+                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Paterno</label>
+                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editApePat} onInput={(e: any) => setEditApePat(e.target.value)}></input>
+                                    </div>
+                                    <div className="flex-auto relative w-14">
+                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Materno</label>
+                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editApeMat} onInput={(e: any) => setEditApeMat(e.target.value)}></input>
+                                    </div>
+                                </div>
+                                <div className="mb-5 flex gap-2 justify-between">
+                                    <div className="relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo Documento</label>
                                         <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setIdDocumento(e.target.value)}>
                                             <option value='0'>Seleccione</option>
@@ -601,23 +607,16 @@ const confirmOp = async (e: any) => {
                                             }
                                         </select>
                                     </div>
-                                    <div className="flex-auto w-auto relative">
+                                    <div className="flex-auto relative w-20">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Documento</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editDocumento} onInput={(e: any) => setEditDocumento(e.target.value)}></input>
+                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editDocumento} onInput={(e: any) => setEditDocumento(e.target.value)}></input>
                                     </div>
-                                    <div className="flex-auto w-auto relative">
+                                    <div className="flex-auto relative w-20">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Telefono</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={telefono} onInput={(e: any) => setTelefono(e.target.value)}></input>
+                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={telefono} onInput={(e: any) => setTelefono(e.target.value)}></input>
                                     </div>
-                                </div>
-                                <div className="mb-5 flex">
-                                    <div className="flex-auto w-auto relative">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Email</label>
-                                        <input type="email" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editEmail} onInput={(e: any) => setEditEmail(e.target.value)}></input>
-                                    </div>
-                                </div>
-                               
-                                <div className="flex  gap-4">
+                                </div>                               
+                                <div className="flex gap-2">
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Perfil</label>
                                         <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditIdPerfil(e.target.value)}>
