@@ -18,11 +18,11 @@ export const PerfilesService = {
     tokenAuth(token);
 
     const { data } = await axiosClient.post("perfil/getPerfilList", {
-      inumero_pagina: pageNumber - 1, // 0
-      itotal_pagina: itemsPerPage, // 10
-      vnombre_perfil: nombre, // ""
-      vdescripcion_perfil: descripcion, // ""
-      iid_estado_registro: state, // -1
+      'inumero_pagina': pageNumber - 1, // 0
+      'itotal_pagina': itemsPerPage, // 10
+      'vnombre_perfil': nombre, // ""
+      'vdescripcion_perfil': descripcion, // ""
+      'iid_estado_registro': state, // -1
     });
 
     return data;
@@ -45,9 +45,9 @@ export const PerfilesService = {
     tokenAuth(token);
 
     const res = await axiosClient.post("perfil/updateperfil", {
-      iid_perfil: id,
-      vnombre_perfil: titulo,
-      vdescripcion_perfil: descripcion,
+      'iid_perfil': id,
+      'vnombre_perfil': titulo,
+      'vdescripcion_perfil': descripcion,
     });
 
     return res;
@@ -64,7 +64,7 @@ export const PerfilesService = {
     tokenAuth(token);
 
     const res = await axiosClient.post(`perfil/delPerfilId`, {
-        iid_perfil: id
+        'iid_perfil': id
       });
   },
 

@@ -3,18 +3,10 @@
 import ModalComponent from "@/app/intranet/componentes/mantenedores/modal";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { PerfilesService } from "@/app/intranet/services/administration/perfiles.service";
+import { parametrosServices } from "@/app/intranet/services/parametros.service";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface options {
-  iid_perfil_opcion: number,
-  iid_opcion: number,
-  iacceso_crear: number,
-  iacceso_visualizar:number,
-  iacceso_actualizar:number,
-  iacceso_eliminar:number
-}
 
 const ProfilesPage = () => {
 
@@ -31,6 +23,9 @@ const ProfilesPage = () => {
     setPathFinal(resul[resul.length - 1]);
     return pathFinal;
   };
+
+   // parametros
+   const [statesList, setStatesList] = useState([]);
 
   // busqueda
   const [searchTitle, setSearchTitle] = useState("");
@@ -100,8 +95,15 @@ const ProfilesPage = () => {
     getData(currentPage, itemsPorPagina, searchTitle);
     getOptionsData();
     obtenerPath();
+    getStates();
     
   }, []);
+
+  const getStates = async () => {
+      const { data } = await parametrosServices.getStates()
+
+      setStatesList(data)        
+  }
 
   
   const getData = async (page: number, items: number, titulo: string) => {
@@ -436,15 +438,24 @@ const ProfilesPage = () => {
                     {capitalize(item.vdescripcion_perfil)}
                   </th>
                   <th scope="row" className="px-6 py-4">
-                    <div
-                      className={`flex items-center justify-center font-bold min-w-24 h-10 rounded-xl ${
-                        item.vdescripcion_estado === "ACTIVO"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-rose-200 text-rose-800"
-                      }`}
-                    >
-                      {capitalize(item.vdescripcion_estado)}
-                    </div>
+                  {
+                    statesList.map((state: any) => (
+                        <>
+                            {
+                                state.iid_tabla_detalle == item.iid_estado_registro ? (
+                                    <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                        {
+                                            state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                        }
+                                    </div>
+                                ) : (
+                                    <>
+                                    </>
+                                )
+                            }
+                        </>
+                    ))
+                  }
                   </th>
                   <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                     <Link
