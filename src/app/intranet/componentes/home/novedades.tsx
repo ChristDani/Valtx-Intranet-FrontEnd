@@ -12,16 +12,14 @@ interface novedad{
     vdescripcion_estado: string
 }
 export const Novedades = () =>{
-
-    const [novedades, setNovedades] = useState<novedad>();
+    const [dataInfo,setDataInfo] = useState<any>([]);
+    const [novedades, setNovedades] = useState<novedad[]>([]);
     const getData= async () => {
-        const {data} = await novedadesServices.getList(1,10,"",3,"asc");
-        const list: any = data.reverse((item:novedad)=>{
-            if(item.vdescripcion_estado==='ACTIVO'){
-                return item
-            }
-        });
-        setNovedades(list[0]);
+        const info = await novedadesServices.getList(1,10,"",3,"desc");
+        const data = info.data
+        const list: any = data.reverse((item:novedad)=>item.vdescripcion_estado==='ACTIVO');
+        setDataInfo(info);
+        setNovedades(data);
     }
 
     useEffect(()=>{
@@ -38,18 +36,28 @@ export const Novedades = () =>{
 
             {/** Contenido */}
             {
-            <div className=" relative flex w-full h-96 bg-white rounded-2xl mt-3">
-            <img className="w-full" src={`/images/${novedades?.vimagen}`}/>
-            <div className="absolute h-full w-1/2 text-white">
-                            <div className="bg-[#31BAFF] h-44 p-6 rounded-br-full rounded-tl-lg w-full">
-                                <h1 className="flex text-5xl font-bold justify-center"> {novedades?.vtitulo}</h1>
-                            </div>
-                            <div className="p-4 pr-10">
-                                <h3><b>{novedades?.vtextobreve}</b></h3>
-                            </div>
-            
+                dataInfo.IsSuccess ? (
+                <div className=" relative flex w-full h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden">
+                    <img className="w-full h-full object-cover" src={`/images/${novedades[0]?.vimagen}`}/>
+                    <div className="absolute h-full w-1/2 text-white">
+                                <div className="bg-[#31BAFF] h-40 p-6 rounded-br-full rounded-tl-lg w-full">
+                                    <h1 className="flex text-5xl font-bold justify-center"> {novedades[0]?.vtitulo}</h1>
+                                </div>
+                                <div className="mt-4 p-4 text-xl">
+                                    <h3><b>{novedades[0]?.vtextobreve}</b></h3>
+                                </div>
+                
+                    </div>
                 </div>
-            </div>
+                ) : (
+                    <div className="bg-white border-b hover:bg-gray-50">
+                        <div className="px-6 py-4 font-medium text-gray-900 text-center">
+                                        Lo sentimos, aún no se han registrado datos!
+                        </div>
+                    </div>
+
+                )
+            
             } 
         </div>
     );

@@ -6,6 +6,8 @@ import { Noticias, NoticiasResponseDTO } from "../../interfaces/news.response.dt
 
 const TopNews = () =>{
 
+
+    const [dataInfo, setDataInfo] = useState<any>([]);
     const [newsList, setNewsList] = useState<Noticias[]>([]);
 
     useEffect(()=>{
@@ -18,14 +20,13 @@ const TopNews = () =>{
     const getNews = async () =>{
         try{
 
-            const news: NoticiasResponseDTO = await newsServices.getList(1, 10, "", 3, "asc");
+            const news: NoticiasResponseDTO = await newsServices.getList(1, 2, "", 3, "asc");
             const newsL: Noticias[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
+            setDataInfo(news);
             setNewsList(newsL);
-            console.log(newsL[0].vimagen);
-            
         }catch(e){
-
+            console.log(e);
         }
     }
 
@@ -43,14 +44,21 @@ const TopNews = () =>{
                 <span className="cursor-pointer global-secondary-text">Ver todos</span>
             </div>
             <div className="flex flex-row w-full h-64">
-
-                <div className="w-1/2 h-[100%] p-4 pl-0" onClick={()=>{goLink(newsList[0].vlink, newsList[0].vredireccion)}}>
-                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${newsList[0].vimagen}`}/></div> : null}
-                </div>
-
-                <div className="w-1/2 h-[100%] p-4 pr-0" onClick={()=>{goLink(newsList[1].vlink, newsList[1].vredireccion)}}>
-                    {newsList.length > 1 ? <div className="h-full rounded-2xl bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${newsList[1].vimagen}`}/></div> : null}
-                </div>
+                {
+                    dataInfo.IsSuccess ? (
+                        newsList.map((item:Noticias, index)=>(
+                            <div key={index} className="w-1/2 h-full m-2" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
+                                <div className="h-full rounded-2xl overflow-hidden bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${item.vimagen}`}/></div>
+                            </div>
+                        ))
+                ):(
+                    <div className="bg-white border-b hover:bg-gray-50 w-full ">
+                        <div className="px-6 py-4 font-medium text-gray-900 text-center">
+                                        Lo sentimos, aún no se han registrado datos!
+                        </div>
+                    </div>
+                )
+                }
 
             </div>
         </div>

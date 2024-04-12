@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { documentacionServices } from "../../services/mantenedores/document.service";
 import { Documentation, DocumentationResponseDTO } from "../../interfaces/documentacion.response.dto";
-
+import Link from "next/link";
 export const Documentacion = () =>{
 
     const [docums, setDocumns] = useState<Documentation[]>([]);
@@ -28,10 +28,10 @@ export const Documentacion = () =>{
 
     return(
         <div className="flex flex-col">
-            <div className="flex align-bottom font-bold mt-4">
-                <h1 className="text-lg global-main-text"> Documentación </h1>
+            <div className="flex justify-between align-bottom font-bold mt-4">
+                <h1 className="text-lg global-main-text">Documentos </h1>
+                <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/document">Ver todos</Link>
             </div>
-
             {/** Contenido */}
             <div className="cursor-pointer flex flex-col rounded-2xl justify-between">
 
@@ -45,7 +45,7 @@ export const Documentacion = () =>{
                             {docum.vtitulo}
                         </h1>
                     </span>
-                    <img src={`/images/${docum.vimagen}`} className="easy-in duration-500 w-full"></img>
+                    <img src={`/images/${docum.vimagen}`} className=" object-cover w-full h-full"></img>
                 </div>
             ))}
             

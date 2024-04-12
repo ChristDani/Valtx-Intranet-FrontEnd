@@ -1,14 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
-import { eventServices } from '../../../services/mantenedores/eventos.service';
+import { documentacionServices } from '../../../services/mantenedores/document.service';
 import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
-import { format } from "path";
+import ManagerDoc from "./ManagerDocument";
 
-const EventsViewPage = () => {
+const DocuViewPage = () => {
 
     // obtener la ruta
     const pathName = usePathname()
@@ -22,6 +22,7 @@ const EventsViewPage = () => {
 
     // parametros
     const [statesList, setStatesList] = useState([]);
+    const [repositoriesList, setRepositoriesList] = useState([]);
 
     // data
     const [dataList, setDataList] = useState([]);
@@ -36,6 +37,12 @@ const EventsViewPage = () => {
     // busqueda
     const [searchTitle, setSearchTitle] = useState("");
 
+    // modal
+    const [modalState, setModalState] = useState({
+        create: false,
+        update: false,
+        delete: false
+    })
 
     // edición
     const [editId, setEditId] = useState('0');
@@ -51,48 +58,77 @@ const EventsViewPage = () => {
     const [redirecction, setRedirecction] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
-    const [dataEvent,setDataEvent] = useState<any>([])
+
+    const cambiarImagen = (e: any) => {
+        const file = e.target.files[0];
+        const name = e.target.files[0].name;
+        setImage(file);
+        setNameImage(name);
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setSrcImage(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        cleanData()
+        setModalState({ create: false, update: false, delete: false })
+        setModalIsOpen(false);
+        setShow({
+            state: false,
+            id_doc: 0
+        })
+    };
 
     useEffect(() => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
+        getStates();
+        getRepositories;
     }, [])
 
+    const getStates = async () => {
+        const { data } = await parametrosServices.getStates()
+
+        setStatesList(data)
+    }
+
+    const getRepositories = async () => {
+        const { data } = await parametrosServices.getRepositoriesTypes()
+
+        setRepositoriesList(data)
+    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await eventServices.getList(page, items, "", 3, getCurrentDate(), 'asc');
+        const itemsList: any = await documentacionServices.getList(page, items, titulo, -1, 'asc');
 
         setDataInfo(itemsList);
-
-        const list = itemsList.data.map((item:any)=>{
-            const date= new Date(item.dfecha)
-            return {
-                'year' : date.getFullYear(),
-                'month' : date.getMonth(),
-                'day' : date.getDate(),
-                'dayNumber': date.getDay(),
-                'titulo': item.vtitulo,
-                'desc' : item.vtextobreve 
-            }
-        })
-        const groupedByMonth = list.reduce((acc:any, currentItem) => {
-          const { month, ...rest } = currentItem;
-          if (!acc[month]) {
-            acc[month] = [];
-          }
-          acc[month].push(rest);
-          return acc;
-        }, {});
-
-        setDataList(groupedByMonth);
+        setDataList(itemsList.data);
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
         setPages(pages);
         iniciarPaginacion(page, pages);
-        
-        
+    }
+
+    const searchData = (title: string) => {
+        setSearchTitle(title)
+        getData(1, itemsPorPagina, title)
+    }
+
+    const createItem = async () => {
+        setModalState({ create: true, update: false, delete: false })
+        openModal()
     }
 
     const formatFech = (fecha: string) => {
@@ -121,9 +157,12 @@ const EventsViewPage = () => {
     }
 
     const getOneItem = async (id: number) => {
-        const onlyOneItem = await eventServices.getOne(id);
-        onlyOneItem.data.map((item: any) => (
-            setEditId(item.iid_evento),
+        const onlyOneItem = await documentacionServices.getOne(id);
+
+        const edittttt = onlyOneItem.data
+
+        edittttt.map((item: any) => (
+            setEditId(item.iid_documentacion),
             setEditTitle(item.vtitulo),
             setEditDesc(item.vtextobreve),
             setEditLink(item.vlink),
@@ -132,10 +171,67 @@ const EventsViewPage = () => {
             setEditOrden(item.iorden),
             setEditState(item.iid_estado_registro),
             setRedirecction(item.vredireccion),
-            setFecha(obDate(item.dfecha).toString()),
+            setFecha(item.dfecha),
             formatFech(item.dfecha)
         ))
+        console.log(onlyOneItem.data);
+        
     }
+
+    const itemDetails = (e: any, id: number) => {
+        openModal()
+        getOneItem(id)
+    }
+
+    const editItem = (e: any, id: number) => {
+        setModalState({ create: false, update: true, delete: false })
+        openModal()
+        getOneItem(id)
+    }
+
+    const deleteItem = async (e: any, id: number) => {
+        setModalState({ create: false, update: false, delete: true })
+        getOneItem(id)
+        openModal()
+    }
+
+    const confirmOp = async (e: any) => {
+        e.preventDefault();
+
+        if (modalState.create) {
+            if (Image != null) {
+                const res = await documentacionServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
+            } else {
+                alert('debe elegir una imagen')
+            }
+        } else if (modalState.update) {
+            if (Image != null) {
+                const res = await documentacionServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, Image)
+            } else {
+                const res = await documentacionServices.update(editTitle, editDesc, editLink, editOrden, editState, editId)
+            }
+        } else if (modalState.delete) {
+            const res = await documentacionServices.delete(editId);
+        } else {
+            alert('detalles')
+        }
+        getData(1, itemsPorPagina, searchTitle)
+        closeModal()
+    }
+
+    const cleanData = () => {
+        setEditId('0')
+        setEditTitle('')
+        setEditDesc('')
+        setEditLink('')
+        setEditImage('')
+        setImage(null)
+        setSrcImage(null)
+        setNameImage('')
+        setEditState('1')
+        setEditOrden('')
+    }
+
     const iniciarPaginacion = (page: number, pages: number) => {
 
         setPagInicio(1);
@@ -172,6 +268,24 @@ const EventsViewPage = () => {
         getData(page, itemsPorPagina, searchTitle)
     }
 
+    const [imageSrc, setImageSrc] = useState(null);
+    const fileInputRef: any = useRef(null);
+
+    const handleImageChange = (event: any) => {
+        const file = event.target.files[0];
+        const reader: any = new FileReader();
+        reader.onloadend = () => {
+            setImageSrc(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleButtonClick = () => {
+        fileInputRef.current.click();
+    };
+
     const capitalize = (text: String) => {
         const first = text.charAt(0);
         const rest = text.slice(1).toLowerCase();
@@ -183,163 +297,65 @@ const EventsViewPage = () => {
         setEditOrden(e.value);
     }
 
-    const getCurrentDate = () => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
+    const imageRef = useRef<any>(null)
 
-        return `${year}-${month}-${day}`;
+    const openInputImage = () => {
+        imageRef.current.click();
     };
 
+    const deleteImage = () => {
+        setImage(null)
+        setSrcImage(null)
+        setNameImage(editImage)
+    };
 
-    const obDate=(date:string)=>{
-        const aux = new Date(date)
-        const year = aux.getUTCFullYear();
-        const month = String(aux.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(aux.getUTCDate()).padStart(2, '0');
+    const [show, setShow] = useState({
+        state: false,
+        id_doc: 0
+    });
 
-        return `${year}-${month}-${day}`;
-    }
-
-    const dayNumber =(date:string)=>{
-        const aux = new Date(date)
-        const day = String(aux.getUTCDate()).padStart(2, '0');
-        return day;
-    }
-    const dayName =(date:string)=>{
-        const day = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-        const aux = new Date(date)
-        const dayname = aux.getDay()
-        return day[dayname];
+    const showDataFiles = (e: any, id: number) => {
+        setShow({
+            state: true,
+            id_doc: id
+        })
+        openModal()
     }
 
-    const year =(date:string)=>{
-        const aux = new Date(date)
-        const day = aux.getFullYear()
-        return day;
-    }
-    const month =(date:string)=>{
-        const aux = new Date(date)
-        const day = aux.getMonth()
-        return day;
-    }
-    const monthName =(date:string)=>{
-        const day = ['En.','Feb.','Abr.','May.','Jun','Jul','Ag.','Set','Oct','Nov','Dic'];
-        const aux = new Date(date)
-        const dayname = aux.getDay()
-        return day[dayname];
-    }
-    const mes =()=>{
-        const aux = new Date()
-        const day = aux.getMonth()
-        return day;
-    }
     return (
 
-        <>
-        {
-            <div>
-            {Object.keys(dataEvent).map((month) => (
-              <div key={month}>
-                <h2>{`Mes: ${month}`}</h2>
-                {dataEvent[month].map((item, index) => (
-                  <div key={index}>
-                    <h3>{`${item.day}/${item.year}`}</h3>
-                    <p>{item.titulo}</p>
-                    <p>{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        }
-        
-         {/*
-            <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-lg overflow-hidden p-4">
-                <div className="flex flex-row text-2xl items-center gap-4">
-                    <div>
-                        <span className="ml-1">{monthName(mes().toString())}</span>
-                        <span className="ml-1">2024</span>
-                    </div>
-                    <hr className="my-8 h-0.5 w-full bg-black "/>
-                </div>
-                {
-                    datInfo.IsSuccess ? (
-                        dataList.filter((item:any) => month(item.dfecha)===mes()).map((item: any,key) => (
-                                <div key={key} className="flex flex-row w-full ">
-                                <div className="w-1/4 h-20 flex flex-col justify-center items-center">
-                                        <span className=" text-slate-500">{dayName(item.dfecha)}</span>
-                                        <span className="font-bold text-3xl">{dayNumber(item.dfecha)}</span>
-                                </div>
-                                <div className="w-3/4 flex border-b border-b-slate-400">
-                                    <span className="flex w-2/6 justify-center items-center text-slate-600">{item.vtitulo}</span>
-                                    <span className="flex w-4/6 justify-center items-center font-medium">{item.vtextobreve}</span>
-                                </div>
-                            </div>
-                    ))) : (
-                        <tr className="bg-white border-b hover:bg-gray-50">
-                            <th scope="row" colSpan={4} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                Lo sentimos, aún no se han registrado datos!
-                            </th>
-                        </tr>
-
-                    )
-                }
-                
+            <> 
+            <div className="grid grid-cols-3 gap-2 m-5 justify-center w-full max-sm:grid-cols-1 max-lg:grid-cols-2" >
+           {
+                datInfo.IsSuccess ? (
+                    dataList.map((item: any) => ( 
+                    <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
+                    <img className="w-full" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
+                        <div className="w-full p-4">
+                            <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
+                            <p className="text-gray-700 text-base">
+                                {item.vtextobreve}
+                            </p>
+                        </div>
+                        <div>
+                            <Link href="" className="flex flex-row justify-end items-center gap-1 pr-5 text-sm text-sky-600 w-full" onClick={(e) => showDataFiles(e, item.iid_documentacion)}>
+                                <span className="">Ver Documentos</span>
+                                <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+                                </svg>
+                            </Link>
+                        </div>
+                    </div> 
+                    ))
+                ):(
+                    <tr className="bg-white border-b hover:bg-gray-50">
+                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                            Lo sentimos, aún no se han registrado datos!
+                        </th>
+                    </tr>
+                )
+            }
             </div>
-            {/* tabla */}
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg hidden">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Fecha
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Titulo
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Descripción
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center hidden">
-                                Imagen
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Replace the following <tr> elements with your actual product data */}
-                        {
-                            datInfo.IsSuccess ? (
-                                dataList.map((item: any, key) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_evento}>
-                                        <th scope="row" className="px-6 py-4 text-center">
-                                            {obDate(item.dfecha)}
-                                        </th>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {item.vtitulo}
-                                        </th>
-                                        <td className="px-6 py-4 text-start ">
-                                            {item.vtextobreve}
-                                        </td>
-                                        <td className="px-6 py-4 text-center hidden">
-                                            <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr className="bg-white border-b hover:bg-gray-50">
-                                    <th scope="row" colSpan={4} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                        Lo sentimos, aún no se han registrado datos!
-                                    </th>
-                                </tr>
-
-                            )
-                        }
-                    </tbody>
-                </table>
-            </div>
-
             {/* paginacion */}
             {(paginas > 1) ? (
                 <nav className="w-full">
@@ -364,13 +380,13 @@ const EventsViewPage = () => {
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item, key) => (
+                        {pagesToShow.map((item) => (
                             (currentPage == item) ? (
-                                <li key={key}>
+                                <li>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li key={key}>
+                                <li>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
@@ -401,9 +417,15 @@ const EventsViewPage = () => {
                 <span></span>
             )
             }
-        </>
 
+            {/* modal */}
+            <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+                {
+                    show.state ? <ManagerDoc close={closeModal} idDoc={show.id_doc} />:<></>
+                }
+            </ModalComponent>
+            </>
     );
 }
 
-export default EventsViewPage;
+export default DocuViewPage;

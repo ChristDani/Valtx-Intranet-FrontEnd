@@ -37,10 +37,12 @@ const HomeMainBanner = () =>{
             const bannersList: Banner[] = banners.data;
             bannersList.sort((a:any, b:any)=> a.iorden - b.iorden);
             setBanners(bannersList);
+            
 
         } catch (error) {
             console.error('Error al obtener banners:', error);
         }
+        
     }
 
     const goLink = () =>{
@@ -51,39 +53,37 @@ const HomeMainBanner = () =>{
     
       const [currentIndex, setCurrentIndex] = useState(0);
     
-      const prevSlide = () => {
-        const isFirstSlide = currentIndex === 0;
-        const newIndex = isFirstSlide ? banners.length - 1 : currentIndex - 1;
+      const goToPrevSlide = () => {
+        const newIndex = (currentIndex - 1 + banners.length) % banners.length;
         setCurrentIndex(newIndex);
       };
-      const nextSlide = () => {
-        const isLastSlide = currentIndex === banners.length - 1;
-        const newIndex = isLastSlide ? 0 : currentIndex + 1;
+    
+      const goToNextSlide = () => {
+        const newIndex = (currentIndex + 1) % banners.length;
         setCurrentIndex(newIndex);
       };
       
-      setTimeout(()=>{nextSlide();}, 4000);
+      // Ejecutar nextSlide cada 4000ms
+      const intervalId = setTimeout(() => {
+        goToNextSlide();
+      }, 4000);
+      
     
       const goToSlide = (slideIndex: any) => {
         setCurrentIndex(slideIndex);
       };
 
     return(
-        <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full group'>
-        <div
-          className='w-full h-full rounded-2xl bg-center bg-cover duration-500'
-          style={{ backgroundImage: `url(${`/images/${banners[currentIndex].vimagen}`})` }} 
-          onClick={goLink}
-        >
+    <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full group'>
+        <div className='w-full h-full rounded-2xl bg-center bg-cover duration-500 overflow-hidden'onClick={()=>goLink()}>
+          <img src={`/images/${banners[currentIndex].vimagen}`} alt="" />
         </div>
-        {/* Flecha izquierda */}
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-          <BsChevronCompactLeft onClick={prevSlide} size={30} />
+          <BsChevronCompactLeft onClick={()=>goToPrevSlide()} size={30} />
         </div>
         
-        {/* Flecha derecha */}
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
-          <BsChevronCompactRight onClick={nextSlide} size={30} />
+          <BsChevronCompactRight onClick={()=>goToNextSlide()} size={30} />
         </div>
         <div className='absolute flex bottom-10 right-10 py-2'>
           {banners.map((banner, slideIndex) => (
@@ -96,7 +96,7 @@ const HomeMainBanner = () =>{
             </div>
           ))}
         </div>
-      </div>
+    </div>
     );
 }
 
