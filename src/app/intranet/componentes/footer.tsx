@@ -24,7 +24,7 @@ export const Footer = () =>{
     const getIcons = async () => {
         try {
             
-            const icons: IconsResponseDTO = await iconServices.getList(1,10,"",-1,8,"asc");
+            const icons: IconsResponseDTO = await iconServices.getList(1,10,"",3,8,"asc");
             const iconsL: Icons[] = icons.data;
             iconsL.sort((a: any, b:any) => a.iorden - b.iorden);
             setIconList(iconsL);
@@ -37,7 +37,7 @@ export const Footer = () =>{
 
     const getEnlaces = async () => {
         try {
-            const links: LinksResponseDTO = await linkServices.getList(1,10,"",-1,"asc");
+            const links: LinksResponseDTO = await linkServices.getList(1,10,"",3,"asc");
             const linksL: Links[] = links.data;
             linksL.sort((a:any, b:any) => a.iorden - b.iorden);
             setLinkList(linksL)
