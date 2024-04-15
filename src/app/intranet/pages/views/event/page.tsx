@@ -24,7 +24,7 @@ const EventsViewPage = () => {
     const [statesList, setStatesList] = useState([]);
 
     // data
-    const [dataList, setDataList] = useState([]);
+    const [dataList, setDataList] = useState<any>([]);
     const [datInfo, setDataInfo] = useState<any>([]);
     // paginacion
     const [paginas, setPages] = useState(0);
@@ -63,17 +63,17 @@ const EventsViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await eventServices.getList(page, items, "", 3, getCurrentDate(), 'asc');
+        const itemsList: any = await eventServices.getList(1, items, "", 3, getCurrentDate(), "asc");
 
         setDataInfo(itemsList);
 
         const list = itemsList.data.map((item:any)=>{
             const date= new Date(item.dfecha)
             return {
-                'year' : date.getFullYear(),
-                'month' : date.getMonth(),
-                'day' : date.getDate(),
-                'dayNumber': date.getDay(),
+                'year' : date.getUTCFullYear(),
+                'month' : date.getUTCMonth(),
+                'day' : date.getUTCDate(),
+                'dayNumber': date.getUTCDay(),
                 'titulo': item.vtitulo,
                 'desc' : item.vtextobreve 
             }
@@ -91,8 +91,6 @@ const EventsViewPage = () => {
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
         setPages(pages);
         iniciarPaginacion(page, pages);
-        
-        
     }
 
     const formatFech = (fecha: string) => {
@@ -202,33 +200,14 @@ const EventsViewPage = () => {
         return `${year}-${month}-${day}`;
     }
 
-    const dayNumber =(date:string)=>{
-        const aux = new Date(date)
-        const day = String(aux.getUTCDate()).padStart(2, '0');
-        return day;
-    }
-    const dayName =(date:string)=>{
+    const dayName =(date:number)=>{
         const day = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-        const aux = new Date(date)
-        const dayname = aux.getDay()
-        return day[dayname];
+        return day[date];
     }
 
-    const year =(date:string)=>{
-        const aux = new Date(date)
-        const day = aux.getFullYear()
-        return day;
-    }
-    const month =(date:string)=>{
-        const aux = new Date(date)
-        const day = aux.getMonth()
-        return day;
-    }
-    const monthName =(date:string)=>{
-        const day = ['En.','Feb.','Abr.','May.','Jun','Jul','Ag.','Set','Oct','Nov','Dic'];
-        const aux = new Date(date)
-        const dayname = aux.getDay()
-        return day[dayname];
+    const monthName =(date:number)=>{
+        const day = ['En.','Feb.','Abr','May','Jun','Jul','Ag.','Set','Oct','Nov','Dic'];
+        return day[date];
     }
     const mes =()=>{
         const aux = new Date()
@@ -237,108 +216,41 @@ const EventsViewPage = () => {
     }
     return (
 
-        <>
+        <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-lg overflow-hidden p-4">
         {
-            <div>
-            {Object.keys(dataEvent).map((month) => (
-              <div key={month}>
-                <h2>{`Mes: ${month}`}</h2>
-                {dataEvent[month].map((item, index) => (
-                  <div key={index}>
-                    <h3>{`${item.day}/${item.year}`}</h3>
-                    <p>{item.titulo}</p>
-                    <p>{item.desc}</p>
-                  </div>
-                ))}
+            datInfo.IsSuccess ? (
+                <div>
+                    {Object.keys(dataList).map((month) => (
+                    <div key={month}>
+                        <div className="flex flex-row text-2xl items-center gap-4">
+                            <div>
+                                <span className="ml-1">{monthName(parseInt(month) -1 )}</span>
+                                <span className="ml-1">2024</span>
+                            </div>
+                            <hr className="my-8 h-0.5 w-full bg-black "/>
+                        </div>
+                        {dataList[month].map((item, index) => (
+                        <div key={index} className="flex flex-row w-full ">
+                        <div className="w-1/4 h-20 flex flex-col justify-center items-center">
+                                <span className=" text-slate-500">{dayName(item.dayNumber)}</span>
+                                <span className="font-bold text-3xl">{item.day}</span>
+                        </div>
+                        <div className="w-3/4 flex border-b border-b-slate-400">
+                            <span className="flex w-2/6 justify-center items-center text-slate-600">{item.titulo}</span>
+                            <span className="flex w-4/6 justify-center items-center font-medium">{item.desc}</span>
+                        </div>
+                    </div>
+                        ))}
               </div>
             ))}
           </div>
+            ):(<div className="bg-white border-b hover:bg-gray-50">
+            <div className="px-6 py-4 font-medium text-gray-900 text-center">
+                            Lo sentimos, aún no se han registrado datos!
+            </div>
+        </div>)
+            
         }
-        
-         {/*
-            <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-lg overflow-hidden p-4">
-                <div className="flex flex-row text-2xl items-center gap-4">
-                    <div>
-                        <span className="ml-1">{monthName(mes().toString())}</span>
-                        <span className="ml-1">2024</span>
-                    </div>
-                    <hr className="my-8 h-0.5 w-full bg-black "/>
-                </div>
-                {
-                    datInfo.IsSuccess ? (
-                        dataList.filter((item:any) => month(item.dfecha)===mes()).map((item: any,key) => (
-                                <div key={key} className="flex flex-row w-full ">
-                                <div className="w-1/4 h-20 flex flex-col justify-center items-center">
-                                        <span className=" text-slate-500">{dayName(item.dfecha)}</span>
-                                        <span className="font-bold text-3xl">{dayNumber(item.dfecha)}</span>
-                                </div>
-                                <div className="w-3/4 flex border-b border-b-slate-400">
-                                    <span className="flex w-2/6 justify-center items-center text-slate-600">{item.vtitulo}</span>
-                                    <span className="flex w-4/6 justify-center items-center font-medium">{item.vtextobreve}</span>
-                                </div>
-                            </div>
-                    ))) : (
-                        <tr className="bg-white border-b hover:bg-gray-50">
-                            <th scope="row" colSpan={4} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                Lo sentimos, aún no se han registrado datos!
-                            </th>
-                        </tr>
-
-                    )
-                }
-                
-            </div>
-            {/* tabla */}
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg hidden">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Fecha
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Titulo
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Descripción
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center hidden">
-                                Imagen
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Replace the following <tr> elements with your actual product data */}
-                        {
-                            datInfo.IsSuccess ? (
-                                dataList.map((item: any, key) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_evento}>
-                                        <th scope="row" className="px-6 py-4 text-center">
-                                            {obDate(item.dfecha)}
-                                        </th>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                            {item.vtitulo}
-                                        </th>
-                                        <td className="px-6 py-4 text-start ">
-                                            {item.vtextobreve}
-                                        </td>
-                                        <td className="px-6 py-4 text-center hidden">
-                                            <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr className="bg-white border-b hover:bg-gray-50">
-                                    <th scope="row" colSpan={4} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                        Lo sentimos, aún no se han registrado datos!
-                                    </th>
-                                </tr>
-
-                            )
-                        }
-                    </tbody>
-                </table>
-            </div>
 
             {/* paginacion */}
             {(paginas > 1) ? (
@@ -401,7 +313,7 @@ const EventsViewPage = () => {
                 <span></span>
             )
             }
-        </>
+        </div>
 
     );
 }
