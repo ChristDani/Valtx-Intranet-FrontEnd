@@ -133,7 +133,7 @@ const NovedadesViewPage = () => {
                     <img className="w-full" src={`/images/${item.vimagen}`}/>
                         <div className="w-full p-4">
                             <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="text-gray-700 text-base">
+                            <p className="text-gray-700 text-base line-clamp-2">
                                 {item.vtextobreve}
                             </p>
                         </div>

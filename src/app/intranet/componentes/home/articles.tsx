@@ -53,7 +53,7 @@ const Articles = () =>{
                         <div className="rounded-full h-auto ml-4 bg-sky-500 self-center"></div>
                     </div>
                     <br></br>
-                    <p className="text-[#00245F]">{article.vtextobreve}</p>
+                    <p className="text-[#00245F] line-clamp-2">{article.vtextobreve}</p>
                 </div>
                 
                 <div className="flex mt-9 justify-end mr-3 mb-3">
