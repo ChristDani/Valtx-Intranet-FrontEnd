@@ -635,7 +635,7 @@ const EnteratePage = () => {
                                         <>
                                             <div className="mb-5 hidden relative">
                                                 <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
-                                                <input type="file" ref={videoRef} name="video" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarVideo}></input>
+                                                <input type="file" ref={videoRef} name="video" accept="video/mp4" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarVideo}></input>
                                             </div>
                                             <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
                                                 <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Video</label>
