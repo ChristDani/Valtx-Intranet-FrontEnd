@@ -217,7 +217,6 @@ const EnteratePage = () => {
             if (Image != null) {
                 const codigo: any = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
                 const CODIGO = codigo['Codigo'];
-                alert(CODIGO)
                 if (modalState.uploadVideo) {
                     if (Video != null) {
                         const res = await enterateServices.uploadVideo(Video, CODIGO)
