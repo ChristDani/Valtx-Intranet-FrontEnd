@@ -10,7 +10,7 @@ export async function middleware(req:NextRequest){
     const token = req.cookies.get('token');
     
     if(token === null){
-        return NextResponse.redirect(new URL('authentication', req.url));
+        return NextResponse.redirect(new URL('/authentication', req.url));
     }
 
     try{
@@ -19,7 +19,7 @@ export async function middleware(req:NextRequest){
 
     } catch(error){
 
-        return NextResponse.redirect(new URL('authentication', req.url));
+        return NextResponse.redirect(new URL('/authentication', req.url));
 
     }
 
