@@ -81,7 +81,7 @@ export const userServices = {
     async deletUsuario(id:number) {
       tokenAuth(token);
 
-      const res = await axiosClient.get(`usuario/delUsuarioId?iid=${id}`);
+      const res = await axiosClient.post(`usuario/delUsuarioId?iid=${id}`);
       return res;
     }
 }
