@@ -17,12 +17,6 @@ const ProfilesPage = () => {
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
 
-  const obtenerPath = () => {
-    const resul = pathName.split("/");
-    setPathFinal(resul[resul.length - 1]);
-    return pathFinal;
-  };
-
   // parametros
   const [statesList, setStatesList] = useState([]);
 
@@ -59,6 +53,12 @@ const ProfilesPage = () => {
     update: false,
     delete: false,
   });
+
+  const obtenerPath = () => {
+    const resul = pathName.split("/");
+    setPathFinal(resul[resul.length - 1]);
+    return pathFinal;
+  };
 
   const iniciarPaginacion = (page: number, pages: number) => {
     setPagInicio(1);
@@ -99,7 +99,6 @@ const ProfilesPage = () => {
 
   const getStates = async () => {
     const { data } = await parametrosServices.getStates();
-
     setStatesList(data);
   };
 
@@ -318,7 +317,6 @@ const ProfilesPage = () => {
 
     setNewOptions(newCopyOptions);
   };
-
 
   return (
     <>
@@ -753,16 +751,36 @@ const ProfilesPage = () => {
                     onChange={(e) => setEditState(e.target.value)}
                   >
                     {modalState.update ? (
-                      <option value={editState} selected hidden>
-                        {editState == "1" ? "Activo" : "Inactivo"}
-                      </option>
+                      <>
+                        {statesList.map((state: any) => (
+                          <>
+                            {state.iid_tabla_detalle == state ? (
+                              <option
+                                value={state.iid_tabla_detalle}
+                                selected
+                                hidden
+                              >
+                                {capitalize(state.vvalor_texto_corto)}
+                              </option>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        ))}
+                      </>
                     ) : (
-                      <option value="1" selected hidden>
-                        Activo
+                      <option value="0" selected hidden>
+                        Seleccione
                       </option>
                     )}
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
+
+                    {statesList.map((state: any) => (
+                      <>
+                        <option value={state.iid_tabla_detalle}>
+                          {capitalize(state.vvalor_texto_corto)}
+                        </option>
+                      </>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -772,7 +790,7 @@ const ProfilesPage = () => {
                     <tr className="bg-gray-300">
                       <th className="p-4 border">Módulo</th>
                       <th className="p-4 border">Opción del Sistema</th>
-                      <th className="p-4 border" >Ver</th>
+                      <th className="p-4 border">Ver</th>
                       <th className="p-4 border">Crear</th>
                       <th className="p-4 border">Editar</th>
                       <th className="p-4 border">Borrar</th>
@@ -786,8 +804,12 @@ const ProfilesPage = () => {
                               key={item.iid_opcion}
                               className="bg-gray-100 hover:bg-gray-50"
                             >
-                              <th className="text-start border-2">{item.vtitulo_modulo}</th>
-                              <td className="text-start border-2">{item.vtitulo}</td>
+                              <th className="text-start border-2">
+                                {item.vtitulo_modulo}
+                              </th>
+                              <td className="text-start border-2">
+                                {item.vtitulo}
+                              </td>
                               <td className="border-b-2">
                                 <label>
                                   <input
@@ -799,7 +821,7 @@ const ProfilesPage = () => {
                                       handleChange(e, item.iid_opcion)
                                     }
                                   />
-                                    Ver
+                                  Ver
                                 </label>
                               </td>
                               <td className="border-2">
@@ -813,10 +835,10 @@ const ProfilesPage = () => {
                                       handleChange(e, item.iid_opcion)
                                     }
                                   />
-                                    Crear
+                                  Crear
                                 </label>
                               </td>
-                              <td className="border-2"> 
+                              <td className="border-2">
                                 <label>
                                   <input
                                     type="checkbox"
@@ -827,7 +849,7 @@ const ProfilesPage = () => {
                                       handleChange(e, item.iid_opcion)
                                     }
                                   />
-                                    Editar
+                                  Editar
                                 </label>
                               </td>
                               <td className="border-2">
@@ -841,7 +863,7 @@ const ProfilesPage = () => {
                                       handleChange(e, item.iid_opcion)
                                     }
                                   />
-                                    Eliminar
+                                  Eliminar
                                 </label>
                               </td>
                             </tr>
@@ -962,7 +984,20 @@ const ProfilesPage = () => {
                 </h5>
                 <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                 <p className="mb-1 font-normal text-gray-700">
-                  Estado: {editState == "1" ? "Activo" : "Inactivo"}
+                  Estado:
+                  {statesList.map((state: any) => (
+                    <>
+                      {state.iid_tabla_detalle == editState ? (
+                        state.vvalor_texto_corto != null ? (
+                          capitalize(state.vvalor_texto_corto)
+                        ) : (
+                          "Sin estado"
+                        )
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ))}
                 </p>
               </div>
             </>

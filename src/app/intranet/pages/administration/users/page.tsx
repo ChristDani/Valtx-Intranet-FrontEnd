@@ -8,7 +8,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-
 const UsersPage = () => {
   // busqueda
   const [searchTitle, setSearchTitle] = useState("");
@@ -32,32 +31,31 @@ const UsersPage = () => {
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
 
-   // modal
-   const [modalState, setModalState] = useState({
+  // modal
+  const [modalState, setModalState] = useState({
     create: false,
     update: false,
-    delete: false
-})
+    delete: false,
+  });
 
-//Perfil
-    const [listPerfil, setListPerfil] = useState<any[]>([])
+  //Perfil
+  const [listPerfil, setListPerfil] = useState<any[]>([]);
 
-    //Documentos
-    const [documentList, setDocumentList] = useState<any[]>([])
+  //Documentos
+  const [documentList, setDocumentList] = useState<any[]>([]);
 
-    // edición
-    const [editId, setEditId] = useState(0);
-    const [editNombre, setEditNombre] = useState('');
-    const [editApePat, setEditApePat] = useState('');
-    const [editApeMat, setEditApeMat] = useState('');
-    const [editEmail, setEditEmail] = useState('');
-    const [editDocumento, setEditDocumento] = useState('');
-    const [editIdPerfil, setEditIdPerfil] = useState('')
-    const [editPerfil, setEditPerfil] = useState('')
-    const [telefono, setTelefono] = useState('')
-    const [editIdDocumento, setIdDocumento] = useState('')
-    const [estado, setEstado] = useState('0')
-
+  // edición
+  const [editId, setEditId] = useState(0);
+  const [editNombre, setEditNombre] = useState("");
+  const [editApePat, setEditApePat] = useState("");
+  const [editApeMat, setEditApeMat] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editDocumento, setEditDocumento] = useState("");
+  const [editIdPerfil, setEditIdPerfil] = useState("");
+  const [editPerfil, setEditPerfil] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [editIdDocumento, setIdDocumento] = useState("");
+  const [estado, setEstado] = useState("0");
 
   const obtenerPath = () => {
     const resul = pathName.split("/");
@@ -78,10 +76,19 @@ const UsersPage = () => {
     getData(1, itemsPorPagina, title);
   };
 
-  const createItem = async (e: any) => {
-    e.preventDefault();
-    setModalState({ create: true, update: false, delete: false });
-    openModal();
+  const getListPerfil = async () => {
+    const { data } = await PerfilesService.getList(1, 10, "", "", -1);
+    setListPerfil(data);
+  };
+
+  const getStates = async () => {
+    const { data } = await parametrosServices.getStates();
+    setStatesList(data);
+  };
+
+  const getDocuments = async () => {
+    const { data } = await parametrosServices.getDocumentsTypes();
+    setDocumentList(data);
   };
 
   const getData = async (
@@ -104,7 +111,6 @@ const UsersPage = () => {
       -1,
       -1
     );
-    
 
     setDataInfo(itemsList);
     setDataList(itemsList.data);
@@ -115,14 +121,14 @@ const UsersPage = () => {
     setPages(pages);
     iniciarPaginacion(page, pages);
   };
-  
-  
+
   const getOneItem = async (id: number) => {
     const onlyOneItem = await userServices.getOne(id);
 
-    const edittttt = onlyOneItem.data
+    const edittttt = onlyOneItem.data;
 
-    edittttt.map((item: any) => (
+    edittttt.map(
+      (item: any) => (
         setEditId(item.iid_usuario),
         setEditNombre(item.vnombres),
         setEditApePat(item.vapellido_paterno),
@@ -134,29 +140,37 @@ const UsersPage = () => {
         setEstado(item.iid_estado_registro),
         setTelefono(item.vnumero_telefonico),
         setIdDocumento(item.iid_tipo_documento)
-        
-
-    ))
-    
-}
-const openModal = () => {
+      )
+    );
+  };
+  const openModal = () => {
     setModalIsOpen(true);
-};
+  };
+
+  const createItem = async (e: any) => {
+    e.preventDefault();
+    setModalState({ create: true, update: false, delete: false });
+    openModal();
+  };
+
   const itemDetails = (e: any, id: number) => {
-     openModal()
-     getOneItem(id)
+    e.preventDefault()
+    openModal();
+    getOneItem(id);
   };
 
   const editItem = (e: any, id: number) => {
-    setModalState({ create: false, update: true, delete: false })
-    openModal()
-    getOneItem(id)
+    e.preventDefault()
+    setModalState({ create: false, update: true, delete: false });
+    openModal();
+    getOneItem(id);
   };
 
   const deleteItem = async (e: any, id: number) => {
-    setModalState({ create: false, update: false, delete: true })
-    getOneItem(id)
-    openModal()
+    e.preventDefault()
+    setModalState({ create: false, update: false, delete: true });
+    getOneItem(id);
+    openModal();
   };
 
   const iniciarPaginacion = (page: number, pages: number) => {
@@ -194,70 +208,73 @@ const openModal = () => {
     getData(page, itemsPorPagina, searchTitle);
   };
 
+  const closeModal = () => {
+    cleanData();
+    setModalState({ create: false, update: false, delete: false });
+    setModalIsOpen(false);
+  };
+
+  const confirmOp = async (e: any) => {
+    e.preventDefault();
+    if (modalState.create) {
+      const res = await userServices.setUsuario(
+        editId,
+        editNombre,
+        editApePat,
+        editApeMat,
+        editDocumento,
+        editEmail,
+        telefono,
+        editIdPerfil,
+        editIdDocumento,
+        1,
+        1,
+        estado
+      );
+    } else if (modalState.update) {
+      const res = await userServices.updateUsuario(
+        editId,
+        editNombre,
+        editApePat,
+        editApeMat,
+        editDocumento,
+        editEmail,
+        telefono,
+        editIdPerfil,
+        editIdDocumento,
+        1,
+        1,
+        estado
+      );
+    } else if (modalState.delete) {
+      const res = await userServices.deletUsuario(editId);
+    } else {
+      alert("detalles");
+    }
+    getData(1, itemsPorPagina, searchTitle);
+    closeModal();
+  };
+
+  const cleanData = () => {
+    setEditId(0);
+    setEditNombre("");
+    setEditApePat("");
+    setEditApeMat("");
+    setEditDocumento("");
+    setEditEmail("");
+    setEditIdPerfil("0");
+    setEditPerfil("");
+    setTelefono("");
+    setEditIdPerfil("");
+    setIdDocumento("0");
+    setEstado("0");
+  };
+
   const capitalize = (text: String) => {
     const first = text.charAt(0);
     const rest = text.slice(1).toLowerCase();
     return first + rest;
   };
-
-  const closeModal = () => {
-    cleanData()
-    setModalState({ create: false, update: false, delete: false })
-    setModalIsOpen(false);
-};
-
-const confirmOp = async (e: any) => {
-    e.preventDefault();
-    if (modalState.create) {  
-      const res = await userServices.setUsuario(editId, editNombre, editApePat, editApeMat, editDocumento, editEmail, telefono, editIdPerfil, editIdDocumento, 1, 1, estado)
-    } else if (modalState.update) {
-      const res = await userServices.updateUsuario(editId, editNombre, editApePat, editApeMat, editDocumento, editEmail, telefono, editIdPerfil, editIdDocumento, 1, 1, estado)
-    } else if (modalState.delete) {
-      const res = await userServices.deletUsuario(editId);
-    } else {
-        alert('detalles')
-    }
-    getData(1, itemsPorPagina, searchTitle)
-    closeModal()
-}
-
-  const getListPerfil = async () => {
-    const { data } = await PerfilesService.getList(1,10,'','',-1)
-    setListPerfil(data)
-    
-  }
-
-
-  const getStates = async () => {
-    const { data } = await parametrosServices.getStates();
-
-    setStatesList(data);
-
-    
-  };
-
-  const getDocuments = async () => {
-    const { data } = await parametrosServices.getDocumentsTypes();
-
-    setDocumentList(data);
-
-    
-  };
-
-  const cleanData = () => {
-    setEditId(0)
-    setEditNombre('')
-    setEditApePat('')
-    setEditApeMat('')
-    setEditDocumento('')
-    setEditEmail('')
-    setEditIdPerfil('0')
-    setEditPerfil('')
-    setTelefono('')
-    setEditIdPerfil('')
-    setIdDocumento('0')
-    setEstado('0')
-}
 
 
   return (
@@ -318,7 +335,7 @@ const confirmOp = async (e: any) => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-center">
+              {/* <th scope="col" className="px-6 py-3 text-center">
                 Nombres
               </th>
               <th scope="col" className="px-6 py-3 text-center">
@@ -326,7 +343,7 @@ const confirmOp = async (e: any) => {
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Apellido Materno
-              </th>
+              </th> */}
               <th scope="col" className="px-6 py-3 text-center">
                 Nombre Completo
               </th>
@@ -357,33 +374,45 @@ const confirmOp = async (e: any) => {
                     key={item.iid_usuario}
                     className="bg-white border-b hover:bg-gray-50"
                   >
-                    <td className="px-6 py-4 text-center">{item.vnombres}</td>
+                    {/* <td className="px-6 py-4 text-center">{item.vnombres}</td>
                     <td className="px-6 py-4 text-center">{item.vapellido_paterno}</td>
-                    <td className="px-6 py-4 text-center">{item.vapellido_materno}</td>
-                    <td className="px-6 py-4 text-center">{item.vnombre_completo}</td>
-                    <td className="px-6 py-4 text-center">{item.vcorreo_electronico}</td>
-                    <td className="px-6 py-4 text-center">{item.vnumero_telefonico}</td>
-                    <td className="px-6 py-4 text-center">{item.vnro_documento}</td>
-                    <td className="px-6 py-4 text-center">{item.vdescripcion_perfil}</td>
+                    <td className="px-6 py-4 text-center">{item.vapellido_materno}</td> */}
+                    <td className="px-6 py-4 text-center capitalize">
+                      {capitalize(item.vnombre_completo)}
+                    </td>
+                    <td className="px-6 py-4 text-center lowercase">
+                      {item.vcorreo_electronico}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {item.vnumero_telefonico}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {item.vnro_documento}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      {item.vdescripcion_perfil}
+                    </td>
                     <td>
-                    {
-                        statesList.map((state: any) => (
-                            <>
-                                {
-                                    state.iid_tabla_detalle == item.iid_estado_registro ? (
-                                        <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                            {
-                                                state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
-                                            }
-                                        </div>
-                                    ) : (
-                                        <>
-                                        </>
-                                    )
-                                }
-                            </>
-                        ))
-                    }
+                      {statesList.map((state: any) => (
+                        <>
+                          {state.iid_tabla_detalle ==
+                          item.iid_estado_registro ? (
+                            <div
+                              className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
+                                state.vvalor_texto_corto === "ACTIVO"
+                                  ? "bg-emerald-100 text-emerald-700"
+                                  : "bg-rose-200 text-rose-800"
+                              }`}
+                            >
+                              {state.vvalor_texto_corto != null
+                                ? capitalize(state.vvalor_texto_corto)
+                                : "Sin estado"}
+                            </div>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      ))}
                     </td>
                     <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                       <Link
@@ -465,275 +494,530 @@ const confirmOp = async (e: any) => {
           </tbody>
         </table>
       </div>
-       {/* paginacion */}
+      {/* paginacion */}
 
-            {/* <Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion> */}
+      {/* <Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion> */}
 
-            {(paginas > 1) ? (
-                <nav className="flex justify-end mt-3 w-full">
-                    <ul className="flex items-center -space-x-px h-8 text-sm">
-                        {(currentPage != pagInicio) ? (
-                            <li>
-                                <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
-                                    <span className="sr-only">Previous</span>
-                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-                                    </svg>
-                                </Link>
-                            </li>
-                        ) : (<span></span>)}
-                        {(pagInicio > 2) ? (
-                            <>
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle)}>1</Link>
-                                </li>
-                                <li>
-                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
-                                </li>
-                            </>
-                        ) : (<span></span>)}
-                        {pagesToShow.map((item, key) => (
-                            (currentPage == item) ? (
-                                <li key={key}>
-                                    <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
-                                </li>
-                            ) : (
-                                <li key={key}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
-                                </li>
-                            )
-                        ))}
-                        {(pagFinal < (paginas - 1)) ? (
-                            <>
-                                <li>
-                                    <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
-                                </li>
-                                <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle)}>{paginas}</Link>
-                                </li>
-                            </>
-                        ) : (<span></span>)}
-                        {(currentPage != pagFinal) ? (
-                            <li>
-                                <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
-                                    <span className="sr-only">Next</span>
-                                    <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                </Link>
-                            </li>
-                        ) : (<span></span>)}
-                    </ul>
-                </nav>
+      {paginas > 1 ? (
+        <nav className="flex justify-end mt-3 w-full">
+          <ul className="flex items-center -space-x-px h-8 text-sm">
+            {currentPage != pagInicio ? (
+              <li>
+                <Link
+                  href="#"
+                  className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700"
+                  onClick={() => previusPage(currentPage - 1)}
+                >
+                  <span className="sr-only">Previous</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 1 1 5l4 4"
+                    />
+                  </svg>
+                </Link>
+              </li>
             ) : (
-                <span></span>
-            )
-            }
-
-            <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
-                <div className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
-                    <div className="flex justify-between">
-                        <div className="capitalize">
-                            Mantenedores › {pathFinal} › <strong>{modalState.create ? 'Agregar' : modalState.update ? 'Actualizar' : modalState.delete ? 'Eliminar' : 'Detalles'}</strong>
-                        </div>
-                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
-                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </div>
-                    <hr />
-                    {
-                        modalState.create || modalState.update ? (
-                            <form onSubmit={confirmOp} className="mt-5">
-                                <div className="mb-5 hidden">
-                                    <label htmlFor="idItem" >ID</label>
-                                    <input type="text" name="idItem" value={editId}></input>
-                                </div>
-                                <div className="mb-5 flex gap-2">
-                                    <div className="flex-auto relative w-10">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Nombre</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editNombre} onInput={(e: any) => setEditNombre(e.target.value)}></input>
-                                    </div>
-                                    <div className="flex-auto w-44 relative">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Email</label>
-                                        <input type="email" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editEmail} onInput={(e: any) => setEditEmail(e.target.value)}></input>
-                                    </div>
-                                </div>
-                                <div className="mb-5 flex gap-2">
-                                    <div className="flex-auto relative w-14">
-                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Paterno</label>
-                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editApePat} onInput={(e: any) => setEditApePat(e.target.value)}></input>
-                                    </div>
-                                    <div className="flex-auto relative w-14">
-                                        <label htmlFor="vtitulo" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Apellido Materno</label>
-                                        <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editApeMat} onInput={(e: any) => setEditApeMat(e.target.value)}></input>
-                                    </div>
-                                </div>
-                                <div className="mb-5 flex gap-2 justify-between">
-                                    <div className="relative">
-                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo Documento</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setIdDocumento(e.target.value)}>
-                                            <option value='0'>Seleccione</option>
-                                            {
-                                                modalState.update ? (
-                                                    <>
-                                                        {
-                                                            documentList.map((state: any) => (
-                                                                <>
-                                                                    {
-                                                                        state.iid_tabla_detalle == editIdDocumento ? (
-                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
-                                                )
-                                            }
-
-                                            {
-                                                documentList.map((state: any) => (
-                                                    <>
-                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
-                                                    </>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
-                                    <div className="flex-auto relative w-20">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Documento</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editDocumento} onInput={(e: any) => setEditDocumento(e.target.value)}></input>
-                                    </div>
-                                    <div className="flex-auto relative w-20">
-                                        <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Telefono</label>
-                                        <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={telefono} onInput={(e: any) => setTelefono(e.target.value)}></input>
-                                    </div>
-                                </div>                               
-                                <div className="flex gap-2">
-                                    <div className="mb-5 relative">
-                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Perfil</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditIdPerfil(e.target.value)}>
-                                            <option value='0'>Seleccione</option>
-                                            {
-                                                modalState.update ? (
-                                                    <>
-                                                        {
-                                                            listPerfil.map((item: any) => (
-                                                                <>
-                                                                    {
-                                                                        item.iid_perfil == editIdPerfil ? (
-                                                                            <option value={item.iid_perfil} selected hidden>{capitalize(item.vnombre_perfil)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
-                                                )
-                                            }
-
-                                            {
-                                                listPerfil.map((item: any) => (
-                                                    <>
-                                                        <option value={item.iid_perfil}>{capitalize(item.vnombre_perfil)}</option>
-                                                    </>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
-                                    <div className="mb-5 relative hidden">
-                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo de Usuario</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" >
-                                            <option value='0'>Seleccione</option>
-                                            
-                                        </select>
-                                    </div>
-                                    <div className="mb-5 relative hidden">
-                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Empresa</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" >
-                                            <option value='0'>Seleccione</option>
-                                            <option value='1'>VALTX</option>
-                                            <option value='2'>OTRA</option>
-                                        </select>
-                                    </div>
-                                    <div className="mb-5 relative">
-                                        <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEstado(e.target.value)}>
-                                        {
-                                                modalState.update ? (
-                                                    <>
-                                                        {
-                                                            statesList.map((state: any) => (
-                                                                <>
-                                                                    {
-                                                                        state.iid_tabla_detalle == estado ? (
-                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
-                                                )
-                                            }
-
-                                            {
-                                                statesList.map((state: any) => (
-                                                    <>
-                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
-                                                    </>
-                                                ))
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
-                                </div>
-                            </form>
-                        ) : modalState.delete ? (
-                            <div className="mt-5">
-                                <h1>¿Está seguro que desea eliminar este elemento?</h1>
-                                <p>- {`${editApePat} ${editApeMat} ${editNombre}`}</p>
-                                <br />
-                                <div className="text-end">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
-                                </div>
-                            </div>
-                        ) : (
-                            <>
-                                <hr />
-                                <div className="px-5 py-3">
-                                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{`${editApePat} ${editApeMat} ${editNombre}`}</h5>
-                                    <p className="mb-1 font-normal text-gray-700">Documento: {editDocumento}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Email: {editEmail}</p>
-                                    <p className="mb-1 font-normal text-gray-700" >Perfil: {capitalize(editPerfil)}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {estado}</p>
-                                </div>
-                            </>
-                        )
+              <span></span>
+            )}
+            {pagInicio > 2 ? (
+              <>
+                <li>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() => getData(1, itemsPorPagina, searchTitle)}
+                  >
+                    1
+                  </Link>
+                </li>
+                <li>
+                  <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">
+                    ...
+                  </span>
+                </li>
+              </>
+            ) : (
+              <span></span>
+            )}
+            {pagesToShow.map((item, key) =>
+              currentPage == item ? (
+                <li key={key}>
+                  <Link
+                    href="#"
+                    aria-current="page"
+                    className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ) : (
+                <li key={key}>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() => getData(item, itemsPorPagina, searchTitle)}
+                  >
+                    {item}
+                  </Link>
+                </li>
+              )
+            )}
+            {pagFinal < paginas - 1 ? (
+              <>
+                <li>
+                  <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">
+                    ...
+                  </span>
+                </li>
+                <li>
+                  <Link
+                    href="#"
+                    className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700"
+                    onClick={() =>
+                      getData(paginas, itemsPorPagina, searchTitle)
                     }
+                  >
+                    {paginas}
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <span></span>
+            )}
+            {currentPage != pagFinal ? (
+              <li>
+                <Link
+                  href="#"
+                  className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700"
+                  onClick={() => nextPage(currentPage + 1)}
+                >
+                  <span className="sr-only">Next</span>
+                  <svg
+                    className="w-2.5 h-2.5 rtl:rotate-180"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 6 10"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m1 9 4-4-4-4"
+                    />
+                  </svg>
+                </Link>
+              </li>
+            ) : (
+              <span></span>
+            )}
+          </ul>
+        </nav>
+      ) : (
+        <span></span>
+      )}
+
+      <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+        <div
+          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${
+            modalState.create || modalState.update
+              ? "w-[700px]"
+              : modalState.delete
+              ? "w-[500px]"
+              : "w-[600px]"
+          }`}
+        >
+          <div className="flex justify-between">
+            <div className="capitalize">
+              Mantenedores › {pathFinal} ›{" "}
+              <strong>
+                {modalState.create
+                  ? "Agregar"
+                  : modalState.update
+                  ? "Actualizar"
+                  : modalState.delete
+                  ? "Eliminar"
+                  : "Detalles"}
+              </strong>
+            </div>
+            <div
+              className="cursor-pointer  rounded-full p-1 "
+              onClick={closeModal}
+            >
+              <svg
+                className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+          </div>
+          <hr />
+          {modalState.create || modalState.update ? (
+            <form onSubmit={confirmOp} className="mt-5">
+              <div className="mb-5 hidden">
+                <label htmlFor="idItem">ID</label>
+                <input type="text" name="idItem" value={editId}></input>
+              </div>
+              <div className="mb-5 flex gap-2">
+                <div className="flex-auto relative w-10">
+                  <label
+                    htmlFor="iorden"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Nombre
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="iorden"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editNombre}
+                    onInput={(e: any) => setEditNombre(e.target.value)}
+                  ></input>
                 </div>
-            </ModalComponent>
+                <div className="flex-auto relative w-14">
+                  <label
+                    htmlFor="vtitulo"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Apellido Paterno
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="vtitulo"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editApePat}
+                    onInput={(e: any) => setEditApePat(e.target.value)}
+                  ></input>
+                </div>
+                <div className="flex-auto relative w-14">
+                  <label
+                    htmlFor="vtitulo"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Apellido Materno
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="vtitulo"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editApeMat}
+                    onInput={(e: any) => setEditApeMat(e.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="mb-5 flex gap-2 justify-between">
+                <div className="relative">
+                  <label
+                    htmlFor="stateItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Tipo Documento
+                  </label>
+                  <select
+                    id="stateItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
+                    onChange={(e) => setIdDocumento(e.target.value)}
+                  >
+                    <option value="0">Seleccione</option>
+                    {modalState.update ? (
+                      <>
+                        {documentList.map((state: any) => (
+                          <>
+                            {state.iid_tabla_detalle == editIdDocumento ? (
+                              <option
+                                value={state.iid_tabla_detalle}
+                                selected
+                                hidden
+                              >
+                                {capitalize(state.vvalor_texto_corto)}
+                              </option>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    ) : (
+                      <option value="0" selected hidden>
+                        Seleccione
+                      </option>
+                    )}
+
+                    {documentList.map((state: any) => (
+                      <>
+                        <option value={state.iid_tabla_detalle}>
+                          {capitalize(state.vvalor_texto_corto)}
+                        </option>
+                      </>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-auto relative w-20">
+                  <label
+                    htmlFor="iorden"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Documento
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="iorden"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editDocumento}
+                    onInput={(e: any) => setEditDocumento(e.target.value)}
+                  ></input>
+                </div>
+                <div className="flex-auto relative w-20">
+                  <label
+                    htmlFor="iorden"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Telefono
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="iorden"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={telefono}
+                    onInput={(e: any) => setTelefono(e.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="mb-5 flex gap-2">
+                <div className="flex-auto w-44 relative">
+                  <label
+                    htmlFor="iorden"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Email
+                  </label>
+                  <input
+                    required
+                    type="email"
+                    name="iorden"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editEmail}
+                    onInput={(e: any) => setEditEmail(e.target.value)}
+                  ></input>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <div className="mb-5 relative">
+                  <label
+                    htmlFor="stateItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Perfil
+                  </label>
+                  <select
+                    id="stateItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
+                    onChange={(e) => setEditIdPerfil(e.target.value)}
+                  >
+                    <option value="0">Seleccione</option>
+                    {modalState.update ? (
+                      <>
+                        {listPerfil.map((item: any) => (
+                          <>
+                            {item.iid_perfil == editIdPerfil ? (
+                              <option value={item.iid_perfil} selected hidden>
+                                {capitalize(item.vnombre_perfil)}
+                              </option>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    ) : (
+                      <option value="0" selected hidden>
+                        Seleccione
+                      </option>
+                    )}
+
+                    {listPerfil.map((item: any) => (
+                      <>
+                        <option value={item.iid_perfil}>
+                          {capitalize(item.vnombre_perfil)}
+                        </option>
+                      </>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-5 relative hidden">
+                  <label
+                    htmlFor="stateItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Tipo de Usuario
+                  </label>
+                  <select
+                    id="stateItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
+                  >
+                    <option value="0">Seleccione</option>
+                  </select>
+                </div>
+                <div className="mb-5 relative hidden">
+                  <label
+                    htmlFor="stateItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Empresa
+                  </label>
+                  <select
+                    id="stateItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
+                  >
+                    <option value="0">Seleccione</option>
+                    <option value="1">VALTX</option>
+                    <option value="2">OTRA</option>
+                  </select>
+                </div>
+                <div className="mb-5 relative">
+                  <label
+                    htmlFor="stateItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Estado
+                  </label>
+                  <select
+                    id="stateItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
+                    onChange={(e) => setEstado(e.target.value)}
+                  >
+                    {modalState.update ? (
+                      <>
+                        {statesList.map((state: any) => (
+                          <>
+                            {state.iid_tabla_detalle == estado ? (
+                              <option
+                                value={state.iid_tabla_detalle}
+                                selected
+                                hidden
+                              >
+                                {capitalize(state.vvalor_texto_corto)}
+                              </option>
+                            ) : (
+                              <></>
+                            )}
+                          </>
+                        ))}
+                      </>
+                    ) : (
+                      <option value="0" selected hidden>
+                        Seleccione
+                      </option>
+                    )}
+
+                    {statesList.map((state: any) => (
+                      <>
+                        <option value={state.iid_tabla_detalle}>
+                          {capitalize(state.vvalor_texto_corto)}
+                        </option>
+                      </>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="text-right">
+                <button
+                  type="button"
+                  className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
+                  onClick={closeModal}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]"
+                >
+                  Guardar
+                </button>
+              </div>
+            </form>
+          ) : modalState.delete ? (
+            <div className="mt-5">
+              <h1>¿Está seguro que desea eliminar este elemento?</h1>
+              <p>- {`${editApePat} ${editApeMat} ${editNombre}`}</p>
+              <br />
+              <div className="text-end">
+                <button
+                  type="button"
+                  className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
+                  onClick={closeModal}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]"
+                  onClick={confirmOp}
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <hr />
+              <div className="px-5 py-3">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{`${editApePat} ${editApeMat} ${editNombre}`}</h5>
+                <p className="mb-1 font-normal text-gray-700">
+                  Documento: {editDocumento}
+                </p>
+                <p className="mb-1 font-normal text-gray-700">
+                  Email: {editEmail}
+                </p>
+                <p className="mb-1 font-normal text-gray-700">
+                  Perfil: {capitalize(editPerfil)}
+                </p>
+                <p className="mb-1 font-normal text-gray-700">
+                  Estado:  {statesList.map((state: any) => (
+                    <>
+                      {state.iid_tabla_detalle == estado ? (
+                        state.vvalor_texto_corto != null ? (
+                          capitalize(state.vvalor_texto_corto)
+                        ) : (
+                          "Sin estado"
+                        )
+                      ) : (
+                        <></>
+                      )}
+                    </>
+                  ))}
+                </p>
+              </div>
+            </>
+          )}
+        </div>
+      </ModalComponent>
     </>
   );
 };
