@@ -28,14 +28,14 @@ export const PerfilesService = {
     return data;
   },
 
-  async create(titulo: string, descripcion: string, id: string) {
+  async create(titulo: string, descripcion: string, id: string,state:number) {
     tokenAuth(token);
 
     const  data  = await axiosClient.post("perfil/setperfil", {
       "iid_perfil": id,
       "vnombre_perfil": titulo,
-      "vdescripcion_perfil": descripcion
-
+      "vdescripcion_perfil": descripcion,
+      "iid_estado_registro": +state
     });
 
     return data;
@@ -47,7 +47,7 @@ export const PerfilesService = {
     const res = await axiosClient.post("perfil/updateperfil", {
       'iid_perfil': id,
       'vnombre_perfil': titulo,
-      'vdescripcion_perfil': descripcion,
+      'vdescripcion_perfil': descripcion
     });
 
     return res;

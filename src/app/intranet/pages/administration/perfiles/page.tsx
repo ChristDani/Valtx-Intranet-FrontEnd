@@ -37,7 +37,7 @@ const ProfilesPage = () => {
   const [editId, setEditId] = useState("0");
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
-  const [editState, setEditState] = useState("1");
+  const [editState, setEditState] = useState("3");
 
   // paginacion
   const [paginas, setPages] = useState(0);
@@ -203,7 +203,7 @@ const ProfilesPage = () => {
     e.preventDefault();
 
     if (modalState.create) {
-      const datos = await PerfilesService.create(editTitle, editDesc, editId);
+      const datos = await PerfilesService.create(editTitle, editDesc, editId,editState);
       rellenarId(datos.data.Codigo);
       const data = await optionsServices.setPefilOptions(select);
       closeModal();
