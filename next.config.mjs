@@ -34,7 +34,7 @@ const nextConfig = {
       },
       {
         source: '/docs/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
-        destination: 'http://localhost:4000/public/:path*', // Especifica la URL del backend
+        destination: 'http://localhost:4000/public/documentacion/:path*', // Especifica la URL del backend
       },
     ];
   },

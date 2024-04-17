@@ -34,8 +34,8 @@ export const repositorioServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_repo', id);
         formData.append('iid_documentacion', document);
-        formData.append('repositorio', '');
-        formData.append('repositorioCabecera', '');
+        formData.append('repositorio', repo);
+        formData.append('repositorioCabecera', repoCabezera);
 
         const res = await axiosClient.post('/repositorio/setRepositorio', formData);
         
@@ -64,8 +64,8 @@ export const repositorioServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_repo', id);
         formData.append('iid_documentacion', document);
-        formData.append('repositorio', '');
-        formData.append('repositorioCabecera', '');
+        formData.append('repositorio', repo);
+        formData.append('repositorioCabecera', repoCabezera);
 
         const res = await axiosClient.post('repositorio/updateRepositorio', formData);
 

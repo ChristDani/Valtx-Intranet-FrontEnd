@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 import { repositorioServices } from "@/app/intranet/services/mantenedores/repositorio.service";
 import { parametrosServices } from "@/app/intranet/services/parametros.service";
 
@@ -33,7 +32,7 @@ const ManagerDoc = ({close, idDoc}) => {
     // data
     const [dataList, setDataList] = useState<repositorio[]>([]);
     const [datInfo, setDataInfo] = useState<any>([]);
-
+    
     // edición
     const [editId, setEditId] = useState('0'); // iid_repo
     const [editTitle, setEditTitle] = useState(''); //vtitulo
@@ -57,6 +56,7 @@ const ManagerDoc = ({close, idDoc}) => {
     }
     const closeInterModal = () => {
         setModalIsOpen(false);
+        cleanData();
     }
     const handleCabeceraChange = async (e:any) => {
             setEditNameCabecera(e.target.children[e.target.selectedIndex].textContent); // textContent;
@@ -77,7 +77,7 @@ const ManagerDoc = ({close, idDoc}) => {
     }
     const getData = async () => {
 
-        const docsListItems = await repositorioServices.getList(1, 10, 3, 'desc');
+        const docsListItems = await repositorioServices.getList(1, 30, 3, 'desc');
         const filterId:any = docsListItems.data.filter((item:repositorio)=>{
             if(item.iid_documentacion === idDoc){
                 return item
@@ -131,9 +131,9 @@ const ManagerDoc = ({close, idDoc}) => {
         } else if (state === 'delete') {
             const res = await repositorioServices.delete(editId);
         }
+        cleanData();
         closeInterModal();
         getData();
-        cleanData();
     }
 
     const cleanData = () => {
@@ -141,8 +141,6 @@ const ManagerDoc = ({close, idDoc}) => {
         setEditTitle(''),
         setEditDoc(null),
         setNameDoc(''),
-        setEditNameCabecera(''),
-        setEditNameRepo(''),
         setState('create')
     }
 
@@ -165,7 +163,7 @@ const ManagerDoc = ({close, idDoc}) => {
 
     return (
         <>  
-        <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-full">
+        <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-full h-[500px]">
             <div className="flex flex-row justify-between items-center">
             <div className="mt-4 ml-5 capitalize">
                 Mantenedores › {pathFinal} › <strong>Repositorio</strong>
@@ -204,7 +202,7 @@ const ManagerDoc = ({close, idDoc}) => {
                     </div>
                 </div>
                 
-                <div className="overflow-x-auto shadow-md sm:rounded-lg">
+                <div className="overflow-auto h-[340px] shadow-md sm:rounded-lg">
                     <table className="w-full text-left rtl:text-right text-gray-500">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
@@ -226,16 +224,16 @@ const ManagerDoc = ({close, idDoc}) => {
                                     dataList.filter((item:repositorio) => item.iid_tabla_cabecera==editCabecera && item.iid_tabla_cabeceraMaestra==editCabeceraMaestra)
                                     .map((item:repositorio)=>(
                                             <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_documentacion}>
-                                                <th scope="row" className="p-4 text-center font-medium text-gray-900">
+                                                <th scope="row" className="p-2 text-center font-medium text-gray-900">
                                                     {item.vtitulo}
                                                 </th>
-                                                <td className="px-6 py-1 text-start ">
+                                                <td className="px-6 text-start ">
                                                     {
                                                         nombredoc(item.vdocumento)
                                                     }
                                                 </td>
-                                                <td className="flex gap-1 items-center justify-center my-auto px-4 h-28">
-                                                    <Link href={`/docs/${item.vdocumento}`}
+                                                <td className="flex gap-1 items-center justify-center my-auto px-4 h-14">
+                                                    <Link href={`/docs/${item.vdescripcion_cabeceraMaestra}/${item.vdescripcion_cabecera}/${item.vdocumento}`} 
                                                     target="_blank"
                                                     className="font-medium text-blue-600 hover:underline">
                                                         <svg className=" text-dark" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
