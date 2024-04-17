@@ -28,7 +28,7 @@ export const PerfilesService = {
     return data;
   },
 
-  async create(titulo: string, descripcion: string, id: string,state:number) {
+  async create(titulo: string, descripcion: string, id: string,state:string) {
     tokenAuth(token);
 
     const  data  = await axiosClient.post("perfil/setperfil", {

@@ -9,13 +9,49 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const ProfilesPage = () => {
-  const [select, setSelect] = useState<any[]>([]);
-  const [optionId, setOptionId] = useState<any[]>([]);
-  const [newOptions, setNewOptions] = useState<any[]>([]);
 
   // obtener la ruta
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
+
+  // obtener opciones de usuario
+  const perfilId = localStorage.getItem("perfil") || '';
+
+  // obtener opciones por usuario
+  const [optionUser, setOptionUser] = useState({
+    visualizar: false,
+    crear: false,
+    editar: false,
+    eliminar: false
+  })
+
+  const getOptionsUser = async (id: any, path : string) => {
+
+    const resul = path.split("/");
+    const finalPath = resul[resul.length - 1]
+    const pathResul = "/" + finalPath
+
+    const datos = await optionsServices.getPerfilOpcionId(id);
+    const listOptionsId = datos.data;
+    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
+
+    if (options) {
+      setOptionUser({
+        visualizar: options.ivisualizar,
+        crear: options.icrear ,
+        editar: options.iactualizar,
+        eliminar: options.ieliminar,
+      });
+    }
+
+  };
+
+  //manejo de opciones
+  const [select, setSelect] = useState<any[]>([]);
+  const [optionId, setOptionId] = useState<any[]>([]);
+  const [newOptions, setNewOptions] = useState<any[]>([]);
+
+  
 
   // parametros
   const [statesList, setStatesList] = useState([]);
@@ -95,6 +131,7 @@ const ProfilesPage = () => {
     getOptionsData();
     obtenerPath();
     getStates();
+    getOptionsUser(perfilId, pathName)
   }, []);
 
   const getStates = async () => {
@@ -172,6 +209,7 @@ const ProfilesPage = () => {
     openModal();
     getOneItem(id);
     getOneOptionList(id);
+    
   };
 
   const editItem = (e: any, id: any) => {
@@ -348,7 +386,7 @@ const ProfilesPage = () => {
               </svg>
             </div>
           </div>
-          <button
+          {optionUser.crear ?  <button
             className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
             onClick={createItem}
           >
@@ -370,7 +408,7 @@ const ProfilesPage = () => {
               />
             </svg>
             <span className=" text-white font-bold">Agregar</span>
-          </button>
+          </button> : ''}
         </div>
       </div>
       {/* tabla */}
@@ -449,7 +487,7 @@ const ProfilesPage = () => {
                         />
                       </svg>
                     </Link>
-                    <Link
+                    {optionUser.editar ? <Link
                       href=""
                       className="font-medium text-blue-600 hover:underline"
                       onClick={(e) => editItem(e, item.iid_perfil)}
@@ -477,8 +515,8 @@ const ProfilesPage = () => {
                           </clipPath>
                         </defs>
                       </svg>
-                    </Link>
-                    <Link
+                    </Link> : ''}
+                    {optionUser.eliminar ? <Link
                       href=""
                       className="font-medium text-blue-600 hover:underline"
                       onClick={(e) => deleteItem(e, item.iid_perfil)}
@@ -502,7 +540,7 @@ const ProfilesPage = () => {
                           </clipPath>
                         </defs>
                       </svg>
-                    </Link>
+                    </Link> : ''}
                   </td>
                 </tr>
               ))

@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const UsersPage = () => {
+
   // busqueda
   const [searchTitle, setSearchTitle] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,6 +20,7 @@ const UsersPage = () => {
   // data
   const [dataList, setDataList] = useState([]);
   const [datInfo, setDataInfo] = useState<any>([]);
+
   // paginacion
   const [paginas, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,9 +96,7 @@ const UsersPage = () => {
   const getData = async (
     page: number,
     items: number,
-    titulo: string,
-    apellidos?: string,
-    documento?: string
+    titulo: string
   ) => {
     setCurrentPage(page);
     setItems(items);
@@ -104,9 +104,9 @@ const UsersPage = () => {
     const itemsList: any = await userServices.getList(
       page,
       items,
+      "",
+      "",
       titulo,
-      apellidos ? apellidos : "",
-      documento ? documento : "",
       -1,
       -1,
       -1
@@ -285,7 +285,7 @@ const UsersPage = () => {
             type="text"
             name="itemtitle"
             className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
-            placeholder="Buscar por nombre"
+            placeholder="Buscar por documento"
             value={searchTitle}
             onInput={(e: any) => searchData(e.target.value)}
           ></input>

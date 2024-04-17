@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
+import { optionsServices } from '../services/administration/perfiles-opcion.service';
 
 // Definimos un tipo para el estado
 interface ExpandedItems {
@@ -9,7 +11,46 @@ interface ExpandedItems {
 }
 
 const Sidebar = () => {
+     // obtener la ruta
+    const pathName = usePathname();
     const [expandedItem, setExpandedItem] = useState<string | null>('inicio');
+
+     // obtener opciones de usuario
+  const perfilId = localStorage.getItem("perfil") || '';
+
+    // obtener opciones por usuario
+  const [optionUser, setOptionUser] = useState({
+    visualizar: false,
+    crear: false,
+    editar: false,
+    eliminar: false
+  })
+
+  useEffect(() => {
+    getOptionsUser(perfilId, pathName)
+  }, []);
+
+  const getOptionsUser = async (id: any, path : string) => {
+
+    const resul = path.split("/");
+    const finalPath = resul[resul.length - 1]
+    const pathResul = "/" + finalPath
+
+    const datos = await optionsServices.getPerfilOpcionId(id);
+    const listOptionsId = datos.data;
+    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
+
+    if (options) {
+      setOptionUser({
+        visualizar: options.ivisualizar,
+        crear: options.icrear ,
+        editar: options.iactualizar,
+        eliminar: options.ieliminar,
+      });
+    }
+
+  };
+
 
     const toggleItem = (item: string) => {
         if (expandedItem === item) {
@@ -54,7 +95,7 @@ const Sidebar = () => {
                     {/* <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href={""}>Noticias</Link>
                     </li> */}
-                    <li className="relative">
+                    { <li className="relative">
                         <div className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
                         {expandedItem === 'item5' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
@@ -70,14 +111,14 @@ const Sidebar = () => {
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/news">Valtx News</Link>
                             </div>
                         )}
-                    </li>
+                    </li>}
                     <li className="relative">
                         <div className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</div>
                         {expandedItem === 'item6' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/auxiliares">Auxiliares</Link>
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/parametros">Parametros</Link>
-                                <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/perfiles">Perfiles</Link>
+                                <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/perfil">Perfiles</Link>
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/administration/users">Usuarios</Link>
                             </div>
                         )}
