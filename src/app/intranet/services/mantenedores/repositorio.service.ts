@@ -21,7 +21,7 @@ export const repositorioServices = {
         return data;
     },
 
-    async create(docFile: File, titulo: string, cabecera: string,estado: string, id: string, document: string) {
+    async create(docFile: File, titulo: string, cabecera: string,estado: string, id: string, document: string,repo:string,repoCabezera:string) {
 
         tokenAuth(token, 'multipart/form-data');
 
@@ -34,6 +34,8 @@ export const repositorioServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_repo', id);
         formData.append('iid_documentacion', document);
+        formData.append('repositorio', '');
+        formData.append('repositorioCabecera', '');
 
         const res = await axiosClient.post('/repositorio/setRepositorio', formData);
         
@@ -48,7 +50,7 @@ export const repositorioServices = {
         return data;
     },
     
-    async update(titulo: string, cabecera: string,estado: string, id: string, document: string,docFile?: File) {
+    async update(titulo: string, cabecera: string,estado: string, id: string, document: string,repo:string,repoCabezera:string,docFile?: File) {
 
         tokenAuth(token, 'multipart/form-data');
         
@@ -62,6 +64,8 @@ export const repositorioServices = {
         formData.append('storage', '/documentacion');
         formData.append('iid_repo', id);
         formData.append('iid_documentacion', document);
+        formData.append('repositorio', '');
+        formData.append('repositorioCabecera', '');
 
         const res = await axiosClient.post('repositorio/updateRepositorio', formData);
 

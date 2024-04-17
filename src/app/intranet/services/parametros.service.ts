@@ -37,9 +37,9 @@ export const parametrosServices = {
         return data;
     },
 
-    async getRepositoriesTypes() {
+    async getRepositoriesTypes(id:any) {
 
-        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=5`);
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=${id}`);
 
         return data;
     }

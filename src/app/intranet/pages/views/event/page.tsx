@@ -66,7 +66,9 @@ const EventsViewPage = () => {
         const itemsList: any = await eventServices.getList(1, items, "", 3, getCurrentDate(), "asc");
 
         setDataInfo(itemsList);
-
+        console.log(itemsList);
+        
+        // ordernar por dia de mes - pendiente
         const list = itemsList.data.map((item:any)=>{
             const date= new Date(item.dfecha)
             return {
