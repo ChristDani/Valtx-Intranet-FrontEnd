@@ -14,10 +14,9 @@ const Sidebar = () => {
      // obtener la ruta
     const pathName = usePathname();
     const [expandedItem, setExpandedItem] = useState<string | null>('inicio');
-
      // obtener opciones de usuario
   const perfilId = localStorage.getItem("perfil") || '';
-
+    const [titulos, setTitulos] = useState<any>([]);
     // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
     visualizar: false,
@@ -29,7 +28,7 @@ const Sidebar = () => {
   useEffect(() => {
     getOptionsUser(perfilId, pathName)
   }, []);
-
+  
   const getOptionsUser = async (id: any, path : string) => {
 
     const resul = path.split("/");
@@ -39,6 +38,32 @@ const Sidebar = () => {
     const datos = await optionsServices.getPerfilOpcionId(id);
     const listOptionsId = datos.data;
     const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
+
+    const listop = listOptionsId.map((item: any)=>{
+        return {
+            "iid_modulo": item.iid_modulo,
+            "vtitulo_modulo": item.vtitulo_modulo,
+            "vtitulo": item.vtitulo,
+            "vdescripcion": item.vdescripcion,
+            "vurl": item.vurl,
+            "ivisualizar": item.ivisualizar,
+            "icrear": item.icrear,
+            "iactualizar": item.iactualizar,
+            "ieliminar": item.ieliminar
+        }
+    })
+    
+    const groupedByModuleTitle = listop.reduce((acc: any, currentItem:any) => {
+      const moduleTitle = currentItem.vtitulo_modulo;
+      if (currentItem.ivisualizar) {
+        if (!acc[moduleTitle]) {
+          acc[moduleTitle] = [];
+        }
+        acc[moduleTitle].push(currentItem);
+      }
+      return acc;
+    }, {});
+      setTitulos(groupedByModuleTitle);
 
     if (options) {
       setOptionUser({
@@ -67,9 +92,27 @@ const Sidebar = () => {
 
     return (
         <div>
+            {
+                        Object.keys(titulos).map((vtitulo_modulo)=>(
+                            <div key={vtitulo_modulo}>
+                                {vtitulo_modulo}
+                                <div>
+                                    {
+                                        titulos[vtitulo_modulo].map((item:any)=>(
+                                            <div key={item.iid_opcion}>
+                                                {item.vtitulo}
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+
+                        ))
+                    }
             {/* Sidebar */}
             <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
                 <ul className="flex align-middle justify-center w-fit">
+                    
                     <li className={`flex px-6 py-3 text-gray-900 rounded-2xl cursor-pointer ${expandedItem === 'inicio' ? 'bg-[#1aabe3] text-white' : 'hover:bg-[#1aabe3] hover:text-white'}`}>
                         <Link href="/intranet" className="flex items-center" onClick={() => setExpandedItem('inicio')}>Inicio</Link>
                     </li>
