@@ -80,7 +80,7 @@ const EventsViewPage = () => {
                 'desc' : item.vtextobreve 
             }
         })
-        const groupedByMonth = list.reduce((acc:any, currentItem) => {
+        const groupedByMonth = list.reduce((acc: any, currentItem) => {
           const { month, ...rest } = currentItem;
           if (!acc[month]) {
             acc[month] = [];
@@ -88,6 +88,10 @@ const EventsViewPage = () => {
           acc[month].push(rest);
           return acc;
         }, {});
+        
+        for (const month in groupedByMonth) {
+          groupedByMonth[month].sort((a, b) => a.day - b.day);
+        }
 
         setDataList(groupedByMonth);
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;

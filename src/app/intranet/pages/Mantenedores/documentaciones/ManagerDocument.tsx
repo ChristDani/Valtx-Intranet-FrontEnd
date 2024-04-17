@@ -180,7 +180,7 @@ const ManagerDoc = ({close, idDoc}) => {
             <div>
                 <div className="flex flex-row gap-2 mb-4">
                     <select id="categories" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e)=>handleCabeceraChange(e)}>
-                    <option value="0">Selecciona</option>
+                    <option value="0">Selecciona un Repositorio</option>
                     <option value="6">ISO 9001</option>
                     <option value="7">POLITICAS</option>
                     <option value="8">SEGURIDAD AMBIENTAL</option>

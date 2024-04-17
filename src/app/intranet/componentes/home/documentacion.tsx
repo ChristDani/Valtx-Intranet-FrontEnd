@@ -3,9 +3,22 @@
 import { useEffect, useState } from "react";
 import { documentacionServices } from "../../services/mantenedores/document.service";
 import { Documentation, DocumentationResponseDTO } from "../../interfaces/documentacion.response.dto";
+import ModalComponent from "../mantenedores/modal";
+import ManagerDoc from "../../pages/views/document/ManagerDocument";
 import Link from "next/link";
 export const Documentacion = () =>{
+    const [openIsModal, setModalIsOpen] = useState(false);
+    const [idDoc, setIdDoc] = useState(0);
 
+    const closeModal=()=>{
+        setModalIsOpen(false);
+        setIdDoc(0);
+    }
+    const openModal = (e:any,id:number) => {
+        e.preventDefault();
+        setModalIsOpen(true);
+        setIdDoc(id);
+    }
     const [docums, setDocumns] = useState<Documentation[]>([]);
 
     useEffect(()=>{
@@ -36,7 +49,7 @@ export const Documentacion = () =>{
             <div className="cursor-pointer flex flex-col rounded-2xl justify-between">
 
             {docums && docums.length>0 && docums.map((docum,index)=>(
-                <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full" onClick={() => { goLink(docum.vlink, docum.vredireccion) }}>
+                <div key={index} className="relative bg-cover cursor-pointer h-44 rounded-2xl overflow-hidden mt-3 w-full" onClick={(e)=>openModal(e,docum.iid_documentacion)}>
                     <span className="absolute top-0 left-0 w-full h-full bg-black opacity-55 hover:opacity-25 z-30">
                         
                     </span>
@@ -50,6 +63,9 @@ export const Documentacion = () =>{
             ))}
             
             </div>
+            <ModalComponent isOpen={openIsModal} closeModal={closeModal}>
+                <ManagerDoc close={closeModal} idDoc={idDoc}/>
+            </ModalComponent>
         </div>
     );
 
