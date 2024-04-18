@@ -19,7 +19,7 @@ const Repos = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,10, "", 3, "asc");
+        const articlesRes: ArticleResponseDTO = await blogServices.getListWeb(1,10, "", 3, "asc");
         const articlesList: Article[] = articlesRes.data;
         setArticles(articlesList);
     }
