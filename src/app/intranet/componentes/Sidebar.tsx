@@ -13,6 +13,7 @@ const Sidebar = () => {
   const [expandedItem, setExpandedItem] = useState<string | null>("inicio");
   // obtener opciones de usuario
   const perfilId = localStorage.getItem("perfil") || "";
+  const perfilOptions = JSON.parse(localStorage.getItem("permisosMenu") || '');
   const [titulos, setTitulos] = useState<any>([]);
 
   useEffect(() => {
@@ -20,35 +21,40 @@ const Sidebar = () => {
   }, [perfilId]);
 
   const getOptionsUser = async (id: any) => {
-    const datos = await optionsServices.getPerfilOpcionId(id);
-    const listOptionsId = datos.data;
+    setTitulos(perfilOptions)
+    
+    // const datos = await optionsServices.getPerfilOpcionId(id);
+    // const listOptionsId = datos.data;
 
-    const listop = listOptionsId.map((item: any) => {
-      return {
-        iid_modulo: item.iid_modulo,
-        vtitulo_modulo: item.vtitulo_modulo,
-        vtitulo: item.vtitulo,
-        vdescripcion: item.vdescripcion,
-        vurl: item.vurl,
-        ivisualizar: item.ivisualizar,
-        icrear: item.icrear,
-        iactualizar: item.iactualizar,
-        ieliminar: item.ieliminar,
-      };
-    });
+    // const listop = listOptionsId.map((item: any) => {
+    //   return {
+    //     iid_modulo: item.iid_modulo,
+    //     vtitulo_modulo: item.vtitulo_modulo,
+    //     vtitulo: item.vtitulo,
+    //     vdescripcion: item.vdescripcion,
+    //     vurl: item.vurl,
+    //     ivisualizar: item.ivisualizar,
+    //     icrear: item.icrear,
+    //     iactualizar: item.iactualizar,
+    //     ieliminar: item.ieliminar,
+    //   };
+    // });
 
-    const groupedByModuleTitle = listop.reduce((acc: any, currentItem: any) => {
-      const moduleTitle = currentItem.vtitulo_modulo;
-      if (currentItem.ivisualizar) {
-        if (!acc[moduleTitle]) {
-          acc[moduleTitle] = [];
-        }
-        acc[moduleTitle].push(currentItem);
-      }
-      return acc;
-    }, {});
-    setTitulos(groupedByModuleTitle);
-  };
+    
+
+//     const groupedByModuleTitle = listop.reduce((acc: any, currentItem: any) => {
+//       const moduleTitle = currentItem.vtitulo_modulo;
+//       if (currentItem.ivisualizar) {
+//         if (!acc[moduleTitle]) {
+//           acc[moduleTitle] = [];
+//         }
+//         acc[moduleTitle].push(currentItem);
+//       }
+//       return acc;
+//     }, {});
+//     setTitulos(groupedByModuleTitle);
+//   };
+  }
 
   const toggleItem = (item: string) => {
     if (expandedItem === item) {
@@ -82,41 +88,41 @@ const Sidebar = () => {
               Inicio
             </Link>
           </li>
-          {Object.keys(titulos).map((vtitulo_modulo) => (
-            <li key={vtitulo_modulo} className="relative">
-              {titulos[vtitulo_modulo].length > 1 ? (
-                <>
-                  <div
-                    className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
-                    onClick={() => toggleItem(vtitulo_modulo)}
-                  >
-                    {vtitulo_modulo}
-                  </div>
-                  {expandedItem === vtitulo_modulo && (
-                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
-                      {titulos[vtitulo_modulo].map((item: any) => (
-                        <Link
-                          key={item.iid_opcion}
-                          onClick={onSelect}
-                          href={`/intranet/pages/${item.vtitulo_modulo}${item.vurl}`}
-                          className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                        >
-                          {item.vtitulo}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </>
-              ) : (
-                <Link
-                  href={`/intranet/pages/${vtitulo_modulo}`}
-                  className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
-                >
-                  {vtitulo_modulo}
-                </Link>
-              )}
-            </li>
-          ))}
+          {Object.values(titulos).map((item: any) => (
+  <li key={item} className="relative">
+    {Object.keys(item.opciones).length > 1 ? (
+      <>
+        <div
+          className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+          onClick={() => toggleItem(item.vtitulo)}
+        >
+          {item.vtitulo}
+        </div>
+        {expandedItem === item.vtitulo && (
+          <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+            {item.opciones.map((opcion: any) => (
+              <Link
+                key={opcion.iid_opcion}
+                onClick={onSelect}
+                href={`/intranet/pages/${opcion.vtitulo_modulo}${opcion.vurl}`}
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+              >
+                {opcion.vtitulo}
+              </Link>
+            ))}
+          </div>
+        )}
+      </>
+    ) : (
+      <Link
+        href={`/intranet/pages/${item.vtitulo}`}
+        className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+      >
+        {item.vtitulo}
+      </Link>
+    )}
+  </li>
+))}
         </ul>
         <div className="relative flex">
           <input

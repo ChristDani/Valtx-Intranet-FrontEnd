@@ -33,6 +33,7 @@ export const loginService = {
             localStorage.setItem("userFirstLastName", res.data.data.vapellido_paterno);
             localStorage.setItem("userSecondLastName", res.data.data.vapellido_materno);
             localStorage.setItem("perfil", res.data.data.iid_perfil);
+            localStorage.setItem("permisosMenu", JSON.stringify(res.data.data.perfil.permisos));
         } else {
             return res.data.Message
         }
