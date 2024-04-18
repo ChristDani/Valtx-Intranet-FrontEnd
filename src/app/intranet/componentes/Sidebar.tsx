@@ -22,38 +22,6 @@ const Sidebar = () => {
 
   const getOptionsUser = async (id: any) => {
     setTitulos(perfilOptions)
-    
-    // const datos = await optionsServices.getPerfilOpcionId(id);
-    // const listOptionsId = datos.data;
-
-    // const listop = listOptionsId.map((item: any) => {
-    //   return {
-    //     iid_modulo: item.iid_modulo,
-    //     vtitulo_modulo: item.vtitulo_modulo,
-    //     vtitulo: item.vtitulo,
-    //     vdescripcion: item.vdescripcion,
-    //     vurl: item.vurl,
-    //     ivisualizar: item.ivisualizar,
-    //     icrear: item.icrear,
-    //     iactualizar: item.iactualizar,
-    //     ieliminar: item.ieliminar,
-    //   };
-    // });
-
-    
-
-//     const groupedByModuleTitle = listop.reduce((acc: any, currentItem: any) => {
-//       const moduleTitle = currentItem.vtitulo_modulo;
-//       if (currentItem.ivisualizar) {
-//         if (!acc[moduleTitle]) {
-//           acc[moduleTitle] = [];
-//         }
-//         acc[moduleTitle].push(currentItem);
-//       }
-//       return acc;
-//     }, {});
-//     setTitulos(groupedByModuleTitle);
-//   };
   }
 
   const toggleItem = (item: string) => {
@@ -74,11 +42,10 @@ const Sidebar = () => {
       <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
         <ul className="flex align-middle justify-center w-fit">
           <li
-            className={`flex px-6 py-3 text-gray-900 rounded-2xl cursor-pointer ${
-              expandedItem === "inicio"
-                ? "bg-[#1aabe3] text-white"
-                : "hover:bg-[#1aabe3] hover:text-white"
-            }`}
+            className={`flex px-6 py-3 text-gray-900 rounded-2xl cursor-pointer ${expandedItem === "inicio"
+              ? "bg-[#1aabe3] text-white"
+              : "hover:bg-[#1aabe3] hover:text-white"
+              }`}
           >
             <Link
               href="/intranet"
@@ -89,40 +56,41 @@ const Sidebar = () => {
             </Link>
           </li>
           {Object.values(titulos).map((item: any) => (
-  <li key={item} className="relative">
-    {Object.keys(item.opciones).length > 1 ? (
-      <>
-        <div
-          className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
-          onClick={() => toggleItem(item.vtitulo)}
-        >
-          {item.vtitulo}
-        </div>
-        {expandedItem === item.vtitulo && (
-          <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
-            {item.opciones.map((opcion: any) => (
-              <Link
-                key={opcion.iid_opcion}
-                onClick={onSelect}
-                href={`/intranet/pages/${opcion.vtitulo_modulo}${opcion.vurl}`}
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-              >
-                {opcion.vtitulo}
-              </Link>
-            ))}
-          </div>
-        )}
-      </>
-    ) : (
-      <Link
-        href={`/intranet/pages/${item.vtitulo}`}
-        className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
-      >
-        {item.vtitulo}
-      </Link>
-    )}
-  </li>
-))}
+            <li key={item} className="relative">
+              {item.opciones.length > 1 ? (
+                <>
+                  <div
+                    className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                    onClick={() => toggleItem(item.vtitulo)}
+                  >
+                    {item.vtitulo}
+                  </div>
+                  {expandedItem === item.vtitulo && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                      {item.opciones.map((opcion: any) => (
+                        <div key={opcion.iid_opcion}>
+                          <Link
+                            onClick={onSelect}
+                            href={`/intranet/pages/${opcion.vtitulo_modulo}${opcion.vurl}`}
+                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                          >
+                            {opcion.vtitulo}
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={`/intranet/pages/${item.vtitulo}`}
+                  className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                >
+                  {item.vtitulo}
+                </Link>
+              )}
+            </li>
+          ))}
         </ul>
         <div className="relative flex">
           <input

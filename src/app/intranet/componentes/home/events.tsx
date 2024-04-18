@@ -43,9 +43,9 @@ const Events = () => {
                 <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/event">Ver todos</Link>
             </div>
             <ul className="mt-4 w-full bg-white rounded-2xl">
-                {events.map((evento, index) => (
-                    <>
-                        <li className="flex justify-center items-center p-4" key={index}>
+                {events.map((evento) => (
+                    <div  key={evento.iid_evento}>
+                        <li className="flex justify-center items-center p-4">
                             <div className="flex justify-center h-full w-1/6">
                                 <img src={`images/${evento.vimagen}`}></img>
                             </div>
@@ -55,7 +55,7 @@ const Events = () => {
                             </div>
                         </li>
                         <hr className="w-full"></hr>
-                    </>
+                    </div>
                 ))}
 
             </ul>
