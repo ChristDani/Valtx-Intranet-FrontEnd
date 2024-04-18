@@ -1,59 +1,43 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from 'next/navigation';
-import { optionsServices } from '../services/administration/perfiles-opcion.service';
+import { optionsServices } from "../services/administration/perfiles-opcion.service";
 
 // Definimos un tipo para el estado
 interface ExpandedItems {
-    [key: string]: boolean;
+  [key: string]: boolean;
 }
 
 const Sidebar = () => {
-     // obtener la ruta
-    const pathName = usePathname();
-    const [expandedItem, setExpandedItem] = useState<string | null>('inicio');
-     // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || '';
-    const [titulos, setTitulos] = useState<any>([]);
-    // obtener opciones por usuario
-  const [optionUser, setOptionUser] = useState({
-    visualizar: false,
-    crear: false,
-    editar: false,
-    eliminar: false
-  })
+  const [expandedItem, setExpandedItem] = useState<string | null>("inicio");
+  // obtener opciones de usuario
+  const perfilId = localStorage.getItem("perfil") || "";
+  const [titulos, setTitulos] = useState<any>([]);
 
   useEffect(() => {
-    getOptionsUser(perfilId, pathName)
-  }, []);
-  
-  const getOptionsUser = async (id: any, path : string) => {
+    getOptionsUser(perfilId);
+  }, [perfilId]);
 
-    const resul = path.split("/");
-    const finalPath = resul[resul.length - 1]
-    const pathResul = "/" + finalPath
-
+  const getOptionsUser = async (id: any) => {
     const datos = await optionsServices.getPerfilOpcionId(id);
     const listOptionsId = datos.data;
-    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
 
-    const listop = listOptionsId.map((item: any)=>{
-        return {
-            "iid_modulo": item.iid_modulo,
-            "vtitulo_modulo": item.vtitulo_modulo,
-            "vtitulo": item.vtitulo,
-            "vdescripcion": item.vdescripcion,
-            "vurl": item.vurl,
-            "ivisualizar": item.ivisualizar,
-            "icrear": item.icrear,
-            "iactualizar": item.iactualizar,
-            "ieliminar": item.ieliminar
-        }
-    })
-    
-    const groupedByModuleTitle = listop.reduce((acc: any, currentItem:any) => {
+    const listop = listOptionsId.map((item: any) => {
+      return {
+        iid_modulo: item.iid_modulo,
+        vtitulo_modulo: item.vtitulo_modulo,
+        vtitulo: item.vtitulo,
+        vdescripcion: item.vdescripcion,
+        vurl: item.vurl,
+        ivisualizar: item.ivisualizar,
+        icrear: item.icrear,
+        iactualizar: item.iactualizar,
+        ieliminar: item.ieliminar,
+      };
+    });
+
+    const groupedByModuleTitle = listop.reduce((acc: any, currentItem: any) => {
       const moduleTitle = currentItem.vtitulo_modulo;
       if (currentItem.ivisualizar) {
         if (!acc[moduleTitle]) {
@@ -63,53 +47,103 @@ const Sidebar = () => {
       }
       return acc;
     }, {});
-      setTitulos(groupedByModuleTitle);
-
-    if (options) {
-      setOptionUser({
-        visualizar: options.ivisualizar,
-        crear: options.icrear ,
-        editar: options.iactualizar,
-        eliminar: options.ieliminar,
-      });
-    }
-
+    setTitulos(groupedByModuleTitle);
   };
 
-
-    const toggleItem = (item: string) => {
-        if (expandedItem === item) {
-            setExpandedItem(null);
-        } else {
-            setExpandedItem(item);
-        }
-    };
-
-    const onSelect = () => {
-        console.log(expandedItem)
-        setExpandedItem(null);
+  const toggleItem = (item: string) => {
+    if (expandedItem === item) {
+      setExpandedItem(null);
+    } else {
+      setExpandedItem(item);
     }
+  };
 
-    return (
-        <div>
-            {
-                        Object.keys(titulos).map((vtitulo_modulo)=>(
-                            <div key={vtitulo_modulo}>
-                                {vtitulo_modulo}
-                                <div>
-                                    {
-                                        titulos[vtitulo_modulo].map((item:any)=>(
-                                            <div key={item.iid_opcion}>
-                                                {item.vtitulo}
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </div>
+  const onSelect = () => {
+    console.log(expandedItem);
+    setExpandedItem(null);
+  };
 
-                        ))
-                    }
-            {/* Sidebar */}
+  return (
+    <div>
+      <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
+        <ul className="flex align-middle justify-center w-fit">
+          <li
+            className={`flex px-6 py-3 text-gray-900 rounded-2xl cursor-pointer ${
+              expandedItem === "inicio"
+                ? "bg-[#1aabe3] text-white"
+                : "hover:bg-[#1aabe3] hover:text-white"
+            }`}
+          >
+            <Link
+              href="/intranet"
+              className="flex items-center"
+              onClick={() => setExpandedItem("inicio")}
+            >
+              Inicio
+            </Link>
+          </li>
+          {Object.keys(titulos).map((vtitulo_modulo) => (
+            <li key={vtitulo_modulo} className="relative">
+              {titulos[vtitulo_modulo].length > 1 ? (
+                <>
+                  <div
+                    className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                    onClick={() => toggleItem(vtitulo_modulo)}
+                  >
+                    {vtitulo_modulo}
+                  </div>
+                  {expandedItem === vtitulo_modulo && (
+                    <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
+                      {titulos[vtitulo_modulo].map((item: any) => (
+                        <Link
+                          key={item.iid_opcion}
+                          onClick={onSelect}
+                          href={`/intranet/pages/${item.vtitulo_modulo}${item.vurl}`}
+                          className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                        >
+                          {item.vtitulo}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={`/intranet/pages/${vtitulo_modulo}`}
+                  className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                >
+                  {vtitulo_modulo}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ul>
+        <div className="relative flex">
+          <input
+            type="text"
+            placeholder="Buscar"
+            className="px-4 pr-10 rounded-full border border-[#F5F5F5] focus:outline-none focus:border-blue-500 bg-[#F5F5F5] placeholder-gray-400"
+          />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z"
+                stroke="#7D7E8A"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+      {/* Sidebar */}
+      {/* 
             <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
                 <ul className="flex align-middle justify-center w-fit">
                     
@@ -135,10 +169,10 @@ const Sidebar = () => {
                             </div>
                         )}
                     </li>
-                    {/* <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
+                    <li className="flex px-6 py-3 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer">
                         <Link href={""}>Noticias</Link>
-                    </li> */}
-                    { <li className="relative">
+                    </li>
+                     <li className="relative">
                         <div className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item5')}>Mantenedores</div>
                         {expandedItem === 'item5' && (
                             <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
@@ -154,7 +188,7 @@ const Sidebar = () => {
                                 <Link className="block px-4 py-2 text-gray-800 hover:bg-gray-200" onClick={onSelect} href="/intranet/pages/Mantenedores/news">Valtx News</Link>
                             </div>
                         )}
-                    </li>}
+                    </li>
                     <li className="relative">
                         <div className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer" onClick={() => toggleItem('item6')}>Administración</div>
                         {expandedItem === 'item6' && (
@@ -179,9 +213,10 @@ const Sidebar = () => {
                         </svg>
                     </div>
                 </div>
-            </div>
-        </div>
-    );
-}
+            </div> 
+            */}
+    </div>
+  );
+};
 
 export default Sidebar;
