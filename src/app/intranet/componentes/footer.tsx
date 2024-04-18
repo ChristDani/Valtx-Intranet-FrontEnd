@@ -37,7 +37,7 @@ export const Footer = () =>{
 
     const getEnlaces = async () => {
         try {
-            const links: LinksResponseDTO = await linkServices.getList(1,10,"",3,"asc");
+            const links: LinksResponseDTO = await linkServices.getListWeb(1,10,"",3,"asc");
             const linksL: Links[] = links.data;
             linksL.sort((a:any, b:any) => a.iorden - b.iorden);
             setLinkList(linksL)

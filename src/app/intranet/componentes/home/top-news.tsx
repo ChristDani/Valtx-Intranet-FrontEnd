@@ -20,7 +20,7 @@ const TopNews = () =>{
     const getNews = async () =>{
         try{
 
-            const news: NoticiasResponseDTO = await newsServices.getList(1, 2, "", 3, "asc");
+            const news: NoticiasResponseDTO = await newsServices.getListWeb(1, 2, "", 3, "asc");
             const newsL: Noticias[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setDataInfo(news);
