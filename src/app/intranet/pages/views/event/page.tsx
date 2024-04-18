@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from "react";
 import { eventServices } from '../../../services/mantenedores/eventos.service';
-import { parametrosServices } from '../../../services/parametros.service';
 
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
@@ -63,10 +62,9 @@ const EventsViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await eventServices.getList(1, items, "", 3, getCurrentDate(), "asc");
+        const itemsList: any = await eventServices.getListWeb(1, items, "", 3, getCurrentDate(), "asc");
 
         setDataInfo(itemsList);
-        console.log(itemsList);
         
         // ordernar por dia de mes - pendiente
         const list = itemsList.data.map((item:any)=>{
@@ -92,7 +90,6 @@ const EventsViewPage = () => {
         for (const month in groupedByMonth) {
           groupedByMonth[month].sort((a, b) => a.day - b.day);
         }
-
         setDataList(groupedByMonth);
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
         setPages(pages);
@@ -122,23 +119,6 @@ const EventsViewPage = () => {
         const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${amOrPm}`;
 
         setFechaFormat(`${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]} del ${year} / ${formattedTime}`);
-    }
-
-    const getOneItem = async (id: number) => {
-        const onlyOneItem = await eventServices.getOne(id);
-        onlyOneItem.data.map((item: any) => (
-            setEditId(item.iid_evento),
-            setEditTitle(item.vtitulo),
-            setEditDesc(item.vtextobreve),
-            setEditLink(item.vlink),
-            setEditImage(item.vimagen),
-            setNameImage(item.vimagen),
-            setEditOrden(item.iorden),
-            setEditState(item.iid_estado_registro),
-            setRedirecction(item.vredireccion),
-            setFecha(obDate(item.dfecha).toString()),
-            formatFech(item.dfecha)
-        ))
     }
     const iniciarPaginacion = (page: number, pages: number) => {
 
@@ -182,11 +162,6 @@ const EventsViewPage = () => {
         return first + rest
     }
 
-    const validarOrder = (e: any) => {
-        e.value = e.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
-        setEditOrden(e.value);
-    }
-
     const getCurrentDate = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -197,14 +172,6 @@ const EventsViewPage = () => {
     };
 
 
-    const obDate=(date:string)=>{
-        const aux = new Date(date)
-        const year = aux.getUTCFullYear();
-        const month = String(aux.getUTCMonth() + 1).padStart(2, '0');
-        const day = String(aux.getUTCDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    }
 
     const dayName =(date:number)=>{
         const day = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -215,13 +182,7 @@ const EventsViewPage = () => {
         const day = ['En.','Feb.','Abr','May','Jun','Jul','Ag.','Set','Oct','Nov','Dic'];
         return day[date];
     }
-    const mes =()=>{
-        const aux = new Date()
-        const day = aux.getMonth()
-        return day;
-    }
     return (
-
         <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-lg overflow-hidden p-4">
         {
             datInfo.IsSuccess ? (

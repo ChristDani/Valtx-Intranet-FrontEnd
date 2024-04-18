@@ -22,7 +22,20 @@ export const blogServices = {
 
         return data;
     },
+    async getListWeb(pageNumber: number, itemsPerPage: number, titulo: string, state: number, orden: string): Promise<ArticleResponseDTO> {
 
+        tokenAuth(token);
+
+        const { data } = await axiosClient.post('blogs/getBlogListWeb', {
+            "inumero_pagina": pageNumber - 1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state, // -1
+            "order": orden // asc
+        });
+
+        return data;
+    },
     async getOne(id: any) {
 
         tokenAuth(token);

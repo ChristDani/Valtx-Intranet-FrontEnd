@@ -28,7 +28,7 @@ export const Documentacion = () =>{
 
 
     const getAllDocumentation = async () =>{
-        const docum: DocumentationResponseDTO = await documentacionServices.getList(1,10, "", 3, "asc");
+        const docum: DocumentationResponseDTO = await documentacionServices.getListWeb(1,10, "", 3, "asc");
         const documList: Documentation[]  = docum.data;
         setDocumns(documList);
 

@@ -15,7 +15,7 @@ export const Novedades = () =>{
     const [dataInfo,setDataInfo] = useState<any>([]);
     const [novedades, setNovedades] = useState<novedad[]>([]);
     const getData= async () => {
-        const info = await novedadesServices.getList(1,10,"",3,"desc");
+        const info = await novedadesServices.getListWeb(1,10,"",3,"desc");
         const data = info.data
         const list: any = data.reverse((item:novedad)=>item.vdescripcion_estado==='ACTIVO');
         setDataInfo(info);

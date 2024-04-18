@@ -77,7 +77,7 @@ const ManagerDoc = ({close, idDoc}) => {
     }
     const getData = async () => {
 
-        const docsListItems = await repositorioServices.getList(1, 30, 3, 'desc');
+        const docsListItems = await repositorioServices.getListWeb(1, 30, 3, 'desc');
         const filterId:any = docsListItems.data.filter((item:repositorio)=>{
             if(item.iid_documentacion === idDoc){
                 return item

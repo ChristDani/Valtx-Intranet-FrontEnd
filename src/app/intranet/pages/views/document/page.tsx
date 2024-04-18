@@ -112,7 +112,7 @@ const DocuViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await documentacionServices.getList(page, items, titulo, -1, 'asc');
+        const itemsList: any = await documentacionServices.getListWeb(page, items, titulo, -1, 'asc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);

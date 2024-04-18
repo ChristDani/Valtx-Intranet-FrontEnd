@@ -22,6 +22,21 @@ export const iconServices = {
 
         return data;
     },
+    async getListWeb(pageNumber: number, itemsPerPage: number, titulo: string, state: number, iconType: number, orden: string) {
+
+        tokenAuth(token);
+
+        const { data } = await axiosClient.post('icono/getIconoListWeb', {
+            "inumero_pagina": pageNumber - 1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_estado_registro": state, // -1
+            "itipo_icono": iconType, // -1
+            "order": orden // asc
+        });
+
+        return data;
+    },
     
     async getOne(id:any) {
         

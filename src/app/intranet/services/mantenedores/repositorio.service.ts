@@ -20,6 +20,19 @@ export const repositorioServices = {
 
         return data;
     },
+    async getListWeb(pageNumber: number, itemsPerPage: number, state: number, orden: string) {
+
+        tokenAuth(token);
+
+        const { data } = await axiosClient.post('repositorio/getRepositorioListWeb', {
+            "inumero_pagina": pageNumber - 1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "iid_estado_registro": state, // -1
+            "order": orden // asc
+        });
+
+        return data;
+    },
 
     async create(docFile: File, titulo: string, cabecera: string,estado: string, id: string, document: string,repo:string,repoCabezera:string) {
 

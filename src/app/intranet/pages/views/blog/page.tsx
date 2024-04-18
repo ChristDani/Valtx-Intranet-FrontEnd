@@ -42,7 +42,7 @@ const BlogsViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await blogServices.getList(page, items, titulo, 3, 'asc');
+        const itemsList: any = await blogServices.getListWeb(page, items, titulo, 3, 'asc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);

@@ -41,7 +41,7 @@ const NovedadesViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await novedadesServices.getList(page, items, titulo, 3, 'asc');
+        const itemsList: any = await novedadesServices.getListWeb(page, items, titulo, 3, 'asc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);

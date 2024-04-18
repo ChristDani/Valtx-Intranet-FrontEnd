@@ -19,7 +19,7 @@ const Articles = () =>{
     }, [articles])
 
     const getArticles = async () =>{
-        const articlesRes: ArticleResponseDTO = await blogServices.getList(1,3, "", 3, "asc");
+        const articlesRes: ArticleResponseDTO = await blogServices.getListWeb(1,3, "", 3, "asc");
         const articlesList: Article[] = articlesRes.data;
         setArticles(articlesList);
     }

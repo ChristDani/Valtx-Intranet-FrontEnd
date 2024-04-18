@@ -22,6 +22,18 @@ export const eventServices = {
 
         return data;
     },
+    async getListWeb(pageNumber: number, itemsPerPage: number, titulo: string, state: number, fecha: string, orden: string): Promise<EventResponseDTO> {
+        tokenAuth(token);
+        const { data } = await axiosClient.post('evento/getEventoListWeb', {
+            "inumero_pagina": pageNumber - 1, // 0
+            "itotal_pagina": itemsPerPage, // 10
+            "vtitulo": titulo, // ""
+            "iid_lei_registro": state,  // -1
+            "dfecha": fecha, // ""
+            "order": orden // asc
+        });
+        return data;
+    },
 
     async getOne(id: any) {
 
