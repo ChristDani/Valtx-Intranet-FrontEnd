@@ -71,7 +71,7 @@ const Sidebar = () => {
                         <div key={opcion.iid_opcion}>
                           <Link
                             onClick={onSelect}
-                            href={`/intranet/pages/${opcion.vtitulo_modulo}${opcion.vurl}`}
+                            href={`/intranet/pages/${item.vurl}${opcion.vurl}`}
                             className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                           >
                             {opcion.vtitulo}
@@ -83,7 +83,7 @@ const Sidebar = () => {
                 </>
               ) : (
                 <Link
-                  href={`/intranet/pages/${item.vtitulo}`}
+                  href={`/intranet/pages/${item.vurl}`}
                   className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
                 >
                   {item.vtitulo}
