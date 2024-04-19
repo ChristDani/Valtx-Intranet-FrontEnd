@@ -10,6 +10,7 @@ export default function MantenedoresLayout({ children }: { children: React.React
     return (
         <div className="mt-2 pt-4 ml-8 pb-8">
             <div className="flex items-center gap-3">
+                
                 <h1 className="">Mantenedores</h1>
                 <svg className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m9 5 7 7-7 7" />
