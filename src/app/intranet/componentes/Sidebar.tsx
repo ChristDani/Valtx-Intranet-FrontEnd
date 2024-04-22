@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { optionsServices } from "../services/administration/perfiles-opcion.service";
 
 // Definimos un tipo para el estado
 interface ExpandedItems {
@@ -12,15 +11,14 @@ interface ExpandedItems {
 const Sidebar = () => {
   const [expandedItem, setExpandedItem] = useState<string | null>("inicio");
   // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || "";
   const perfilOptions = JSON.parse(localStorage.getItem("permisosMenu") || '');
   const [titulos, setTitulos] = useState<any>([]);
 
   useEffect(() => {
-    getOptionsUser(perfilId);
-  }, [perfilId]);
+    getOptionsUser();
+  }, []);
 
-  const getOptionsUser = async (id: any) => {
+  const getOptionsUser = () => {
     setTitulos(perfilOptions)
   }
 
@@ -33,7 +31,6 @@ const Sidebar = () => {
   };
 
   const onSelect = () => {
-    console.log(expandedItem);
     setExpandedItem(null);
   };
 
@@ -56,7 +53,7 @@ const Sidebar = () => {
             </Link>
           </li>
           {Object.values(titulos).map((item: any) => (
-            <li key={item} className="relative">
+            <li key={item.iid_modulo} className="relative">
               {item.opciones.length > 1 ? (
                 <>
                   <div
@@ -71,7 +68,7 @@ const Sidebar = () => {
                         <div key={opcion.iid_opcion}>
                           <Link
                             onClick={onSelect}
-                            href={`/intranet/pages/${item.vurl}${opcion.vurl}`}
+                            href={`/intranet/pages${item.vurl}${opcion.vurl}`}
                             className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                           >
                             {opcion.vtitulo}
@@ -83,7 +80,7 @@ const Sidebar = () => {
                 </>
               ) : (
                 <Link
-                  href={`/intranet/pages/${item.vurl}`}
+                  href={`/intranet/pages${item.vurl}`}
                   className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
                 >
                   {item.vtitulo}
