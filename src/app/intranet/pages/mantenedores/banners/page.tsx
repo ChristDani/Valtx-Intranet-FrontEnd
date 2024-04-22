@@ -92,7 +92,7 @@ const BannPage = () => {
     const getStates = async () => {
         const { data } = await parametrosServices.getStates()
 
-        setStatesList(data)        
+        setStatesList(data)
     }
 
     const getData = async (page: number, items: number, titulo: string) => {
@@ -605,16 +605,12 @@ const BannPage = () => {
                                                     <>
                                                         {
                                                             statesList.map((state: any) => (
-                                                                <div key={state.iid_tabla_detalle}>
-                                                                    {
-                                                                        state.iid_tabla_detalle == editState ? (
-                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </div>
+                                                                state.iid_tabla_detalle == editState ? (
+                                                                    <option key={state.iid_tabla_detalle} value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
+                                                                ) : (
+                                                                    <>
+                                                                    </>
+                                                                )
                                                             ))
                                                         }
                                                     </>
@@ -625,9 +621,7 @@ const BannPage = () => {
 
                                             {
                                                 statesList.map((state: any) => (
-                                                    <div key={state.iid_tabla_detalle}>
-                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
-                                                    </div>
+                                                    <option key={state.iid_tabla_detalle} value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
                                                 ))
                                             }
                                         </select>
