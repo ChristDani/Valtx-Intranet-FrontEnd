@@ -834,7 +834,6 @@ const UsersPage = () => {
                     Telefono
                   </label>
                   <input
-                    required
                     type="text"
                     name="iorden"
                     className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
