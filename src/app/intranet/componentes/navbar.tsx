@@ -29,7 +29,7 @@ export default function Navbar() {
     const validatePerfil = async () =>{
         const perfilId = localStorage.getItem("perfil") || '';
         const perfil = await PerfilesService.getPerfilById(perfilId);
-        console.log(perfil);
+        
     }
 
     const UserName = async () => {

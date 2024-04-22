@@ -6,6 +6,7 @@ import { parametrosServices } from '../../../services/parametros.service';
 import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
+import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 
 const ArticPage = () => {
 
@@ -57,6 +58,39 @@ const ArticPage = () => {
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
+    // obtener opciones de usuario
+  const perfilId = localStorage.getItem("perfil") || '';
+
+  // obtener opciones por usuario
+  const [optionUser, setOptionUser] = useState({
+    visualizar: false,
+    crear: false,
+    editar: false,
+    eliminar: false
+  })
+
+  
+  const getOptionsUser = async (id: any, path : string) => {
+
+    const resul = path.split("/");
+    const finalPath = resul[resul.length - 1]
+    const pathResul = "/" + finalPath
+
+    const datos = await optionsServices.getPerfilOpcionId(id);
+    const listOptionsId = datos.data;
+    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
+
+    if (options) {
+      setOptionUser({
+        visualizar: options.ivisualizar,
+        crear: options.icrear ,
+        editar: options.iactualizar,
+        eliminar: options.ieliminar,
+      });
+    }
+
+  };
+
     const cambiarImagen = (e: any) => {
         const file = e.target.files[0];
         const name = e.target.files[0].name;
@@ -87,6 +121,7 @@ const ArticPage = () => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
+        getOptionsUser(perfilId, pathName);
     }, [])
 
     const getStates = async () => {
@@ -298,14 +333,14 @@ const ArticPage = () => {
                         </svg>
                     </div>
                 </div>
-                <button className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500" onClick={createItem}>
+                {optionUser.crear && <button className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500" onClick={createItem}>
                     <svg className="text-gray-800  dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
                     </svg>
                     <span className=" text-white font-bold">
                         Agregar
                     </span>
-                </button>
+                </button>}
             </div>
 
             {/* tabla */}
@@ -372,12 +407,12 @@ const ArticPage = () => {
                                             }
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_articulo)}>
+                                            {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_articulo)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587" />
                                                 </svg>
-                                            </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_articulo)}>
+                                            </Link>}
+                                            {optionUser.editar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_articulo)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_191_168)">
                                                         <path d="M2.81326 15.4667L1.54659 20.9333C1.50289 21.1332 1.50439 21.3403 1.55097 21.5394C1.59756 21.7386 1.68805 21.9249 1.81583 22.0846C1.94362 22.2444 2.10547 22.3735 2.28957 22.4627C2.47368 22.5519 2.67537 22.5988 2.87992 22.6C2.97524 22.6096 3.07128 22.6096 3.16659 22.6L8.66659 21.3334L19.2266 10.8133L13.3333 4.93335L2.81326 15.4667Z" fill="#31BAFF" />
@@ -390,8 +425,8 @@ const ArticPage = () => {
                                                     </defs>
                                                 </svg>
 
-                                            </Link>
-                                            <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_articulo)}>
+                                            </Link>}
+                                            {optionUser.eliminar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_articulo)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <g clip-path="url(#clip0_191_172)">
                                                         <path d="M20 5C20.2652 5 20.5196 5.10536 20.7071 5.29289C20.8946 5.48043 21 5.73478 21 6C21 6.26522 20.8946 6.51957 20.7071 6.70711C20.5196 6.89464 20.2652 7 20 7H19L18.997 7.071L18.064 20.142C18.0281 20.6466 17.8023 21.1188 17.4321 21.4636C17.0619 21.8083 16.5749 22 16.069 22H7.93C7.42414 22 6.93707 21.8083 6.56688 21.4636C6.1967 21.1188 5.97092 20.6466 5.935 20.142L5.002 7.072C5.00048 7.04803 4.99982 7.02402 5 7H4C3.73478 7 3.48043 6.89464 3.29289 6.70711C3.10536 6.51957 3 6.26522 3 6C3 5.73478 3.10536 5.48043 3.29289 5.29289C3.48043 5.10536 3.73478 5 4 5H20ZM14 2C14.2652 2 14.5196 2.10536 14.7071 2.29289C14.8946 2.48043 15 2.73478 15 3C15 3.26522 14.8946 3.51957 14.7071 3.70711C14.5196 3.89464 14.2652 4 14 4H10C9.73478 4 9.48043 3.89464 9.29289 3.70711C9.10536 3.51957 9 3.26522 9 3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2H14Z" fill="#EA5065" />
@@ -402,7 +437,7 @@ const ArticPage = () => {
                                                         </clipPath>
                                                     </defs>
                                                 </svg>
-                                            </Link>
+                                            </Link>}
                                         </td>
                                     </tr>
                                 ))
@@ -443,13 +478,13 @@ const ArticPage = () => {
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item) => (
+                        {pagesToShow.map((item, key) => (
                             (currentPage == item) ? (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li>
+                                <li key={key}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
