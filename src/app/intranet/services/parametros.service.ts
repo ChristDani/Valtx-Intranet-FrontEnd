@@ -42,5 +42,19 @@ export const parametrosServices = {
         const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=${id}`);
 
         return data;
+    },
+
+    async getEmployesTypes() {
+
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=10`);
+
+        return data;
+    },
+
+    async getEnterprises() {
+
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=9`);
+
+        return data;
     }
 }
