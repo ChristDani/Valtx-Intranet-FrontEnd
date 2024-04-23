@@ -248,7 +248,6 @@ const ProfilesPage = () => {
       closeModal();
     } else if (modalState.update) {
       await PerfilesService.update(editTitle, editDesc, editId);
-      console.log(newOptions);
       const data = await optionsServices.setPefilOptions(newOptions);
       closeModal();
     } else if (modalState.delete) {
@@ -339,12 +338,14 @@ const ProfilesPage = () => {
     // Actualizar el estado con los nuevos valores
     setOptionId(updatedItems);
 
+    const newId = editId;
+
     // Copia del array select
     let newListOptions = optionId.slice();
 
     const newCopyOptions = newListOptions.map((item) => ({
       iid_perfil_opcion: item.iid_perfil_opcion ? item.iid_perfil_opcion : 0,
-      iid_perfil: id,
+      iid_perfil: newId,
       iid_opcion: item.iid_opcion,
       iacceso_crear: item.icrear ? 1 : 0,
       iacceso_visualizar: item.ivisualizar ? 1 : 0,
@@ -352,8 +353,7 @@ const ProfilesPage = () => {
       iacceso_eliminar: item.ieliminar ? 1 : 0,
     }));
 
-    console.log(newCopyOptions);
-
+    // Actualizar el estado con los nuevos valores
     setNewOptions(newCopyOptions);
   };
 
@@ -454,7 +454,7 @@ const ProfilesPage = () => {
                   </th>
                   <th scope="row" className="px-6 py-4">
                     {statesList.map((state: any) => (
-                      <>
+                      <div key={state.iid_tabla_detalle}>
                         {state.iid_tabla_detalle == item.iid_estado_registro ? (
                           <div
                             className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
@@ -467,10 +467,8 @@ const ProfilesPage = () => {
                               ? capitalize(state.vvalor_texto_corto)
                               : "Sin estado"}
                           </div>
-                        ) : (
-                          <></>
-                        )}
-                      </>
+                        ) : ''}
+                      </div>
                     ))}
                   </th>
                   <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
@@ -850,7 +848,7 @@ const ProfilesPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {modalState.create
+                    { modalState.create
                       ? optionInfo.IsSuccess
                         ? optionList.map((item: any) => (
                             <tr
@@ -922,7 +920,7 @@ const ProfilesPage = () => {
                             </tr>
                           ))
                         : ""
-                      : optionId.map((item: any) => (
+                      :  optionId.map((item: any) => (
                           <tr
                             key={item.iid_opcion}
                             className="bg-gray-100 hover:bg-gray-50"
@@ -986,7 +984,9 @@ const ProfilesPage = () => {
                               </label>
                             </td>
                           </tr>
-                        ))}
+                        )
+                      )
+                    }
                   </tbody>
                 </table>
               </div>

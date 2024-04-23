@@ -12,7 +12,7 @@ const HomeMainBanner = () =>{
             iid_banner: 1,
             vtitulo: "1",
             vtextobreve: "1",
-            vimagen: "banners/1.png",
+            vimagen: "",
             vlink: "https://www.valtx.pe",
             vredireccion: "_blank",
             iorden: 1,
