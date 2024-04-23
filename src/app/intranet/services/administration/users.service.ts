@@ -34,7 +34,7 @@ export const userServices = {
         return data;
       },
 
-    async setUsuario(id:number, nombre:string, apePat:string, apeMat:string, documento:string, email:string, telefono:string, tperfil:string, tdocumento: string, empresa:number, tusuario:number, state:string) {
+    async setUsuario(id:number, nombre:string, apePat:string, apeMat:string, documento:string, email:string, telefono:string, tperfil:string, tdocumento: string, empresa:string, tusuario:string, state:string, vcip:string) {
       tokenAuth(token);
 
       const res = await axiosClient.post('usuario/setUsuario',{
@@ -47,16 +47,17 @@ export const userServices = {
         "vnumero_telefonico":telefono,
         "iid_perfil": +tperfil,
         "iid_tipo_documento":+tdocumento,
-        "iid_empresa":empresa,
-        "iid_tipo_usuario":tusuario,
-        "iid_estado_registro" : +state
+        "iid_empresa":+empresa,
+        "iid_tipo_usuario":+tusuario,
+        "iid_estado_registro" : +state,
+        "vcip": vcip
       })
 
       return res
 
     },
 
-    async updateUsuario(id:number, nombre:string, apePat:string, apeMat:string, documento:string, email:string, telefono:string, tperfil:string, tdocumento: string, empresa:number, tusuario:number, state:string) {
+    async updateUsuario(id:number, nombre:string, apePat:string, apeMat:string, documento:string, email:string, telefono:string, tperfil:string, tdocumento: string, empresa:string, tusuario:string, state:string, vcip:string) {
       tokenAuth(token);
 
       const res = await axiosClient.post('usuario/updateUsuario',{
@@ -69,9 +70,10 @@ export const userServices = {
         "vnumero_telefonico":telefono,
         "iid_perfil": +tperfil,
         "iid_tipo_documento":+tdocumento,
-        "iid_empresa":empresa,
-        "iid_tipo_usuario":tusuario,
-        "iid_estado_registro" : +state
+        "iid_empresa":+empresa,
+        "iid_tipo_usuario":+tusuario,
+        "iid_estado_registro" : +state,
+        "vcip": vcip
       })
 
       return res

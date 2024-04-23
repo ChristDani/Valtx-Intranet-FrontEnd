@@ -53,10 +53,6 @@ const ManagerDoc = ({close, idDoc, crear, editar, eliminar} : {
     const [repositriesList, setRepositoriesList]= useState([]);
     const [state, setState]= useState('create');
     const [openModal, setModalIsOpen] = useState(false);
-    const repositoriesTipos= async () => {
-       //const { data } = await parametrosServices.getRepositoriesTypes();
-        //setRepositoriesList(data);
-    }
     const openInterModal = () => {
         setModalIsOpen(true);
     }
@@ -172,7 +168,7 @@ const ManagerDoc = ({close, idDoc, crear, editar, eliminar} : {
         <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-full h-[500px]">
             <div className="flex flex-row justify-between items-center">
             <div className="mt-4 ml-5 capitalize">
-                Mantenedores › {pathFinal} › <strong>Repositorio</strong>
+                Mantenedores › {pathFinal} › <strong>Repositorio</strong> 
             </div>
             <div className="cursor-pointer  rounded-full p-1 " onClick={close}>
                 <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -239,7 +235,7 @@ const ManagerDoc = ({close, idDoc, crear, editar, eliminar} : {
                                                     }
                                                 </td>
                                                 <td className="flex gap-1 items-center justify-center my-auto px-4 h-14">
-                                                    <Link href={`/docs/${item.vdescripcion_cabeceraMaestra}/${item.vdescripcion_cabecera}/${item.vdocumento}`} 
+                                                    <Link href={`/docs/${item.vdocumento}`} 
                                                     target="_blank"
                                                     className="font-medium text-blue-600 hover:underline">
                                                         <svg className=" text-dark" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
@@ -271,9 +267,6 @@ const ManagerDoc = ({close, idDoc, crear, editar, eliminar} : {
                                                             </defs>
                                                         </svg>
                                                     </Link>}
-                                                </td>
-                                                <td>
-                                                    <embed className="hidden" src={`http://localhost:4000/public/${item.vdocumento}`} type="application/pdf" width="100px" height="200px" />
                                                 </td>
                                             </tr>
                                         )
@@ -312,24 +305,15 @@ const ManagerDoc = ({close, idDoc, crear, editar, eliminar} : {
                                     <label htmlFor="categories" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                     <select id="categories" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e)=>setEditCabecera(e.target.value)}>
                                             <option value="0">Selecciona una categoria</option>
-                                        {
-                                            repositriesList.map((tipo: any)=>(
-                                                <>
-                                                    <option className="capitalize" value={tipo.iid_tabla_detalle} selected={editCabecera == tipo.iid_tabla_detalle ? true: false }>
-                                                        {tipo.vvalor_texto_corto}
-                                                    </option>
-                                                </>
-                                            ))
-                                        }
                                     </select>
-                            </div>
+                                </div>
                                 <div className="mt-4 relative">
                                     <label className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Titulo</label>
                                     <input required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" type="text" value={editTitle} placeholder="Ingrese titulo" onChange={(e) =>  setEditTitle(e.target.value)}/>
                                 </div>
                                 <div className="">
                                     <div className="flex items-center justify-center w-80 text-center">
-                                        <label for="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg hover:bg-gray-200 ">
+                                        <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg hover:bg-gray-200 ">
                                             <div className="flex flex-col items-center justify-center pt-5 pb-6 p-4">
                                                 <svg className="w-10 h-10 mb-4 text-dark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                                     <path fillRule="evenodd" d="M9 2.221V7H4.221a2 2 0 0 1 .365-.5L8.5 2.586A2 2 0 0 1 9 2.22ZM11 2v5a2 2 0 0 1-2 2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2 2 2 0 0 0 2 2h12a2 2 0 0 0 2-2 2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2V4a2 2 0 0 0-2-2h-7Zm-6 9a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h.5a2.5 2.5 0 0 0 0-5H5Zm1.5 3H6v-1h.5a.5.5 0 0 1 0 1Zm4.5-3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.376A2.626 2.626 0 0 0 15 15.375v-1.75A2.626 2.626 0 0 0 12.375 11H11Zm1 5v-3h.375a.626.626 0 0 1 .625.626v1.748a.625.625 0 0 1-.626.626H12Zm5-5a1 1 0 0 0-1 1v5a1 1 0 1 0 2 0v-1h1a1 1 0 1 0 0-2h-1v-1h1a1 1 0 1 0 0-2h-2Z" clipRule="evenodd"/>

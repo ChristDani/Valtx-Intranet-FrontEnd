@@ -20,6 +20,8 @@ const UsersPage = () => {
   // data
   const [dataList, setDataList] = useState([]);
   const [datInfo, setDataInfo] = useState<any>([]);
+  const [datEmpresa, setDatEmpresa] = useState<any>([]);
+  const [datTempleado, setDatTempleado] = useState<any>([]);
 
   // paginacion
   const [paginas, setPages] = useState(0);
@@ -58,7 +60,9 @@ const UsersPage = () => {
   const [telefono, setTelefono] = useState("");
   const [editIdDocumento, setIdDocumento] = useState("");
   const [estado, setEstado] = useState("0");
-
+  const [editVcip, setEditVcip] = useState(""); 
+  const [editTipoEmp, setEditTipoEmp] = useState("");
+  const [editEmpresa, setEditEmpresa] = useState("");
   // obtener opciones de usuario
   const perfilId = localStorage.getItem("perfil") || "";
 
@@ -96,7 +100,6 @@ const UsersPage = () => {
     setPathFinal(resul[resul.length - 1]);
     return pathFinal;
   };
-
   useEffect(() => {
     getData(currentPage, itemsPorPagina, searchTitle);
     obtenerPath();
@@ -104,6 +107,8 @@ const UsersPage = () => {
     getListPerfil();
     getDocuments();
     getOptionsUser(perfilId, pathName);
+    gettipoEmpleado();
+    getempresa();
   }, []);
 
   const searchData = (title: string) => {
@@ -125,7 +130,17 @@ const UsersPage = () => {
     const { data } = await parametrosServices.getDocumentsTypes();
     setDocumentList(data);
   };
+  const gettipoEmpleado = async () => {
+    const {data} = await parametrosServices.getEmployesTypes();
+    setDatTempleado(data);
+    
+  }
 
+  const getempresa = async () => {
+    const {data} = await parametrosServices.getEnterprises();
+    setDatEmpresa(data);
+    
+  }
   const getData = async (page: number, items: number, titulo: string) => {
     setCurrentPage(page);
     setItems(items);
@@ -151,11 +166,13 @@ const UsersPage = () => {
     iniciarPaginacion(page, pages);
   };
 
+  
   const getOneItem = async (id: number) => {
     const onlyOneItem = await userServices.getOne(id);
 
     const edittttt = onlyOneItem.data;
-
+    console.log(datEmpresa);
+    
     edittttt.map(
       (item: any) => (
         setEditId(item.iid_usuario),
@@ -168,7 +185,10 @@ const UsersPage = () => {
         setEditIdPerfil(item.perfil.iid_perfil),
         setEstado(item.iid_estado_registro),
         setTelefono(item.vnumero_telefonico),
-        setIdDocumento(item.iid_tipo_documento)
+        setIdDocumento(item.iid_tipo_documento),
+        setEditVcip(item.vcip),
+        setEditEmpresa(item.iid_empresa),
+        setEditTipoEmp(item.itipo_empleado)
       )
     );
   };
@@ -256,9 +276,10 @@ const UsersPage = () => {
         telefono,
         editIdPerfil,
         editIdDocumento,
-        1,
-        1,
-        estado
+        editEmpresa,
+        editTipoEmp,
+        estado,
+        editVcip
       );
     } else if (modalState.update) {
       const res = await userServices.updateUsuario(
@@ -271,9 +292,10 @@ const UsersPage = () => {
         telefono,
         editIdPerfil,
         editIdDocumento,
-        1,
-        1,
-        estado
+        editEmpresa,
+        editTipoEmp,
+        estado,
+        editVcip
       );
     } else if (modalState.delete) {
       const res = await userServices.deletUsuario(editId);
@@ -297,6 +319,8 @@ const UsersPage = () => {
     setEditIdPerfil("");
     setIdDocumento("0");
     setEstado("0");
+    setEditEmpresa(0);
+    setEditTipoEmp(0);
   };
 
   const capitalize = (text: String) => {
@@ -304,7 +328,10 @@ const UsersPage = () => {
     const rest = text.slice(1).toLowerCase();
     return first + rest;
   };
-
+  const onlyNumber = (e: any) => {
+    const vcip = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+    setEditVcip(vcip);
+}
   return (
     <>
       <div className="max-w mt-4 flex flex-wrap items-center justify-between">
@@ -801,10 +828,10 @@ const UsersPage = () => {
                       </option>
                     )}
 
-                    {documentList.map((state: any) => (
+                    {documentList.map((item: any) => (
                       <>
-                        <option value={state.iid_tabla_detalle}>
-                          {capitalize(state.vvalor_texto_corto)}
+                        <option value={item.iid_tabla_detalle}>
+                          {capitalize(item.vvalor_texto_corto)}
                         </option>
                       </>
                     ))}
@@ -842,7 +869,7 @@ const UsersPage = () => {
                   ></input>
                 </div>
               </div>
-              <div className="mb-5 flex gap-2">
+              <div className="mb-5 flex gap-2 ">
                 <div className="flex-auto w-44 relative">
                   <label
                     htmlFor="iorden"
@@ -858,6 +885,69 @@ const UsersPage = () => {
                     value={editEmail}
                     onInput={(e: any) => setEditEmail(e.target.value)}
                   ></input>
+                </div>
+              </div>
+              
+              <div className="mb-5 flex gap-2">
+                  <div className="flex-auto relative w-10">
+                    <label
+                      htmlFor="vcip"
+                      className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                    >
+                      VCIP
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      name="vcip"
+                      className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                      value={editVcip}
+                      minLength={0} 
+                      maxLength={9}
+                      onInput={(e: any) => onlyNumber(e)}
+                    ></input>
+                  </div>
+                <div className="flex-auto relative w-14">
+                  <label
+                    htmlFor="emplItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Tipo de Empleado:
+                  </label>
+                  <select
+                    id="emplItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full"
+                    onChange={(e) => setEditTipoEmp(e.target.value)}
+                  >
+                    <option value="0">Seleccione</option>
+                    {datTempleado?.map((item: any) => (
+                        <option key={item.iid_tabla_detalle} value={item.iid_tabla_detalle} selected={item.iid_tabla_detalle === editTipoEmp ? true : false}>
+                          {item.vvalor_texto_corto}
+                        </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex-auto relative w-14">
+                  <label
+                    htmlFor="empItem"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    Empresa
+                  </label>
+                  <select
+                    id="empItem"
+                    className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full"
+                    onChange={(e) => setEditEmpresa(e.target.value)}
+                  >
+                    <option value="0">Seleccione</option>
+                    {
+                      datEmpresa?.map((item:any)=>(
+                        <option key={item.iid_tabla_detalle} value={item.iid_tabla_detalle} selected={item.iid_tabla_detalle === editEmpresa ? true : false}>
+                          {item.vvalor_texto_corto}
+                        </option>
+                      ))
+                    }
+                  </select>
                 </div>
               </div>
               <div className="flex gap-2">
@@ -1030,6 +1120,16 @@ const UsersPage = () => {
                 </p>
                 <p className="mb-1 font-normal text-gray-700">
                   Perfil: {capitalize(editPerfil)}
+                </p>
+                
+                <p className="mb-1 font-normal text-gray-700">
+                  VCIP: {editVcip}
+                </p>
+                <p className="mb-1 font-normal text-gray-700">
+                  Tipo de empleado: {datTempleado?.find((obj: any) => obj.iid_tabla_detalle == editTipoEmp)?.vvalor_texto_corto}
+                </p>
+                <p className="mb-1 font-normal text-gray-700">
+                  Empresa: {datEmpresa?.find((obj: any) => obj.iid_tabla_detalle == editEmpresa)?.vvalor_texto_corto}
                 </p>
                 <p className="mb-1 font-normal text-gray-700">
                   Estado:{" "}

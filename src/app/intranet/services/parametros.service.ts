@@ -46,14 +46,14 @@ export const parametrosServices = {
 
     async getEmployesTypes() {
 
-        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=10`);
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=9`);
 
         return data;
     },
 
     async getEnterprises() {
 
-        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=9`);
+        const { data } = await axiosClient.get(`maestra/getCabeceraId?iid_cabecera=10`);
 
         return data;
     }
