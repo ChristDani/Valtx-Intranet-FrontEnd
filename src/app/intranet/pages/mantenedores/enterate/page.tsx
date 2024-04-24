@@ -393,7 +393,7 @@ const EnteratePage = () => {
                 </div>
                 {optionUser.crear && <button className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500" onClick={createItem}>
                     <svg className="text-gray-800  dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
                     </svg>
                     <span className=" text-white font-bold">
                         Agregar
@@ -447,7 +447,7 @@ const EnteratePage = () => {
                                         <td className='px-6 py-4'>
                                             {
                                                 statesList.map((state: any) => (
-                                                    <>
+                                                    <div key={state.iid_tabla_detalle}>
                                                         {
                                                             state.iid_tabla_detalle == item.iid_estado_registro ? (
                                                                 <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
@@ -460,7 +460,7 @@ const EnteratePage = () => {
                                                                 </>
                                                             )
                                                         }
-                                                    </>
+                                                    </div>
                                                 ))
                                             }
                                         </td>
@@ -472,7 +472,7 @@ const EnteratePage = () => {
                                             </Link>}
                                             {optionUser.editar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_enterate)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <g clip-path="url(#clip0_191_168)">
+                                                    <g clipPath="url(#clip0_191_168)">
                                                         <path d="M2.81326 15.4667L1.54659 20.9333C1.50289 21.1332 1.50439 21.3403 1.55097 21.5394C1.59756 21.7386 1.68805 21.9249 1.81583 22.0846C1.94362 22.2444 2.10547 22.3735 2.28957 22.4627C2.47368 22.5519 2.67537 22.5988 2.87992 22.6C2.97524 22.6096 3.07128 22.6096 3.16659 22.6L8.66659 21.3334L19.2266 10.8133L13.3333 4.93335L2.81326 15.4667Z" fill="#31BAFF" />
                                                         <path d="M22.5466 5.54667L18.6133 1.61333C18.3547 1.35604 18.0048 1.21161 17.64 1.21161C17.2752 1.21161 16.9252 1.35604 16.6666 1.61333L14.48 3.8L20.3666 9.68667L22.5533 7.5C22.6813 7.37139 22.7826 7.2188 22.8516 7.05098C22.9205 6.88315 22.9557 6.70338 22.955 6.52195C22.9544 6.34052 22.918 6.161 22.848 5.99365C22.7779 5.82629 22.6755 5.6744 22.5466 5.54667Z" fill="#31BAFF" />
                                                     </g>
@@ -486,7 +486,7 @@ const EnteratePage = () => {
                                             </Link>}
                                             {optionUser.eliminar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_enterate)}>
                                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <g clip-path="url(#clip0_191_172)">
+                                                    <g clipPath="url(#clip0_191_172)">
                                                         <path d="M20 5C20.2652 5 20.5196 5.10536 20.7071 5.29289C20.8946 5.48043 21 5.73478 21 6C21 6.26522 20.8946 6.51957 20.7071 6.70711C20.5196 6.89464 20.2652 7 20 7H19L18.997 7.071L18.064 20.142C18.0281 20.6466 17.8023 21.1188 17.4321 21.4636C17.0619 21.8083 16.5749 22 16.069 22H7.93C7.42414 22 6.93707 21.8083 6.56688 21.4636C6.1967 21.1188 5.97092 20.6466 5.935 20.142L5.002 7.072C5.00048 7.04803 4.99982 7.02402 5 7H4C3.73478 7 3.48043 6.89464 3.29289 6.70711C3.10536 6.51957 3 6.26522 3 6C3 5.73478 3.10536 5.48043 3.29289 5.29289C3.48043 5.10536 3.73478 5 4 5H20ZM14 2C14.2652 2 14.5196 2.10536 14.7071 2.29289C14.8946 2.48043 15 2.73478 15 3C15 3.26522 14.8946 3.51957 14.7071 3.70711C14.5196 3.89464 14.2652 4 14 4H10C9.73478 4 9.48043 3.89464 9.29289 3.70711C9.10536 3.51957 9 3.26522 9 3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2H14Z" fill="#EA5065" />
                                                     </g>
                                                     <defs>
@@ -520,7 +520,7 @@ const EnteratePage = () => {
                                 <Link href="#" className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => previusPage(currentPage - 1)}>
                                     <span className="sr-only">Previous</span>
                                     <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4" />
                                     </svg>
                                 </Link>
                             </li>
@@ -561,7 +561,7 @@ const EnteratePage = () => {
                                 <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700" onClick={() => nextPage(currentPage + 1)}>
                                     <span className="sr-only">Next</span>
                                     <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4" />
                                     </svg>
                                 </Link>
                             </li>
@@ -582,7 +582,7 @@ const EnteratePage = () => {
                         </div>
                         <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
                             <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clip-rule="evenodd" />
+                                <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
                             </svg>
                         </div>
                     </div>
@@ -592,7 +592,7 @@ const EnteratePage = () => {
                             <form onSubmit={confirmOp} className="mt-5">
                                 <div className="mb-5 hidden">
                                     <label htmlFor="idItem" >ID</label>
-                                    <input type="text" name="idItem" value={editId}></input>
+                                    <input type="text" name="idItem" defaultValue={editId}></input>
                                 </div>
                                 <div className="mb-5 flex">
                                     <div className="flex-auto w-28 relative">
@@ -744,37 +744,32 @@ const EnteratePage = () => {
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            {
-                                                modalState.update ? (
-                                                    <>
-                                                        {
-                                                            statesList.map((state: any) => (
-                                                                <>
-                                                                    {
-                                                                        state.iid_tabla_detalle == editState ? (
-                                                                            <option value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                        ) : (
-                                                                            <>
-                                                                            </>
-                                                                        )
-                                                                    }
-                                                                </>
-                                                            ))
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
+                                        <select id="stateItem" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
+                                            {modalState.update ? (
+                                                statesList.map((state: any) =>
+                                                    state.iid_tabla_detalle === state ? (
+                                                    <option
+                                                        key={state.iid_tabla_detalle}
+                                                        value={state.iid_tabla_detalle}
+                                                    >
+                                                        {capitalize(state.vvalor_texto_corto)}
+                                                    </option>
+                                                    ) : null
                                                 )
-                                            }
+                                                ) : (
+                                                <option key="0" value="0">
+                                                    Seleccione
+                                                </option>
+                                                )}
 
-                                            {
-                                                statesList.map((state: any) => (
-                                                    <>
-                                                        <option value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
-                                                    </>
-                                                ))
-                                            }
+                                                {statesList.map((state: any) => (
+                                                <option
+                                                    key={state.iid_tabla_detalle}
+                                                    value={state.iid_tabla_detalle}
+                                                >
+                                                    {capitalize(state.vvalor_texto_corto)}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -808,9 +803,9 @@ const EnteratePage = () => {
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                                     <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                                     <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {
+                                    <div className="mb-1 font-normal text-gray-700">Estado: {
                                         statesList.map((state: any) => (
-                                            <>
+                                            <div key={state.iid_tabla_detalle}>
                                                 {
                                                     state.iid_tabla_detalle == editState ? (
                                                         state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
@@ -819,10 +814,10 @@ const EnteratePage = () => {
                                                         </>
                                                     )
                                                 }
-                                            </>
+                                            </div>
                                         ))
                                     }
-                                    </p>
+                                    </div>
                                     <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
                                 </div>
                             </>

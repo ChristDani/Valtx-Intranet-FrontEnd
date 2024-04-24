@@ -28,6 +28,7 @@ const ModalComponent = ({ isOpen, closeModal, children }) => {
     <Modal
       isOpen={isOpen}
       onRequestClose={closeModal}
+      ariaHideApp={false}
       style={customStyles}
       contentLabel="Example Modal"
     >

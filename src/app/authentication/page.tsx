@@ -101,7 +101,7 @@ export default function AuthenticationPage() {
             </div>
         </div>
             
-            <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
+            <ModalComponent isOpen={modalIsOpen} closeModal={closeModal} >
                 <div className="flex justify-center flex-col items-center max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
                     <IoWarningOutline className="text-[red] h-28 w-28" />
                     <div className="flex justify-center items-center mt-4">

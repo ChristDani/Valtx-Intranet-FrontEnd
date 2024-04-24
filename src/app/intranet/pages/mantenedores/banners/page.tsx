@@ -147,7 +147,8 @@ const BannPage = () => {
         getData(1, itemsPorPagina, title)
     }
 
-    const createItem = async () => {
+    const createItem = async (e:any) => {
+        e.preventDefault();
         setModalState({ create: true, update: false, delete: false })
         openModal()
     }
@@ -198,17 +199,20 @@ const BannPage = () => {
     }
 
     const itemDetails = (e: any, id: number) => {
+        e.preventDefault();
         openModal()
         getOneItem(id)
     }
 
     const editItem = (e: any, id: number) => {
+        e.preventDefault();
         setModalState({ create: false, update: true, delete: false })
         openModal()
         getOneItem(id)
     }
 
     const deleteItem = async (e: any, id: number) => {
+        e.preventDefault();
         setModalState({ create: false, update: false, delete: true })
         getOneItem(id)
         openModal()
@@ -554,7 +558,7 @@ const BannPage = () => {
                             <form onSubmit={confirmOp} className="mt-5">
                                 <div className="mb-5 hidden">
                                     <label htmlFor="idItem" >ID</label>
-                                    <input type="text" name="idItem" value={editId}></input>
+                                    <input type="text" name="idItem" defaultValue={editId}></input>
                                 </div>
                                 <div className="mb-5 flex">
                                     <div className="flex-auto w-28 relative">
@@ -633,31 +637,32 @@ const BannPage = () => {
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            {
-                                                modalState.update ? (
-                                                    <>
-                                                        {
-                                                            statesList.map((state: any) => (
-                                                                state.iid_tabla_detalle == editState ? (
-                                                                    <option key={state.iid_tabla_detalle} value={state.iid_tabla_detalle} selected hidden>{capitalize(state.vvalor_texto_corto)}</option>
-                                                                ) : (
-                                                                    <>
-                                                                    </>
-                                                                )
-                                                            ))
-                                                        }
-                                                    </>
-                                                ) : (
-                                                    <option value="0" selected hidden>Seleccione</option>
+                                        <select id="stateItem" className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)} value={editState}>
+                                            {modalState.update ? (
+                                                statesList.map((state: any) =>
+                                                    state.iid_tabla_detalle === state ? (
+                                                    <option
+                                                        key={state.iid_tabla_detalle}
+                                                        value={state.iid_tabla_detalle}
+                                                    >
+                                                        {capitalize(state.vvalor_texto_corto)}
+                                                    </option>
+                                                    ) : null
                                                 )
-                                            }
+                                                ) : (
+                                                <option key="0" value="0">
+                                                    Seleccione
+                                                </option>
+                                                )}
 
-                                            {
-                                                statesList.map((state: any) => (
-                                                    <option key={state.iid_tabla_detalle} value={state.iid_tabla_detalle}>{capitalize(state.vvalor_texto_corto)}</option>
-                                                ))
-                                            }
+                                                {statesList.map((state: any) => (
+                                                <option
+                                                    key={state.iid_tabla_detalle}
+                                                    value={state.iid_tabla_detalle}
+                                                >
+                                                    {capitalize(state.vvalor_texto_corto)}
+                                                </option>
+                                            ))}
                                         </select>
                                     </div>
                                 </div>
@@ -686,7 +691,7 @@ const BannPage = () => {
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                                     <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                                     <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <p className="mb-1 font-normal text-gray-700">Estado: {
+                                    <div className="mb-1 font-normal text-gray-700">Estado: {
                                         statesList.map((state: any) => (
                                             <div key={state.iid_tabla_detalle}>
                                                 {
@@ -700,7 +705,7 @@ const BannPage = () => {
                                             </div>
                                         ))
                                     }
-                                    </p>
+                                    </div>
                                     <p className="mb-1 font-normal text-gray-700">{fechaFormat}</p>
                                 </div>
                             </>

@@ -70,7 +70,7 @@ const ProfilesPage = () => {
   const [editId, setEditId] = useState("0");
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
-  const [editState, setEditState] = useState("3");
+  const [editState, setEditState] = useState("0");
 
   // paginacion
   const [paginas, setPages] = useState(0);
@@ -467,7 +467,9 @@ const ProfilesPage = () => {
                               ? capitalize(state.vvalor_texto_corto)
                               : "Sin estado"}
                           </div>
-                        ) : ''}
+                        ) : (
+                          ""
+                        )}
                       </div>
                     ))}
                   </th>
@@ -754,7 +756,7 @@ const ProfilesPage = () => {
             <form onSubmit={confirmOp} className="mt-5">
               <div className="mb-5 hidden">
                 <label htmlFor="idItem">ID</label>
-                <input type="text" name="idItem" value={editId}></input>
+                <input type="text" name="idItem" defaultValue={editId}></input>
               </div>
               <div className="mb-5 flex flex-grow gap-2">
                 <div className="flex-auto w-1/3 relative">
@@ -800,37 +802,32 @@ const ProfilesPage = () => {
                     id="stateItem"
                     className="bg-gray-50 border border-gray-300 w-full rounded-lg p-2"
                     onChange={(e) => setEditState(e.target.value)}
+                    value={editState} // Usar la prop value para controlar la opción seleccionada
                   >
                     {modalState.update ? (
-                      <>
-                        {statesList.map((state: any) => (
-                          <>
-                            {state.iid_tabla_detalle == state ? (
-                              <option
-                                value={state.iid_tabla_detalle}
-                                selected
-                                hidden
-                              >
-                                {capitalize(state.vvalor_texto_corto)}
-                              </option>
-                            ) : (
-                              <></>
-                            )}
-                          </>
-                        ))}
-                      </>
+                      statesList.map((state: any) =>
+                        state.iid_tabla_detalle === state ? (
+                          <option
+                            key={state.iid_tabla_detalle}
+                            value={state.iid_tabla_detalle}
+                          >
+                            {capitalize(state.vvalor_texto_corto)}
+                          </option>
+                        ) : null
+                      )
                     ) : (
-                      <option value="0" selected hidden>
+                      <option key="0" value="0">
                         Seleccione
                       </option>
                     )}
 
                     {statesList.map((state: any) => (
-                      <>
-                        <option value={state.iid_tabla_detalle}>
-                          {capitalize(state.vvalor_texto_corto)}
-                        </option>
-                      </>
+                      <option
+                        key={state.iid_tabla_detalle}
+                        value={state.iid_tabla_detalle}
+                      >
+                        {capitalize(state.vvalor_texto_corto)}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -848,7 +845,7 @@ const ProfilesPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    { modalState.create
+                    {modalState.create
                       ? optionInfo.IsSuccess
                         ? optionList.map((item: any) => (
                             <tr
@@ -920,7 +917,7 @@ const ProfilesPage = () => {
                             </tr>
                           ))
                         : ""
-                      :  optionId.map((item: any) => (
+                      : optionId.map((item: any) => (
                           <tr
                             key={item.iid_opcion}
                             className="bg-gray-100 hover:bg-gray-50"
@@ -984,9 +981,7 @@ const ProfilesPage = () => {
                               </label>
                             </td>
                           </tr>
-                        )
-                      )
-                    }
+                        ))}
                   </tbody>
                 </table>
               </div>
@@ -1030,30 +1025,28 @@ const ProfilesPage = () => {
               </div>
             </div>
           ) : (
-            <>
-              <div className="px-5 py-3">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-                  {editTitle}
-                </h5>
-                <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
-                <p className="mb-1 font-normal text-gray-700">
-                  Estado:
-                  {statesList.map((state: any) => (
-                    <>
-                      {state.iid_tabla_detalle == editState ? (
-                        state.vvalor_texto_corto != null ? (
-                          capitalize(state.vvalor_texto_corto)
-                        ) : (
-                          "Sin estado"
-                        )
+            <div className="px-5 py-3">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+                {editTitle}
+              </h5>
+              <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
+              <div className="mb-1 font-normal text-gray-700">
+                Estado:
+                {statesList.map((state: any) => (
+                  <div key={state.iid_tabla_detalle}>
+                    {state.iid_tabla_detalle == editState ? (
+                      state.vvalor_texto_corto != null ? (
+                        capitalize(state.vvalor_texto_corto)
                       ) : (
-                        <></>
-                      )}
-                    </>
-                  ))}
-                </p>
+                        "Sin estado"
+                      )
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                ))}
               </div>
-            </>
+            </div>
           )}
         </div>
       </ModalComponent>

@@ -60,7 +60,7 @@ const UsersPage = () => {
   const [telefono, setTelefono] = useState("");
   const [editIdDocumento, setIdDocumento] = useState("");
   const [estado, setEstado] = useState("0");
-  const [editVcip, setEditVcip] = useState(""); 
+  const [editVcip, setEditVcip] = useState("");
   const [editTipoEmp, setEditTipoEmp] = useState("");
   const [editEmpresa, setEditEmpresa] = useState("");
   // obtener opciones de usuario
@@ -131,16 +131,14 @@ const UsersPage = () => {
     setDocumentList(data);
   };
   const gettipoEmpleado = async () => {
-    const {data} = await parametrosServices.getEmployesTypes();
+    const { data } = await parametrosServices.getEmployesTypes();
     setDatTempleado(data);
-    
-  }
+  };
 
   const getempresa = async () => {
-    const {data} = await parametrosServices.getEnterprises();
+    const { data } = await parametrosServices.getEnterprises();
     setDatEmpresa(data);
-    
-  }
+  };
   const getData = async (page: number, items: number, titulo: string) => {
     setCurrentPage(page);
     setItems(items);
@@ -166,13 +164,11 @@ const UsersPage = () => {
     iniciarPaginacion(page, pages);
   };
 
-  
   const getOneItem = async (id: number) => {
     const onlyOneItem = await userServices.getOne(id);
 
     const edittttt = onlyOneItem.data;
-    console.log(datEmpresa);
-    
+
     edittttt.map(
       (item: any) => (
         setEditId(item.iid_usuario),
@@ -329,9 +325,11 @@ const UsersPage = () => {
     return first + rest;
   };
   const onlyNumber = (e: any) => {
-    const vcip = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+    const vcip = e.target.value
+      .replace(/[^0-9]/g, "")
+      .replace(/(\..*)\./g, "$1");
     setEditVcip(vcip);
-}
+  };
   return (
     <>
       <div className="max-w mt-4 flex flex-wrap items-center justify-between">
@@ -392,15 +390,6 @@ const UsersPage = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              {/* <th scope="col" className="px-6 py-3 text-center">
-                Nombres
-              </th>
-              <th scope="col" className="px-6 py-3 text-center">
-                Apellido Paterno
-              </th>
-              <th scope="col" className="px-6 py-3 text-center">
-                Apellido Materno
-              </th> */}
               <th scope="col" className="px-6 py-3 text-center">
                 Nombre Completo
               </th>
@@ -431,9 +420,6 @@ const UsersPage = () => {
                     key={item.iid_usuario}
                     className="bg-white border-b hover:bg-gray-50"
                   >
-                    {/* <td className="px-6 py-4 text-center">{item.vnombres}</td>
-                    <td className="px-6 py-4 text-center">{item.vapellido_paterno}</td>
-                    <td className="px-6 py-4 text-center">{item.vapellido_materno}</td> */}
                     <td className="px-6 py-4 text-center capitalize">
                       {capitalize(item.vnombre_completo)}
                     </td>
@@ -450,24 +436,25 @@ const UsersPage = () => {
                       {item.vdescripcion_perfil}
                     </td>
                     <td>
-                      {statesList.map((state: any) => (
-                        <>
-                          {state.iid_tabla_detalle ==
-                          item.iid_estado_registro ? (
-                            <div
-                              className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
-                                state.vvalor_texto_corto === "ACTIVO"
-                                  ? "bg-emerald-100 text-emerald-700"
-                                  : "bg-rose-200 text-rose-800"
-                              }`}
-                            >
-                              {state.vvalor_texto_corto != null
-                                ? capitalize(state.vvalor_texto_corto)
-                                : "Sin estado"}
-                            </div>
-                          ) : ''}
-                        </>
-                      ))}
+                    {statesList.map((state: any) => (
+                      <div key={state.iid_tabla_detalle}>
+                        {state.iid_tabla_detalle == item.iid_estado_registro ? (
+                          <div
+                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
+                              state.vvalor_texto_corto === "ACTIVO"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-rose-200 text-rose-800"
+                            }`}
+                          >
+                            {state.vvalor_texto_corto != null
+                              ? capitalize(state.vvalor_texto_corto)
+                              : "Sin estado"}
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ))}
                     </td>
                     <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                       {optionUser.visualizar && (
@@ -551,7 +538,7 @@ const UsersPage = () => {
                     </td>
                   </tr>
                 ))
-              : ""}
+              : null}
           </tbody>
         </table>
       </div>
@@ -726,9 +713,9 @@ const UsersPage = () => {
                 viewBox="0 0 24 24"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
             </div>
@@ -738,7 +725,7 @@ const UsersPage = () => {
             <form onSubmit={confirmOp} className="mt-5">
               <div className="mb-5 hidden">
                 <label htmlFor="idItem">ID</label>
-                <input type="text" name="idItem" value={editId}></input>
+                <input type="text" name="idItem" defaultValue={editId}></input>
               </div>
               <div className="mb-5 flex gap-2">
                 <div className="flex-auto relative w-10">
@@ -802,38 +789,31 @@ const UsersPage = () => {
                     id="stateItem"
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2"
                     onChange={(e) => setIdDocumento(e.target.value)}
+                    value={editIdDocumento}
                   >
-                    <option value="0">Seleccione</option>
                     {modalState.update ? (
-                      <>
-                        {documentList.map((state: any) => (
-                          <>
-                            {state.iid_tabla_detalle == editIdDocumento ? (
-                              <option
-                                value={state.iid_tabla_detalle}
-                                selected
-                                hidden
-                              >
-                                {capitalize(state.vvalor_texto_corto)}
-                              </option>
-                            ) : (
-                              <></>
-                            )}
-                          </>
-                        ))}
-                      </>
+                      documentList.map((document: any) =>
+                        document.iid_tabla_detalle === editIdDocumento ? (
+                          <option
+                            key={document.iid_tabla_detalle}
+                            value={document.iid_tabla_detalle}
+                          >
+                            {capitalize(document.vvalor_texto_corto)}
+                          </option>
+                        ) : null
+                      )
                     ) : (
-                      <option value="0" selected hidden>
+                      <option key="0" value="0">
                         Seleccione
                       </option>
                     )}
-
-                    {documentList.map((item: any) => (
-                      <>
-                        <option value={item.iid_tabla_detalle}>
-                          {capitalize(item.vvalor_texto_corto)}
-                        </option>
-                      </>
+                    {documentList.map((document: any) => (
+                      <option
+                        key={document.iid_tabla_detalle}
+                        value={document.iid_tabla_detalle}
+                      >
+                        {capitalize(document.vvalor_texto_corto)}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -887,26 +867,26 @@ const UsersPage = () => {
                   ></input>
                 </div>
               </div>
-              
+
               <div className="mb-5 flex gap-2">
-                  <div className="flex-auto relative w-10">
-                    <label
-                      htmlFor="vcip"
-                      className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
-                    >
-                      VCIP
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="vcip"
-                      className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
-                      value={editVcip}
-                      minLength={0} 
-                      maxLength={9}
-                      onInput={(e: any) => onlyNumber(e)}
-                    ></input>
-                  </div>
+                <div className="flex-auto relative w-10">
+                  <label
+                    htmlFor="vcip"
+                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                  >
+                    VCIP
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    name="vcip"
+                    className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
+                    value={editVcip}
+                    minLength={0}
+                    maxLength={9}
+                    onInput={(e: any) => onlyNumber(e)}
+                  ></input>
+                </div>
                 <div className="flex-auto relative w-14">
                   <label
                     htmlFor="emplItem"
@@ -918,12 +898,32 @@ const UsersPage = () => {
                     id="emplItem"
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full"
                     onChange={(e) => setEditTipoEmp(e.target.value)}
+                    value={editTipoEmp}
                   >
-                    <option value="0">Seleccione</option>
-                    {datTempleado?.map((item: any) => (
-                        <option key={item.iid_tabla_detalle} value={item.iid_tabla_detalle} selected={item.iid_tabla_detalle === editTipoEmp ? true : false}>
-                          {item.vvalor_texto_corto}
-                        </option>
+                    {modalState.update ? (
+                      datTempleado.map((item: any) =>
+                        item.iid_tabla_detalle === editTipoEmp ? (
+                          <option
+                            key={item.iid_tabla_detalle}
+                            value={item.iid_tabla_detalle}
+                          >
+                            {capitalize(item.vvalor_texto_corto)}
+                          </option>
+                        ) : null
+                      )
+                    ) : (
+                      <option key="0" value="0">
+                        Seleccione
+                      </option>
+                    )}
+
+                    {datTempleado.map((item: any) => (
+                      <option
+                        key={item.iid_tabla_detalle}
+                        value={item.iid_tabla_detalle}
+                      >
+                        {capitalize(item.vvalor_texto_corto)}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -938,15 +938,33 @@ const UsersPage = () => {
                     id="empItem"
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full"
                     onChange={(e) => setEditEmpresa(e.target.value)}
+                    value={editEmpresa}
                   >
-                    <option value="0">Seleccione</option>
-                    {
-                      datEmpresa?.map((item:any)=>(
-                        <option key={item.iid_tabla_detalle} value={item.iid_tabla_detalle} selected={item.iid_tabla_detalle === editEmpresa ? true : false}>
-                          {item.vvalor_texto_corto}
-                        </option>
-                      ))
-                    }
+                    {modalState.update ? (
+                      datEmpresa.map((item: any) =>
+                        item.iid_tabla_detalle === editEmpresa ? (
+                          <option
+                            key={item.iid_tabla_detalle}
+                            value={item.iid_tabla_detalle}
+                          >
+                            {capitalize(item.vvalor_texto_corto)}
+                          </option>
+                        ) : null
+                      )
+                    ) : (
+                      <option key="0" value="0">
+                        Seleccione
+                      </option>
+                    )}
+
+                    {datEmpresa.map((item: any) => (
+                      <option
+                        key={item.iid_tabla_detalle}
+                        value={item.iid_tabla_detalle}
+                      >
+                        {capitalize(item.vvalor_texto_corto)}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -962,65 +980,27 @@ const UsersPage = () => {
                     id="stateItem"
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2"
                     onChange={(e) => setEditIdPerfil(e.target.value)}
+                    value={editIdPerfil}
                   >
-                    <option value="0">Seleccione</option>
                     {modalState.update ? (
-                      <>
-                        {listPerfil.map((item: any) => (
-                          <>
-                            {item.iid_perfil == editIdPerfil ? (
-                              <option value={item.iid_perfil} selected hidden>
+                        listPerfil.map((item: any) => (
+                            item.iid_perfil == editIdPerfil ? (
+                              <option key={item.iid_perfil} value={item.iid_perfil} >
                                 {capitalize(item.vnombre_perfil)}
                               </option>
-                            ) : (
-                              <></>
-                            )}
-                          </>
-                        ))}
-                      </>
+                            ) : null
+                        ))
                     ) : (
-                      <option value="0" selected hidden>
+                      <option value="0" key='0'>
                         Seleccione
                       </option>
                     )}
 
                     {listPerfil.map((item: any) => (
-                      <>
-                        <option value={item.iid_perfil}>
+                        <option key={item.iid_perfil} value={item.iid_perfil}>
                           {capitalize(item.vnombre_perfil)}
                         </option>
-                      </>
                     ))}
-                  </select>
-                </div>
-                <div className="mb-5 relative hidden">
-                  <label
-                    htmlFor="stateItem"
-                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
-                  >
-                    Tipo de Usuario
-                  </label>
-                  <select
-                    id="stateItem"
-                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
-                  >
-                    <option value="0">Seleccione</option>
-                  </select>
-                </div>
-                <div className="mb-5 relative hidden">
-                  <label
-                    htmlFor="stateItem"
-                    className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
-                  >
-                    Empresa
-                  </label>
-                  <select
-                    id="stateItem"
-                    className="bg-gray-50 border border-gray-300 rounded-lg p-2"
-                  >
-                    <option value="0">Seleccione</option>
-                    <option value="1">VALTX</option>
-                    <option value="2">OTRA</option>
                   </select>
                 </div>
                 <div className="mb-5 relative">
@@ -1034,37 +1014,32 @@ const UsersPage = () => {
                     id="stateItem"
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2"
                     onChange={(e) => setEstado(e.target.value)}
+                    value={estado} // Usar la prop value para controlar la opción seleccionada
                   >
                     {modalState.update ? (
-                      <>
-                        {statesList.map((state: any) => (
-                          <>
-                            {state.iid_tabla_detalle == estado ? (
-                              <option
-                                value={state.iid_tabla_detalle}
-                                selected
-                                hidden
-                              >
-                                {capitalize(state.vvalor_texto_corto)}
-                              </option>
-                            ) : (
-                              <></>
-                            )}
-                          </>
-                        ))}
-                      </>
+                      statesList.map((state: any) =>
+                        state.iid_tabla_detalle === state ? (
+                          <option
+                            key={state.iid_tabla_detalle}
+                            value={state.iid_tabla_detalle}
+                          >
+                            {capitalize(state.vvalor_texto_corto)}
+                          </option>
+                        ) : null
+                      )
                     ) : (
-                      <option value="0" selected hidden>
+                      <option key="0" value="0">
                         Seleccione
                       </option>
                     )}
 
                     {statesList.map((state: any) => (
-                      <>
-                        <option value={state.iid_tabla_detalle}>
-                          {capitalize(state.vvalor_texto_corto)}
-                        </option>
-                      </>
+                      <option
+                        key={state.iid_tabla_detalle}
+                        value={state.iid_tabla_detalle}
+                      >
+                        {capitalize(state.vvalor_texto_corto)}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -1121,32 +1096,40 @@ const UsersPage = () => {
                 <p className="mb-1 font-normal text-gray-700">
                   Perfil: {capitalize(editPerfil)}
                 </p>
-                
+
                 <p className="mb-1 font-normal text-gray-700">
                   VCIP: {editVcip}
                 </p>
                 <p className="mb-1 font-normal text-gray-700">
-                  Tipo de empleado: {datTempleado?.find((obj: any) => obj.iid_tabla_detalle == editTipoEmp)?.vvalor_texto_corto}
+                  Tipo de empleado:{" "}
+                  {
+                    datTempleado?.find(
+                      (obj: any) => obj.iid_tabla_detalle == editTipoEmp
+                    )?.vvalor_texto_corto
+                  }
                 </p>
                 <p className="mb-1 font-normal text-gray-700">
-                  Empresa: {datEmpresa?.find((obj: any) => obj.iid_tabla_detalle == editEmpresa)?.vvalor_texto_corto}
+                  Empresa:{" "}
+                  {
+                    datEmpresa?.find(
+                      (obj: any) => obj.iid_tabla_detalle == editEmpresa
+                    )?.vvalor_texto_corto
+                  }
                 </p>
-                <p className="mb-1 font-normal text-gray-700">
+                <div className="mb-1 font-normal text-gray-700">
                   Estado:{" "}
                   {statesList.map((state: any) => (
-                    <>
+                    <div key={state.iid_tabla_detalle}>
                       {state.iid_tabla_detalle == estado ? (
                         state.vvalor_texto_corto != null ? (
                           capitalize(state.vvalor_texto_corto)
                         ) : (
                           "Sin estado"
                         )
-                      ) : (
-                        <></>
-                      )}
-                    </>
+                      ) : ''}
+                    </div>
                   ))}
-                </p>
+                </div>
               </div>
             </>
           )}
