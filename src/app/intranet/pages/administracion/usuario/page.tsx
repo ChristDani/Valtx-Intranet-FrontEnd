@@ -63,8 +63,7 @@ const UsersPage = () => {
   const [editVcip, setEditVcip] = useState("");
   const [editTipoEmp, setEditTipoEmp] = useState("");
   const [editEmpresa, setEditEmpresa] = useState("");
-  // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || "";
+
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -101,6 +100,8 @@ const UsersPage = () => {
     return pathFinal;
   };
   useEffect(() => {
+      // obtener opciones de usuario
+    const perfilId = localStorage.getItem("perfil") || "";
     getData(currentPage, itemsPorPagina, searchTitle);
     obtenerPath();
     getStates();
@@ -111,7 +112,8 @@ const UsersPage = () => {
     getempresa();
   }, []);
 
-  const searchData = (title: string) => {
+  const searchData = (e: any) => {
+    const title = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
     setSearchTitle(title);
     getData(1, itemsPorPagina, title);
   };
@@ -330,6 +332,7 @@ const UsersPage = () => {
       .replace(/(\..*)\./g, "$1");
     setEditVcip(vcip);
   };
+
   return (
     <>
       <div className="max-w mt-4 flex flex-wrap items-center justify-between">
@@ -340,7 +343,7 @@ const UsersPage = () => {
             className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
             placeholder="Buscar por documento"
             value={searchTitle}
-            onInput={(e: any) => searchData(e.target.value)}
+            onInput={(e: any) => searchData(e)}
           ></input>
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
             <svg

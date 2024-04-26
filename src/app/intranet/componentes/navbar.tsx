@@ -24,6 +24,7 @@ export default function Navbar() {
     useEffect(()=>{
         validatePerfil();
         getIcons();
+        UserName();
     }, []);
 
     const validatePerfil = async () =>{
@@ -90,14 +91,14 @@ export default function Navbar() {
             </div>
             <div className="flex items-center">
                 <FaRegUserCircle className="w-10 h-10 bg-[#0C3587] rounded-full mr-4" />
-                <h3 className="text-[#0C3587] mr-2">Hola, <br></br> <b>{localStorage.getItem("userName")} {localStorage.getItem("userFirstLastName")} {localStorage.getItem("userSecondLastName")}</b></h3>  
+                <h3 className="text-[#0C3587] mr-2">Hola, <br></br> <b>{nombre}</b></h3>  
                 <div className="relative flex pt-4 h-[50px] rounded-md">
                     {/** DropDown */}
                     {
                         opened ? 
                         <div className="origin-top-right absolute right-0 mt-5 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <div className="py-1" role="none">
-                            <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Configuraciones</a>
+                            <a href="/intranet/pages/configuracion" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Configuraciones</a>
                             <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">Ayuda</a>
                             <div className="block px-4 cursor-pointer py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" onClick={()=>{setModalIsOpen(true)}}>Cerrar Sesión</div>
                         </div>

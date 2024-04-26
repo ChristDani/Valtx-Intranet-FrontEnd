@@ -13,8 +13,7 @@ const ProfilesPage = () => {
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
 
-  // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || "";
+ 
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -23,6 +22,8 @@ const ProfilesPage = () => {
     editar: false,
     eliminar: false,
   });
+
+  const [optionsChange, setOptionChange] = useState(false);
 
   const getOptionsUser = async (id: any, path: string) => {
     const resul = path.split("/");
@@ -124,6 +125,8 @@ const ProfilesPage = () => {
   };
 
   useEffect(() => {
+     // obtener opciones de usuario
+    const perfilId = localStorage.getItem("perfil") || "";
     getData(currentPage, itemsPorPagina, searchTitle);
     getOptionsData();
     obtenerPath();
@@ -162,8 +165,6 @@ const ProfilesPage = () => {
     const options: any = await optionsServices.getList(1, 20);
     setOptionInfo(options);
     setOptionList(options.data);
-
-    let total = options.TotalRecords;
   };
 
   const getOneItem = async (id: any) => {
@@ -231,25 +232,33 @@ const ProfilesPage = () => {
     setSelect([]);
     setOptionId([]);
     setNewOptions([]);
+    setOptionChange(false);
   };
 
   const confirmOp = async (e: any) => {
     e.preventDefault();
 
     if (modalState.create) {
-      const datos = await PerfilesService.create(
-        editTitle,
-        editDesc,
-        editId,
-        editState
-      );
-      rellenarId(datos.data.Codigo);
-      const data = await optionsServices.setPefilOptions(select);
-      closeModal();
+      if(optionsChange){
+        const datos = await PerfilesService.create(
+          editTitle,
+          editDesc,
+          editId,
+          editState
+        );
+        rellenarId(datos.data.Codigo);
+        const data = await optionsServices.setPefilOptions(select);
+        closeModal();
+      } else {
+        alert('No hay cambios en lista de opciones');
+      }
+      
     } else if (modalState.update) {
-      await PerfilesService.update(editTitle, editDesc, editId);
-      const data = await optionsServices.setPefilOptions(newOptions);
-      closeModal();
+      
+        await PerfilesService.update(editTitle, editDesc, editId);
+        const data = await optionsServices.setPefilOptions(newOptions);
+        closeModal();
+      
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
       closeModal();
@@ -281,6 +290,7 @@ const ProfilesPage = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, id: any) => {
+    setOptionChange(true);
     const { name, checked } = e.target;
     let valor = checked ? 1 : 0;
 
@@ -318,6 +328,7 @@ const ProfilesPage = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     id: any
   ) => {
+    setOptionChange(true);
     const { name, checked, value } = e.target;
     let valor = checked ? 1 : 0;
 
