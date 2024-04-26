@@ -97,10 +97,11 @@ export const userServices = {
     const passwordEncrypt = crypto.createHash('sha512').update(user).digest('hex').toUpperCase();
 
     const res = await axiosClient.post(`seguridad/setUsuarioChangePassword`, {
-      "usuario": user, //"12345678"
+      "iid_usuario": user, //"12345678"
       "flg_isnuevo": true,
       "password": passwordEncrypt //"1234567891"
     });
 
+    return res
   }
 }

@@ -220,6 +220,12 @@ const UsersPage = () => {
     openModal();
   };
 
+  const resetearPassword = async (e:any, documento:any) => {
+    e.preventDefault();
+    const res = await userServices.resetPassword(documento);
+    console.log(res)
+  };
+
   const iniciarPaginacion = (page: number, pages: number) => {
     setPagInicio(1);
     let starPage = 1;
@@ -264,21 +270,25 @@ const UsersPage = () => {
   const confirmOp = async (e: any) => {
     e.preventDefault();
     if (modalState.create) {
-      const res = await userServices.setUsuario(
-        editId,
-        editNombre,
-        editApePat,
-        editApeMat,
-        editDocumento,
-        editEmail,
-        telefono,
-        editIdPerfil,
-        editIdDocumento,
-        editEmpresa,
-        editTipoEmp,
-        estado,
-        editVcip
-      );
+      try {
+        const res = await userServices.setUsuario(
+          editId,
+          editNombre,
+          editApePat,
+          editApeMat,
+          editDocumento,
+          editEmail,
+          telefono,
+          editIdPerfil,
+          editIdDocumento,
+          editEmpresa,
+          editTipoEmp,
+          estado,
+          editVcip
+        );
+    } catch (error) {
+      console.log(error);
+    }
     } else if (modalState.update) {
       const res = await userServices.updateUsuario(
         editId,
@@ -537,7 +547,7 @@ const UsersPage = () => {
                             </defs>
                           </svg>
                         </Link>
-                      )}
+                      )} 
                     </td>
                   </tr>
                 ))
@@ -1048,6 +1058,13 @@ const UsersPage = () => {
                 </div>
               </div>
               <div className="text-right">
+                {modalState.update && <button
+                  type="button"
+                  className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
+                  onClick={(e) => resetearPassword(e, '123456')}
+                >
+                  Reiniciar Contraseña
+                </button>}
                 <button
                   type="button"
                   className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
