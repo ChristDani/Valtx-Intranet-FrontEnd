@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { newsServices } from "../../services/mantenedores/news.service";
 import { Noticias, NoticiasResponseDTO } from "../../interfaces/news.response.dto";
-
+import Link from "next/link";
 const TopNews = () =>{
 
 
@@ -41,7 +41,7 @@ const TopNews = () =>{
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
                 <h1 className="global-main-text text-lg"> Valtx news </h1>
-                <span className="cursor-pointer global-secondary-text">Ver todos</span>
+                <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/noticias">Ver todos</Link>
             </div>
             <div className="flex flex-row w-full h-64">
                 {

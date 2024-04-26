@@ -33,7 +33,7 @@ const Sidebar = () => {
   const onSelect = () => {
     setExpandedItem(null);
   };
-
+  
   return (
     <div>
       {/* Sidebar */}

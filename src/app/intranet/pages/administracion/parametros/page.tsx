@@ -92,6 +92,10 @@ const CabeceraPage = () => {
         cleanData()
         setModalState({ create: false, update: false, delete: false })
         setModalIsOpen(false);
+        setShow({
+            state: false,
+            id_tabla_cabecera: 0
+        })
     };
 
     useEffect(() => {
@@ -172,9 +176,9 @@ const CabeceraPage = () => {
         if (modalState.create) {
                 const res = await cabeceraServices.create(editDesc, editAgregacion,editState,editId);
         } else if (modalState.update) {
-            //const res = await cabeceraServices.update(editDesc, editAgregacion,editState,editId);
+            const res = await cabeceraServices.update(editDesc, editAgregacion,editState,editId);
         } else if (modalState.delete) {
-            //const res = await cabeceraServices.delete(editId);
+            const res = await cabeceraServices.delete(editId);
         } else {
             alert('detalles')
         }
@@ -273,7 +277,7 @@ const CabeceraPage = () => {
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_tabla_cabecera)}>
                                                 <svg width="20" height="20" className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path fill-rule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clip-rule="evenodd" />
+                                                    <path fillRule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clipRule="evenodd" />
                                                     <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z" />
                                                 </svg>
                                             </Link>}
