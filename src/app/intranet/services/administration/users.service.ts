@@ -88,18 +88,25 @@ export const userServices = {
     return res;
   },
 
-  async changePasssword() {
+  async changePasssword(user: number, currentPassword: string, newPassword: string) {
+
+    const hashCurrentPassword = crypto.createHash('sha512').update(currentPassword).digest('hex').toUpperCase();
+    const hashNewPassword = crypto.createHash('sha512').update(newPassword).digest('hex').toUpperCase();
+
+    const res = await axiosClient.post(`seguridad/setUsuarioChangePasswordId`, {
+      "iid_usuario": user, // 1
+      "password_actual": hashCurrentPassword, // "hash"
+      "newpassword": hashNewPassword, // "hash"
+    });
+
+    return res;
 
   },
 
-  async resetPassword(user: string) {
+  async resetPassword(user: number) {
 
-    const passwordEncrypt = crypto.createHash('sha512').update(user).digest('hex').toUpperCase();
-
-    const res = await axiosClient.post(`seguridad/setUsuarioChangePassword`, {
-      "iid_usuario": user, //"12345678"
-      "flg_isnuevo": true,
-      "password": passwordEncrypt //"1234567891"
+    const res = await axiosClient.post(`seguridad/setUsuarioResetPasswordId`, {
+      "iid_usuario": user, // 1
     });
 
     return res
