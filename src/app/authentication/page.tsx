@@ -38,6 +38,10 @@ export default function AuthenticationPage() {
         
     }
 
+    const validarDocument = (e: any) => {
+        e.target.value = e.target.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
+        onInputChange(e);
+    }
 
     const closeModal = () =>{
         setModalIsOpen(false);
@@ -66,7 +70,8 @@ export default function AuthenticationPage() {
                                     rounded-md px-3 py-1.5 h-12 text-gray-900 shadow-sm ring-1 ring-inset 
                                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
                                     focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                    onChange={onInputChange}
+                                    onInput={(e: any) => validarDocument(e)}
+                                    maxLength={8}
                                 ></input>
                             </div>
                             <br></br>
