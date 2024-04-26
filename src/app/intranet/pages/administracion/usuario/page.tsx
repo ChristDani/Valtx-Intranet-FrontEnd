@@ -899,7 +899,7 @@ const UsersPage = () => {
                     className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
                     value={editDocumento}
                     onInput={(e: any) => validarDoc(e.target)}
-                    maxLength={8}
+                    
                   ></input>
                 </div>
                 <div className="flex-auto relative w-20">
