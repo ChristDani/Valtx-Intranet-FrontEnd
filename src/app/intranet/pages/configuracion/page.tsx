@@ -25,9 +25,17 @@ export default function ConfiguracionPage() {
   const [editTipoEmp, setEditTipoEmp] = useState("");
   const [editEmpresa, setEditEmpresa] = useState("");
 
+  //nueva clave
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(false);
+  
+
   // modal
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  //modal de aviso
   const [aviso, setAviso] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [showButton, setShowButton] = useState(false);
@@ -94,6 +102,15 @@ export default function ConfiguracionPage() {
     }
   }, [newEditEmail, newTelefono, editEmail, telefono]);
 
+  useEffect(() => {
+    if(confirmPassword.length > 0 && confirmPassword !== newPassword) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+
+  },[confirmPassword, newPassword]);
+
   const updateUser = async (e: React.FormEvent<HTMLFormElement>) => {
     const email = newEditEmail.length > 1 ? newEditEmail : editEmail;
     const tel = newTelefono.length > 1 ? newTelefono : telefono;
@@ -107,6 +124,19 @@ export default function ConfiguracionPage() {
       console.log(error);
     }
     
+  };
+
+  const changePassword = async (e: any) => {
+    e.preventDefault();
+    try {
+      const res = await userServices.changePasssword(editId, currentPassword, newPassword);
+      console.log(res.data.Message);
+      setModalMessage(res.data.Message);
+      setAviso(true);
+    } catch (error) {
+      console.log(error);
+    }
+    //setAviso(false);
   };
 
   return (
@@ -268,6 +298,7 @@ export default function ConfiguracionPage() {
                   name="iorden"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   autoComplete="off"
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                 />
               </div>
               <div className="py-2">
@@ -283,6 +314,7 @@ export default function ConfiguracionPage() {
                   name="iorden"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   autoComplete="off"
+                  onChange={(e) => setNewPassword(e.target.value)}
                 />
               </div>
               <div className="py-2">
@@ -298,7 +330,9 @@ export default function ConfiguracionPage() {
                   name="iorden"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                   autoComplete="off"
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                 />
+                {error && <p className="text-red-500 text-sm">Lasc contraseñas deben coincidir</p>}
               </div>
               <br />
               <div className="text-end">
@@ -312,8 +346,9 @@ export default function ConfiguracionPage() {
                 <button
                   type="submit"
                   className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]"
+                  onClick={(e) => changePassword(e)}
                 >
-                  Confirmar
+                  Guardar
                 </button>
               </div>
             </div>
