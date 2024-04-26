@@ -50,7 +50,7 @@ const BlogPage = () => {
   const [editLink, setEditLink] = useState("");
   const [editOrden, setEditOrden] = useState("");
   const [editState, setEditState] = useState("1");
-  const [editCategory, setEditCategory] = useState("1");
+  const [editCategory, setEditCategory] = useState("0");
   const [Image, setImage] = useState(null);
   const [editImage, setEditImage] = useState("");
   const [nameImage, setNameImage] = useState("");
@@ -317,6 +317,7 @@ const BlogPage = () => {
     setNameImage("");
     setEditState("1");
     setEditOrden("");
+    setEditCategory("0");
   };
 
   const iniciarPaginacion = (page: number, pages: number) => {

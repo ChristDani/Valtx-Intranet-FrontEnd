@@ -33,7 +33,7 @@ const Sidebar = () => {
   const onSelect = () => {
     setExpandedItem(null);
   };
-
+  
   return (
     <div>
       <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
