@@ -51,7 +51,7 @@ export default function ConfiguracionPage() {
 
   const closeAviso = () => {
     setAviso(false);
-    window.location.reload();
+    
   };
 
   const upadtePassword = (e: any) => {
@@ -85,7 +85,7 @@ export default function ConfiguracionPage() {
       )
     );
 
-    console.log(userInfo);
+    
   };
 
   useEffect(() => {
@@ -117,9 +117,12 @@ export default function ConfiguracionPage() {
     e.preventDefault();
     try {
       const res = await userServices.updateUsuario(editId, editNombre, editApePat, editApeMat, editDocumento, email, tel, editIdPerfil, editIdDocumento, editEmpresa, editTipoEmp, estado, editVcip);
-      console.log(res.data.Message);
-      setModalMessage(res.data.Message);
-      setAviso(true);
+      if(!res.data.IsSuccess) {
+        setModalMessage(res.data.Message);
+        setAviso(true);
+      } else {
+        window.location.reload();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -131,9 +134,13 @@ export default function ConfiguracionPage() {
     try {
       if (newPassword === confirmPassword) {
         const res = await userServices.changePasssword(editId, currentPassword, newPassword);
-        console.log(res.data.Message);
-        setModalMessage(res.data.Message);
-        setAviso(true);
+        if(!res.data.IsSuccess) {
+          setModalMessage(res.data.Message);
+          setAviso(true);
+        } else {
+          window.location.reload();
+        }
+        
       } else {
         setModalMessage("Las contraseñas no coinciden");
         setAviso(true);
@@ -224,34 +231,18 @@ export default function ConfiguracionPage() {
                           {
                             aviso && 
                             <ModalComponent isOpen={aviso} closeModal={closeAviso} >
-                              <div className="text-end">
-                                <div
-                                  className="cursor-pointer  rounded-full p-1"
-                                  onClick={closeAviso}
-                                >
-                                  <svg
-                                    className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
+                              <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                <div className="flex justify-end">
+                                    <div className="cursor-pointer  rounded-full p-1 " onClick={closeAviso}>
+                                        <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                            <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
                                 </div>
-                              </div>
-                              <div className="flex justify-center flex-col items-center max-w-md mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow">
-                                  <IoWarningOutline className="text-[#284488] h-28 w-28" />
-                                  <div className="flex justify-center items-center mt-4">
-                                      <h1>{modalMessage}</h1>
-                                  </div>
-                                  
+                                <div className="flex flex-col items-center w-full">
+                                    <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                    <div className="text-center">{modalMessage}</div>
+                                </div>
                               </div>
                             </ModalComponent>
                           }

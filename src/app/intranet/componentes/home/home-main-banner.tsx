@@ -74,9 +74,9 @@ const HomeMainBanner = () =>{
       };
 
     return(
-    <div className='relative cursor-pointer max-w-[1400px] h-[500px] w-full group'>
-        <div className='w-full h-full rounded-2xl bg-center bg-cover duration-500 overflow-hidden'onClick={()=>goLink()}>
-          <img src={`/images/${banners[currentIndex]?.vimagen}`} alt="" />
+    <div className='relative cursor-pointer h-[500px] w-full group rounded-xl overflow-hidden'>
+        <div className='w-full h-full bg-cover'onClick={()=>goLink()}>
+          <img className="w-full" src={`/images/${banners[currentIndex]?.vimagen}`} />
         </div>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
           <BsChevronCompactLeft onClick={()=>goToPrevSlide()} size={30} />
