@@ -107,10 +107,10 @@ export default function AuthenticationPage() {
         </div>
             
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal} >
-                <div className="flex justify-center flex-col items-center max-w-md mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
-                    <IoWarningOutline className="text-[red] h-28 w-28" />
+                <div className="flex justify-center flex-col items-center max-w-md mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow">
+                    <IoWarningOutline className="text-[#284488] h-28 w-28" />
                     <div className="flex justify-center items-center mt-4">
-                        <h1>Contraseña Incorrecta!</h1>
+                        <h1>{modalMessage}</h1>
                     </div>
                 </div>
                 </ModalComponent>

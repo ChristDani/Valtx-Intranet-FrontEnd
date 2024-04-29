@@ -1040,7 +1040,7 @@ const BlogPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option key="0" value="0">
+                      <option hidden key="0" value="0">
                         Seleccione
                       </option>
                     )}
@@ -1072,6 +1072,7 @@ const BlogPage = () => {
                       categoriesList.map((category: any) =>
                         category.iid_tabla_detalle == editCategory ? (
                           <option
+                            hidden
                             key={category.iid_tabla_detalle}
                             value={category.iid_tabla_detalle}
                           >
@@ -1080,7 +1081,7 @@ const BlogPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option value="0" key="0">
+                      <option hidden value="0" key="0">
                         Seleccione
                       </option>
                     )}

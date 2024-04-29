@@ -731,9 +731,9 @@ const DocuPage = () => {
                                                             ) : null
                                                         )
                                                     ) : (
-                                                        <option key="0" value="0">
-                                                            Seleccione
-                                                        </option>
+                                                    <option hidden key="0" value="0">
+                                                        Seleccione
+                                                    </option>
                                                     )}
 
                                                     {statesList.map((state: any) => (

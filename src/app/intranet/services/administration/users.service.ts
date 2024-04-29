@@ -88,19 +88,51 @@ export const userServices = {
     return res;
   },
 
-  async changePasssword() {
+  async changePasssword(user: number, currentPassword: string, newPassword: string) {
+    tokenAuth(token);
+
+    const hashCurrentPassword = crypto.createHash('sha512').update(currentPassword).digest('hex').toUpperCase();
+    const hashNewPassword = crypto.createHash('sha512').update(newPassword).digest('hex').toUpperCase();
+
+    const res = await axiosClient.post(`seguridad/setUsuarioChangePasswordId`, {
+      "iid_usuario": user, // 1
+      "password_actual": hashCurrentPassword, // "hash"
+      "newpassword": hashNewPassword, // "hash"
+    });
+
+    return res;
 
   },
 
-  async resetPassword(user: string) {
+  async resetPassword(user: number) {
+    tokenAuth(token);
 
-    const passwordEncrypt = crypto.createHash('sha512').update(user).digest('hex').toUpperCase();
-
-    const res = await axiosClient.post(`seguridad/setUsuarioChangePassword`, {
-      "usuario": user, //"12345678"
-      "flg_isnuevo": true,
-      "password": passwordEncrypt //"1234567891"
+    const res = await axiosClient.post(`seguridad/setUsuarioResetPasswordId`, {
+      "iid_usuario": user, // 1
     });
 
+    return res
+  },
+
+  async generateCode(user: string, email: string) {
+
+    const res = await axiosClient.post(`seguridad/genera_codigo`, {
+      "email": email, // "prueba@gmail.com"
+      "usuario": user, // "12345678"
+    });
+
+    return res
+  },
+
+  async recoveryPassword(user: string, email: string, codigo: string, password: string) {
+
+    const res = await axiosClient.post(`seguridad/setUsuarioResetPassword`, {
+      "email": email, // "prueba@gmail.com"
+      "usuario": user, // "12345678"
+      "codigo": codigo, // "657449"
+      "password": password, // "220321"
+    });
+
+    return res
   }
 }
