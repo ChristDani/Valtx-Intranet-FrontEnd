@@ -126,7 +126,7 @@ const CabeceraPage = () => {
 
     const searchData = (desc: string) => {
         setSearchTitle(desc)
-        getData(1, itemsPorPagina, desc, 2, 1);
+        getData(1, itemsPorPagina, desc, 2);
     }
 
     const createItem = async () => {
