@@ -248,7 +248,8 @@ const EnteratePage = () => {
         getOneItem(id)
         openModal()
     }
-
+    
+    const [messageModal, setMessageModal] = useState("");
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
@@ -256,14 +257,21 @@ const EnteratePage = () => {
             if (Image != null) {
                 const codigo: any = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
                 const CODIGO = codigo['Codigo'];
+                if (!codigo.IsSuccess){
+                    setMessageModal(codigo.Message)
+                    setErrorModal(true);
+                    return;
+                }
                 if (modalState.uploadVideo) {
                     if (Video != null) {
                         const res = await enterateServices.uploadVideo(Video, CODIGO)
+        
                     } else {
                         alert('Debe ingresar un video')
                     }
                 }
             } else if (fileInput.files && fileInput.files.length === 0) {
+                setMessageModal('Debe seleccionar una imagen')
                 setErrorModal(true);
                 return;
             }
@@ -631,7 +639,7 @@ const EnteratePage = () => {
                                             </div>
                                             <div className="flex flex-col items-center w-full">
                                                 <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                                                <div>Ingresa una Imagen</div>
+                                                <div className="text-center">{messageModal}</div>
                                             </div>
                                         </div>
                                     </ModalComponent>
