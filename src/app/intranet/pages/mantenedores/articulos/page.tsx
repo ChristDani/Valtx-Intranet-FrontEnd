@@ -218,14 +218,20 @@ const ArticPage = () => {
         getOneItem(id)
         openModal()
     }
-
+    const [messageModal, setMessageModal] = useState("");
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
         if (modalState.create) {
             if (Image != null) {
                 const res = await articulosServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
+                if (!res.data.IsSuccess){
+                    setMessageModal(res.data.Message)
+                    setErrorModal(true);
+                    return;
+                }
             } else if (fileInput.files && fileInput.files.length === 0) {
+                setMessageModal("Por favor, selecciona una imagen");
                 setErrorModal(true);
                 return;
             }
@@ -577,7 +583,7 @@ const ArticPage = () => {
                                             </div>
                                             <div className="flex flex-col items-center w-full">
                                                 <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                                                <div>Ingresa una Imagen</div>
+                                                <div className="text-center">{messageModal}</div>
                                             </div>
                                         </div>
                                     </ModalComponent>
