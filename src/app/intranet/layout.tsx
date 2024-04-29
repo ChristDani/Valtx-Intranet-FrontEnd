@@ -8,9 +8,9 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
     
     return(
 
-            <div className="flex flex-col justify-center w-full">
+            <div className=" flex flex-col justify-center w-full min-h-screen">
 
-                <div className="flex flex-col w-[80%] self-center h-auto">
+                <div className="flex flex-col flex-1 w-[80%] self-center h-auto">
 
                 {/* Navbar */}
                 <Navbar />
@@ -21,8 +21,9 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
                 {children}
 
                 </div>
-
-                <Footer></Footer>
+                <div className="">
+                    <Footer></Footer>
+                </div>
 
             </div>
 

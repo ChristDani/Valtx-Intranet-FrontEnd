@@ -51,7 +51,7 @@ export const Footer = () =>{
 
     return(
 
-        <div className="flex bg-[#0C3587] h-60 justify-center w-full">
+        <footer className="flex bg-[#0C3587] h-60 justify-center w-full">
             <div className="flex h-full justify-between pt-9 w-[80%]">
                 
                 {/** contenedor de sistemas de apoyo */}
@@ -131,7 +131,7 @@ export const Footer = () =>{
 
 
             </div>
-        </div>
+        </footer>
 
     );
 }
