@@ -373,6 +373,7 @@ const UsersPage = () => {
     setEstado("0");
     setEditEmpresa("0");
     setEditTipoEmp("0");
+    setEditVcip("");
   };
 
   const validarTel = (e: any) => {
@@ -982,7 +983,7 @@ const UsersPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option key="0" value="0">
+                      <option hidden key="0" value="0">
                         Seleccione
                       </option>
                     )}
@@ -1014,6 +1015,7 @@ const UsersPage = () => {
                       datEmpresa.map((item: any) =>
                         item.iid_tabla_detalle === editEmpresa ? (
                           <option
+                            hidden
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
                           >
@@ -1098,7 +1100,7 @@ const UsersPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option selected hidden key="0" value="0">
+                      <option hidden key="0" value="0">
                         Seleccione
                       </option>
                     )}

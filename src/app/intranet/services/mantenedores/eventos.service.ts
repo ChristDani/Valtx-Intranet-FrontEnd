@@ -62,6 +62,8 @@ export const eventServices = {
         formData.append('iid_evento', id);
 
         const res = await axiosClient.post('evento/setEvento', formData)
+
+        return res;
     },
 
     async update(titulo: string, descripcion: string, link: string, orden: string, estado: string, id: string,fecha:string, image?: File) {
