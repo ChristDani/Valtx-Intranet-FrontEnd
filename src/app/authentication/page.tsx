@@ -109,18 +109,6 @@ export default function AuthenticationPage() {
                 <div className=" flex items-center justify-center max-md:hidden">
                     <Image src='/icons/logoconexion.png' height="700" width="500" alt="" />
                 </div>
-                {
-                    loguinState.loguin ? (
-                        <>
-                        </>
-                    ) : loguinState.generateCode ? (
-                        <></>
-                    ) : loguinState.recoveryPassword ? (
-                        <></>
-                    ) : (
-                        <></>
-                    )
-                }
                 <div className="flex flex-col justify-center bg-white">
                     <div className="sm:mx-auto sm:w-full sm:max-w-sm space-y-2">
                         <h2 className="text-center text-3xl font-bold text-gray-900">{loguinState.loguin ? "Te damos la Bienvenida" : "Recuperemos tu Acceso"}</h2>
