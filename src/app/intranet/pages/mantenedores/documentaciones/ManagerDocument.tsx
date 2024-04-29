@@ -60,8 +60,8 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
 
     const [errorModal, setErrorModal] = useState(false)
     const closeError = () => {
-            setErrorModal(false)
-        }
+        setErrorModal(false)
+    }
     const openInterModal = () => {
         setModalIsOpen(true);
     }
@@ -129,6 +129,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
         getOneItem(id);
         openInterModal();
     }
+    const [messageModal, setMessageModal] = useState("");
     const docRef = useRef<HTMLInputElement>(null);
     const confirmOp = async (e: any) => {
         e.preventDefault();
@@ -136,10 +137,16 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
         if (state === 'create') {
             if (editDoc != null) {
                 const res = await repositorioServices.create(editDoc, editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera);
+                if (!res.data.IsSuccess) {
+                    setMessageModal(res.data.Message)
+                    setErrorModal(true);
+                    return;
+                }
             } else if (fileInput.files && fileInput.files.length === 0) {
-                            setErrorModal(true);
-                            return;
-                        }
+                setMessageModal("Seleccione un documento");
+                setErrorModal(true);
+                return;
+            }
         } else if (state === 'update') {
             if (editDoc != null) {
                 const res = await repositorioServices.update(editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera, editDoc)
@@ -365,7 +372,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                                             </div>
                                                             <div className="flex flex-col items-center w-full">
                                                                 <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                                                                <div>Llene todos los campos</div>
+                                                                <div className="text-center">{messageModal}</div>
                                                             </div>
                                                         </div>
                                                     </ModalComponent>
