@@ -658,7 +658,7 @@ const IcoPage = () => {
                                                     ) : null
                                                 )
                                                 ) : (
-                                                <option key="0" value="0">
+                                                <option hidden key="0" value="0">
                                                     Seleccione
                                                 </option>
                                                 )}
@@ -682,14 +682,15 @@ const IcoPage = () => {
                                                         icon.iid_tabla_detalle == tipoIcono ? (
                                                             <option
                                                                 key={icon.iid_tabla_detalle}
-                                                                value={icon.iid_tabla_detalle} 
+                                                                value={icon.iid_tabla_detalle}
+                                                                hidden
                                                             >
                                                                 {capitalize(icon.vvalor_texto_corto)}
                                                             </option>
                                                         ) : null
                                                     ))
                                                 ) : (
-                                                    <option value="0" key='0'>Seleccione</option>
+                                                    <option hidden value="0" key='0'>Seleccione</option>
                                                 )
                                             }
                                             {

@@ -126,13 +126,21 @@ export default function ConfiguracionPage() {
     
   };
 
-  const changePassword = async (e: any) => {
+  const confirmUpdatePassword = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await userServices.changePasssword(editId, currentPassword, newPassword);
-      console.log(res.data.Message);
-      setModalMessage(res.data.Message);
-      setAviso(true);
+      if (newPassword === confirmPassword) {
+        const res = await userServices.changePasssword(editId, currentPassword, newPassword);
+        console.log(res.data.Message);
+        setModalMessage(res.data.Message);
+        setAviso(true);
+      } else {
+        setModalMessage("Las contraseñas no coinciden");
+        setAviso(true);
+        
+      }
+
+      
     } catch (error) {
       console.log(error);
     }
@@ -258,7 +266,7 @@ export default function ConfiguracionPage() {
         <div className="bg-white rounded-xl m-auto p-6 min-h-52 w-[400px]">
           <div className="flex justify-between">
             <div className="capitalize">
-              <strong>Cambiar Contraseña</strong>
+              <strong>Actualizar Contraseña</strong>
             </div>
             <div
               className="cursor-pointer  rounded-full p-1 "
@@ -283,7 +291,7 @@ export default function ConfiguracionPage() {
           </div>
           <hr />
           <br />
-          <form>
+          <form onSubmit={(e) => confirmUpdatePassword(e)}>
             <div className="flex flex-col">
               <div className="py-2">
                 <label
@@ -346,7 +354,7 @@ export default function ConfiguracionPage() {
                 <button
                   type="submit"
                   className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]"
-                  onClick={(e) => changePassword(e)}
+                  
                 >
                   Guardar
                 </button>

@@ -644,7 +644,7 @@ const EventPage = () => {
                                                     ) : null
                                                 )
                                                 ) : (
-                                                <option key="0" value="0">
+                                                <option hidden key="0" value="0">
                                                     Seleccione
                                                 </option>
                                                 )}

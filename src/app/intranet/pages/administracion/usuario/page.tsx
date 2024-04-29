@@ -861,7 +861,7 @@ const UsersPage = () => {
                     {modalState.update ? (
                       documentList.map((document: any) =>
                         document.iid_tabla_detalle === editIdDocumento ? (
-                          <option selected hidden
+                          <option  hidden
                             key={document.iid_tabla_detalle}
                             value={document.iid_tabla_detalle}
                           >
@@ -870,7 +870,7 @@ const UsersPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option selected hidden key="0" value="0">
+                      <option hidden key="0" value="0">
                         Seleccione
                       </option>
                     )}
@@ -973,7 +973,7 @@ const UsersPage = () => {
                     {modalState.update ? (
                       datTempleado.map((item: any) =>
                         item.iid_tabla_detalle === editTipoEmp ? (
-                          <option
+                          <option hidden
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
                           >
@@ -1022,7 +1022,7 @@ const UsersPage = () => {
                         ) : null
                       )
                     ) : (
-                      <option key="0" value="0">
+                      <option hidden key="0" value="0">
                         Seleccione
                       </option>
                     )}
@@ -1055,13 +1055,13 @@ const UsersPage = () => {
                     {modalState.update ? (
                       listPerfil.map((item: any) => (
                         item.iid_perfil == editIdPerfil ? (
-                          <option selected hidden key={item.iid_perfil} value={item.iid_perfil} >
+                          <option  hidden key={item.iid_perfil} value={item.iid_perfil} >
                             {capitalize(item.vnombre_perfil)}
                           </option>
                         ) : null
                       ))
                     ) : (
-                      <option selected hidden value="0" key='0'>
+                      <option  hidden value="0" key='0'>
                         Seleccione
                       </option>
                     )}
