@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { linkServices } from '../../../services/mantenedores/enlaces.service';
 import { parametrosServices } from '../../../services/parametros.service';
 
@@ -7,6 +7,7 @@ import Link from "next/link";
 import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
+import { IoWarningOutline } from "react-icons/io5";
 
 const LinksPage = () => {
 
@@ -70,7 +71,10 @@ const LinksPage = () => {
     eliminar: false
   })
 
-  
+    const [errorModal, setErrorModal] = useState(false)
+    const closeError = () => {
+            setErrorModal(false)
+        }
   const getOptionsUser = async (id: any, path : string) => {
 
     const resul = path.split("/");
@@ -218,14 +222,15 @@ const LinksPage = () => {
         openModal()
     }
 
-    const confirmOp = async (e: any) => {
+    const confirmOp = async (e: React.FormEvent) => {
         e.preventDefault();
-
+        const fileInput = imageRef.current as HTMLInputElement;
         if (modalState.create) {
             if (Image != null) {
                 const res = await linkServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
-            } else {
-                alert('debe elegir una imagen')
+            } else if (fileInput.files && fileInput.files.length === 0) {
+                setErrorModal(true);
+                return;
             }
         } else if (modalState.update) {
             if (Image != null) {
@@ -588,6 +593,24 @@ const LinksPage = () => {
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
                                     <input type="file" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
+                                {
+                                    errorModal &&
+                                    <ModalComponent isOpen={errorModal} closeModal={closeError}>
+                                        <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                            <div className="flex justify-end">
+                                                <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
+                                                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <div className="flex flex-col items-center w-full">
+                                                <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                                <div>Ingresa una Imagen</div>
+                                            </div>
+                                        </div>
+                                    </ModalComponent>
+                                }
                                 <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
                                     <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
                                     {

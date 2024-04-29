@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { repositorioServices } from "@/app/intranet/services/mantenedores/repositorio.service";
 import { parametrosServices } from "@/app/intranet/services/parametros.service";
 import { cabeceraServices } from "@/app/intranet/services/administration/cabecera.service";
+import { IoWarningOutline } from "react-icons/io5";
 
 interface repositorio {
     iid_repo: number,
@@ -56,6 +57,11 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
     const [repositriesList, setRepositoriesList] = useState([]);
     const [state, setState] = useState('create');
     const [openModal, setModalIsOpen] = useState(false);
+
+    const [errorModal, setErrorModal] = useState(false)
+    const closeError = () => {
+            setErrorModal(false)
+        }
     const openInterModal = () => {
         setModalIsOpen(true);
     }
@@ -123,15 +129,17 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
         getOneItem(id);
         openInterModal();
     }
-
+    const docRef = useRef<HTMLInputElement>(null);
     const confirmOp = async (e: any) => {
         e.preventDefault();
+        const fileInput = docRef.current as HTMLInputElement;
         if (state === 'create') {
             if (editDoc != null) {
                 const res = await repositorioServices.create(editDoc, editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera);
-            } else {
-                alert('Debe llenar todos los campos')
-            }
+            } else if (fileInput.files && fileInput.files.length === 0) {
+                            setErrorModal(true);
+                            return;
+                        }
         } else if (state === 'update') {
             if (editDoc != null) {
                 const res = await repositorioServices.update(editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera, editDoc)
@@ -341,9 +349,27 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                                                 )
                                                             }
                                                         </div>
-                                                        <input required id="dropzone-file" type="file" className="hidden" onChange={handleFileChange} accept="application/pdf" />
+                                                        <input required id="dropzone-file" ref={docRef} type="file" className="hidden" onChange={handleFileChange} accept="application/pdf" />
                                                     </label>
                                                 </div>
+                                                {
+                                                    errorModal &&
+                                                    <ModalComponent isOpen={errorModal} closeModal={closeError}>
+                                                        <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                                            <div className="flex justify-end">
+                                                                <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
+                                                                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                        <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                            <div className="flex flex-col items-center w-full">
+                                                                <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                                                <div>Llene todos los campos</div>
+                                                            </div>
+                                                        </div>
+                                                    </ModalComponent>
+                                                }
                                             </div>
                                             <div className=" text-right">
                                                 <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 hover:bg-[#0C3587] hover:text-white" onClick={closeInterModal}>Cancelar</button>
