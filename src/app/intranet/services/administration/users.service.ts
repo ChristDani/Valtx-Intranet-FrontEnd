@@ -49,9 +49,10 @@ export const userServices = {
       "iid_perfil": +tperfil,
       "iid_tipo_documento": +tdocumento,
       "iid_empresa": +empresa,
-      "iid_tipo_usuario": +tusuario,
+      "iid_tipo_usuario": 1,
       "iid_estado_registro": +state,
-      "vcip": vcip
+      "vcip": vcip,
+      "itipo_empleado": +tusuario
     })
 
     return res
@@ -72,9 +73,10 @@ export const userServices = {
       "iid_perfil": +tperfil,
       "iid_tipo_documento": +tdocumento,
       "iid_empresa": +empresa,
-      "iid_tipo_usuario": +tusuario,
+      "iid_tipo_usuario": 1,
       "iid_estado_registro": +state,
-      "vcip": vcip
+      "vcip": vcip,
+      "itipo_empleado": +tusuario
     })
 
     return res
