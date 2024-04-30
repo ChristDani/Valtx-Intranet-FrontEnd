@@ -11,11 +11,12 @@ interface repositorio {
     vvalor_descripcion:string
 }
 
-const ManagerFolder = ({close, idCabecera, crear, editar, eliminar} : {
+const ManagerFolder = ({close, idCabecera,nameCabecera, crear, editar, eliminar} : {
     crear: boolean,
     editar: boolean,
     eliminar: boolean,
     close: () => void,
+    nameCabecera:string,
     idCabecera: any
 }) => {
     
@@ -39,7 +40,7 @@ const ManagerFolder = ({close, idCabecera, crear, editar, eliminar} : {
     const [editTitle, setEditTitle] = useState(''); //vtitulo
     const [editCabecera, setEditCabecera] = useState(idCabecera); //iid_cabecera
     const [editState, setEditState] = useState(1);
-    const [editNameCabecera, setEditNameCabecera] = useState('');
+    const [editNameCabecera, setEditNameCabecera] = useState(nameCabecera);
     //Tipos repositorios
     const [repositriesList, setRepositoriesList]= useState([]);
     const [state, setState]= useState('create');
@@ -55,6 +56,7 @@ const ManagerFolder = ({close, idCabecera, crear, editar, eliminar} : {
 
         const docsListItems = await parametrosServices.getRepositoriesTypes(idCabecera);
         setDataInfo(docsListItems);
+        
         setDataList(docsListItems.data);
     }
     const getOneItem = async (id: number) => {
@@ -114,7 +116,7 @@ const ManagerFolder = ({close, idCabecera, crear, editar, eliminar} : {
         <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-[400px] h-[500px]">
             <div className="flex flex-row justify-between items-center">
             <div className="mt-4 ml-5 capitalize">
-                {editNameCabecera}› <strong>Carpetas</strong> 
+                {editNameCabecera} › <strong>Carpetas</strong> 
             </div>
             <div className="cursor-pointer  rounded-full p-1 " onClick={close}>
                 <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
@@ -126,7 +128,7 @@ const ManagerFolder = ({close, idCabecera, crear, editar, eliminar} : {
             <div className=" mt-6 mb-6 ml-2">
             {/* tabla */}
             <div className="w-full">
-                <div className="flex gap-2 mb-4">
+                <div className="flex gap-2 mb-4 justify-end">
                     <div className="ml-10">
                         {crear && <button type="button" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 hover:text-white hover:bg-[#0e0c87]" onClick={openInterModal}>Agregar</button>}
                     </div>

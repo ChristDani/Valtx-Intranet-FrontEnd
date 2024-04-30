@@ -148,12 +148,14 @@ const CabeceraPage = () => {
     }
     const [show, setShow] = useState({
         state: false,
-        id_tabla_cabecera: 0
+        id_tabla_cabecera: 0,
+        nameCabecera: ""
     });
-    const itemDetails = (e: any, id: number) => {
+    const itemDetails = (e: any, id: number,name:string) => {
         setShow({
             state: true,
-            id_tabla_cabecera: id
+            id_tabla_cabecera: id,
+            nameCabecera:name
         })
         openModal()
     }
@@ -275,7 +277,7 @@ const CabeceraPage = () => {
                                         </td>
 
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
-                                            {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_tabla_cabecera)}>
+                                            {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_tabla_cabecera, item.vdescripcion)}>
                                                 <svg width="20" height="20" className="text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                                                     <path fillRule="evenodd" d="M20 10H4v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8ZM9 13v-1h6v1a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1Z" clipRule="evenodd" />
                                                     <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 1 1 0 4H4a2 2 0 0 1-2-2Z" />
@@ -392,7 +394,7 @@ const CabeceraPage = () => {
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 {
                     show.state ? (
-                        <ManagerFolder close={closeModal} idCabecera={show.id_tabla_cabecera}  crear={optionUser.crear} editar={optionUser.editar} eliminar={optionUser.eliminar}/>
+                        <ManagerFolder close={closeModal} idCabecera={show.id_tabla_cabecera} nameCabecera={show.nameCabecera}  crear={optionUser.crear} editar={optionUser.editar} eliminar={optionUser.eliminar}/>
                     ): (
 
                 <div className = {`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>

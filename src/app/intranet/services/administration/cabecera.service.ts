@@ -14,7 +14,7 @@ export const cabeceraServices = {
             const { data } = await axiosClient.post('parametro/getCabeceraList', {
                 "inumero_pagina": pageNumber - 1, // 0
                 "itotal_pagina": itemsPerPage, // 
-                "vdescripcion": "",
+                "vdescripcion": titulo,
                 "iindica_agregacion": agregacion,
                 "iid_estado_registro": state,
                 "order": orden // asc
