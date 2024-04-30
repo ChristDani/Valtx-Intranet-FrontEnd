@@ -909,7 +909,7 @@ const UsersPage = () => {
                           <option
                             key={document.iid_tabla_detalle}
                             value={document.iid_tabla_detalle}
-                            selected={document.iid_tabla_detalle === editIdDocumento}
+                            
                           >
                             {capitalize(document.vvalor_texto_corto)}
                           </option>
@@ -1012,7 +1012,7 @@ const UsersPage = () => {
                           <option
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
-                            selected={item.iid_tabla_detalle === editTipoEmp}
+                           
                           >
                             {capitalize(item.vvalor_texto_corto)}
                           </option>
@@ -1042,7 +1042,7 @@ const UsersPage = () => {
                           <option
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
-                            selected={item.iid_tabla_detalle === editEmpresa}
+                            
                           >
                             {capitalize(item.vvalor_texto_corto)}
                           </option>
@@ -1075,7 +1075,7 @@ const UsersPage = () => {
                           <option
                             key={item.iid_perfil}
                             value={item.iid_perfil}
-                            selected={item.iid_perfil === editIdPerfil}
+                            
                           >
                             {capitalize(item.vnombre_perfil)}
                           </option>
@@ -1104,7 +1104,7 @@ const UsersPage = () => {
                           <option
                             key={state.iid_tabla_detalle}
                             value={state.iid_tabla_detalle}
-                            selected={state.iid_tabla_detalle === estado}
+                            
                           >
                             {capitalize(state.vvalor_texto_corto)}
                           </option>
