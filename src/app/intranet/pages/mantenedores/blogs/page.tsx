@@ -50,8 +50,8 @@ const BlogPage = () => {
   const [editDesc, setEditDesc] = useState("");
   const [editLink, setEditLink] = useState("");
   const [editOrden, setEditOrden] = useState("");
-  const [editState, setEditState] = useState("1");
-  const [editCategory, setEditCategory] = useState("3");
+  const [editState, setEditState] = useState("3");
+  const [editCategory, setEditCategory] = useState("0");
   const [Image, setImage] = useState(null);
   const [editImage, setEditImage] = useState("");
   const [nameImage, setNameImage] = useState("");
@@ -262,9 +262,11 @@ const BlogPage = () => {
     const fileInput = imageRef.current as HTMLInputElement;
     if (modalState.create) {
       try {
-       // if (){
-
-       // } else
+        if (editCategory === '0') {
+          setMessageModal("Por favor, selecciona una categoria");
+          setErrorModal(true);
+          return;
+        } else
           if (Image != null) {
             const res = await blogServices.create(
             Image,

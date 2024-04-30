@@ -241,8 +241,7 @@ const IcoPage = () => {
                     setMessageModal("Por favor, selecciona un tipo de icono");
                     setErrorModal(true);
                     return;
-                }
-                else if (Image != null) {
+                } else if (Image != null) {
                     const res = await iconServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono);
                     if (!res.data.IsSuccess){
                         setMessageModal(res.data.Message)
