@@ -121,7 +121,13 @@ export default function ConfiguracionPage() {
         setModalMessage(res.data.Message);
         setAviso(true);
       } else {
-        window.location.reload();
+        // window.location.reload();
+        getUsuario();
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.value = '';
+        });
+        
       }
     } catch (error) {
       console.log(error);
@@ -138,7 +144,8 @@ export default function ConfiguracionPage() {
           setModalMessage(res.data.Message);
           setAviso(true);
         } else {
-          window.location.reload();
+          getUsuario();
+          closeModal();
         }
         
       } else {
