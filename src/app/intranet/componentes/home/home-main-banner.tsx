@@ -48,7 +48,7 @@ const HomeMainBanner = () =>{
     const goLink = () =>{
       const banner = banners[currentIndex]
         if(banner.vlink== null || banner.vlink == '') return;
-        window.open(banner.vlink, banner.vredireccion);
+        window.open(`http://${banner.vlink}`, banner.vredireccion);
     }
     
       const [currentIndex, setCurrentIndex] = useState(0);

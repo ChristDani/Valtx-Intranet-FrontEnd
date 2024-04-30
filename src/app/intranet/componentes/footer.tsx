@@ -13,7 +13,7 @@ export const Footer = () =>{
 
     const goToLink = (vlink: string) =>{
         if(vlink == null || vlink == '') return;
-        window.open(vlink);
+        window.open(`http://${vlink}`);
     }
 
     useEffect(()=> {

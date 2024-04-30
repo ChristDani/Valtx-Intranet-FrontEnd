@@ -32,7 +32,7 @@ const TopNews = () =>{
 
     const goLink = (vlink: string, redireccion: string) =>{
         if(vlink == null || vlink == '') return;
-        window.open(vlink, redireccion);
+        window.open(`http://${vlink}`, redireccion);
       }
 
       

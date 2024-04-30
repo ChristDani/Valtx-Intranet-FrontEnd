@@ -26,7 +26,10 @@ export const Novedades = () =>{
         getData();
     },[])
 
-    
+    const goToLink = (vlink: string) =>{
+        if(vlink == null || vlink == '') return;
+        window.open(`http://${vlink}`);
+    }
     return(
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
@@ -37,7 +40,7 @@ export const Novedades = () =>{
             {/** Contenido */}
             {
                 dataInfo.IsSuccess ? (
-                <div className=" relative flex w-full h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden">
+                <div className=" relative flex w-full h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden" onClick={()=>goToLink(novedades[0]?.vlink)}>
                     <img className="w-full h-full object-cover" src={`/images/${novedades[0]?.vimagen}`}/>
                     <div className="absolute h-full w-1/2 text-white">
                                 <div className="bg-[#31BAFF] h-40 p-6 rounded-br-full rounded-tl-lg w-full">

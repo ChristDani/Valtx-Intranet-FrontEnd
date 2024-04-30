@@ -33,7 +33,7 @@ const Sidebar = () => {
   const onSelect = () => {
     setExpandedItem(null);
   };
-  
+
   return (
     <div>
       {/* Sidebar */}
@@ -67,26 +67,51 @@ const Sidebar = () => {
                     <div className="absolute left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-md z-10">
                       {item.opciones.map((opcion: any) => (
                         <div key={opcion.iid_opcion}>
-                          <Link
-                            onClick={onSelect}
-                            href={`/intranet/pages${item.vurl}${opcion.vurl}`}
-                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                          >
-                            {opcion.vtitulo}
-                          </Link>
+                          {
+                            <Link
+                              onClick={onSelect}
+                              href={`/intranet/pages${item.vurl}${opcion.vurl}`}
+                              className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                            >
+                              {opcion.vtitulo}
+                            </Link>
+                          }
+
                         </div>
                       ))}
                     </div>
                   )}
                 </>
               ) : (
-                <Link
-                  href={`/intranet/pages${item.vurl}`}
-                  className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
-                >
-                  {item.vtitulo}
-                </Link>
-              )}
+                item.vtitulo === "Servicios" ? (
+
+                  <Link
+                    href={`https://www.valtx.pe/soluciones-para-empresas`}
+                    target="_blank"
+                    className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                  >
+                    {item.vtitulo}
+                  </Link>
+                ) : (
+                  item.vtitulo === 'Inducción' ? (
+                    <Link
+                      href={`https://www.valtx.pe/unete`}
+                      target="_blank"
+                      className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                    >
+                      {item.vtitulo}
+                    </Link>
+                  ) : (
+
+                    <Link
+                      href={`/intranet/pages${item.vurl}`}
+                      className="flex px-6 py-2 text-gray-700 hover:bg-[#1aabe3] hover:text-white rounded-2xl cursor-pointer"
+                    >
+                      {item.vtitulo}
+                    </Link>
+                  )
+                ))
+              }
             </li>
           ))}
         </ul>
@@ -114,7 +139,7 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
