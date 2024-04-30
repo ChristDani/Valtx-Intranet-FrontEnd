@@ -51,7 +51,7 @@ const BlogPage = () => {
   const [editLink, setEditLink] = useState("");
   const [editOrden, setEditOrden] = useState("");
   const [editState, setEditState] = useState("1");
-  const [editCategory, setEditCategory] = useState("0");
+  const [editCategory, setEditCategory] = useState("3");
   const [Image, setImage] = useState(null);
   const [editImage, setEditImage] = useState("");
   const [nameImage, setNameImage] = useState("");
@@ -261,26 +261,34 @@ const BlogPage = () => {
     e.preventDefault();
     const fileInput = imageRef.current as HTMLInputElement;
     if (modalState.create) {
-      if (Image != null) {
-        const res = await blogServices.create(
-          Image,
-          editTitle,
-          editDesc,
-          editLink,
-          editOrden,
-          editState,
-          editId,
-          editCategory
-        );
-        if (!res.data.IsSuccess){
-          setMessageModal(res.data.Message)
+      try {
+       // if (){
+
+       // } else
+          if (Image != null) {
+            const res = await blogServices.create(
+            Image,
+            editTitle,
+            editDesc,
+            editLink,
+            editOrden,
+            editState,
+            editId,
+            editCategory
+            );
+          if (!res.data.IsSuccess){
+            setMessageModal(res.data.Message)
+            setErrorModal(true);
+            return;
+          }
+        } else if (fileInput.files && fileInput.files.length === 0) {
+          setMessageModal("Por favor, selecciona una imagen");
           setErrorModal(true);
           return;
-      }
-      } else if (fileInput.files && fileInput.files.length === 0) {
-        setMessageModal("Por favor, selecciona una imagen");
-        setErrorModal(true);
-        return;
+        }
+      } catch (error) {
+        console.log(error);
+        
       }
     } else if (modalState.update) {
       if (Image != null) {
@@ -325,7 +333,7 @@ const BlogPage = () => {
     setImage(null);
     setSrcImage(null);
     setNameImage("");
-    setEditState("1");
+    setEditState("3");
     setEditOrden("");
     setEditCategory("0");
   };
@@ -1035,31 +1043,19 @@ const BlogPage = () => {
                     className="bg-gray-50 border border-gray-300 rounded-lg p-2"
                     onChange={(e) => setEditState(e.target.value)}
                   >
-                    {modalState.update ? (
-                      statesList.map((state: any) =>
-                        state.iid_tabla_detalle === state ? (
+                    <option hidden key="0" value="0">
+                        Seleccione
+                      </option>
+                    { statesList.map((state: any) => (
                           <option
                             key={state.iid_tabla_detalle}
                             value={state.iid_tabla_detalle}
                           >
                             {capitalize(state.vvalor_texto_corto)}
                           </option>
-                        ) : null
                       )
-                    ) : (
-                      <option hidden key="0" value="0">
-                        Seleccione
-                      </option>
-                    )}
-
-                    {statesList.map((state: any) => (
-                      <option
-                        key={state.iid_tabla_detalle}
-                        value={state.iid_tabla_detalle}
-                      >
-                        {capitalize(state.vvalor_texto_corto)}
-                      </option>
-                    ))}
+                    ) 
+                    }
                   </select>
                 </div>
                 <div className="mb-5 relative">
@@ -1075,31 +1071,20 @@ const BlogPage = () => {
                     value={editCategory}
                     onChange={(e) => setEditCategory(e.target.value)}
                   >
-                    {modalState.update ? (
-                      categoriesList.map((category: any) =>
-                        category.iid_tabla_detalle == editCategory ? (
+                    
+                    <option hidden value="0" key="0">
+                        Seleccione
+                      </option>
+                    {
+                      categoriesList.map((category: any) =>(
                           <option
-                            hidden
                             key={category.iid_tabla_detalle}
                             value={category.iid_tabla_detalle}
                           >
                             {category.vvalor_texto_corto}
                           </option>
-                        ) : null
-                      )
-                    ) : (
-                      <option hidden value="0" key="0">
-                        Seleccione
-                      </option>
-                    )}
-                    {categoriesList.map((category: any) => (
-                      <option
-                        key={category.iid_tabla_detalle}
-                        value={category.iid_tabla_detalle}
-                      >
-                        {category.vvalor_texto_corto}
-                      </option>
-                    ))}
+                        ) )
+                    }
                   </select>
                 </div>
               </div>

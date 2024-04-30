@@ -51,7 +51,7 @@ const LinksPage = () => {
     const [editDesc, setEditDesc] = useState('');
     const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
-    const [editState, setEditState] = useState('1');
+    const [editState, setEditState] = useState('3');
     const [Image, setImage] = useState(null);
     const [editImage, setEditImage] = useState('');
     const [nameImage, setNameImage] = useState('');
@@ -263,7 +263,7 @@ const LinksPage = () => {
         setImage(null)
         setSrcImage(null)
         setNameImage('')
-        setEditState('1')
+        setEditState('3')
         setEditOrden('')
     }
 
@@ -648,31 +648,22 @@ const LinksPage = () => {
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                         <select id="stateItem" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            {modalState.update ? (
-                                                statesList.map((state: any) =>
-                                                    state.iid_tabla_detalle === state ? (
+                                            
+                                            <option hidden key="0" value="0">
+                                                    Seleccione
+                                                </option>
+                                            {
+                                                statesList.map((state: any) => (
                                                     <option
                                                         key={state.iid_tabla_detalle}
                                                         value={state.iid_tabla_detalle}
                                                     >
                                                         {capitalize(state.vvalor_texto_corto)}
                                                     </option>
-                                                    ) : null
-                                                )
-                                                ) : (
-                                                <option hidden key="0" value="0">
-                                                    Seleccione
-                                                </option>
-                                                )}
-
-                                                {statesList.map((state: any) => (
-                                                <option
-                                                    key={state.iid_tabla_detalle}
-                                                    value={state.iid_tabla_detalle}
-                                                >
-                                                    {capitalize(state.vvalor_texto_corto)}
-                                                </option>
-                                            ))}
+                                                    
+                                                ))
+                                        }
+                                                
                                         </select>
                                     </div>
                                 </div>

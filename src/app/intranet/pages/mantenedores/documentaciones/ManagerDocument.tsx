@@ -206,7 +206,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                     <div>
                         <div className="flex flex-row gap-2 mb-4">
                             <select id="categories" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e) => handleCabeceraChange(e)}>
-                                <option value="0">Selecciona un Repositorio</option>
+                                <option hidden value="0">Selecciona un Repositorio</option>
                                 {
                                     cabeceraList?.map((cabecera: any) => (
                                         <option key={cabecera.iid_tabla_cabecera} value={cabecera.iid_tabla_cabecera}>
@@ -216,7 +216,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                 }
                             </select>
                             <select id="carpetas" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e) => handleRepoChange(e)}>
-                                <option value="0">Seleccione una carpeta</option>
+                                <option hidden value="0">Seleccione una carpeta</option>
                                 {
                                     repositriesList.map((tipo: any) => (
                                         <option key={tipo.iid_tabla_detalle} value={tipo.iid_tabla_detalle}>
@@ -326,12 +326,6 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                     <form onSubmit={confirmOp}>
                                         <div className="flex flex-col justify-start px-4 gap-3">
                                             <span className="text-center font-bold">{state === 'create' ? 'Registra un Repositorio' : 'Actualizar Repositorio'}</span>
-                                            <div className="mt-2 relative hidden">
-                                                <label htmlFor="categories" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
-                                                <select id="categories" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e) => setEditCabecera(e.target.value)}>
-                                                    <option value="0">Selecciona una categoria</option>
-                                                </select>
-                                            </div>
                                             <div className="mt-4 relative">
                                                 <label className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Titulo</label>
                                                 <input required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" type="text" value={editTitle} placeholder="Ingrese titulo" onChange={(e) => setEditTitle(e.target.value)} />
