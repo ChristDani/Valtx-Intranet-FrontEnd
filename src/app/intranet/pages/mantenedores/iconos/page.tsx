@@ -51,13 +51,13 @@ const IcoPage = () => {
     const [editDesc, setEditDesc] = useState('');
     const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
-    const [editState, setEditState] = useState('1');
+    const [editState, setEditState] = useState('3');
     const [Image, setImage] = useState(null);
     const [editImage, setEditImage] = useState('');
     const [nameImage, setNameImage] = useState('');
     const [srcImage, setSrcImage] = useState<any>(null);
     const [redirecction, setRedirecction] = useState('');
-    const [tipoIcono, setTipoIcono] = useState('2');
+    const [tipoIcono, setTipoIcono] = useState('');
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
     const [errorModal, setErrorModal] = useState(false)
@@ -235,18 +235,30 @@ const IcoPage = () => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
         if (modalState.create) {
-            if (Image != null) {
-                const res = await iconServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono);
-                if (!res.data.IsSuccess){
-                    setMessageModal(res.data.Message)
+
+            try {
+                if( tipoIcono === ''){
+                    setMessageModal("Por favor, selecciona un tipo de icono");
                     setErrorModal(true);
                     return;
                 }
-            } else if (fileInput.files && fileInput.files.length === 0) {
-                setMessageModal("Por favor, selecciona una imagen");
-                setErrorModal(true);
-                return;
+                else if (Image != null) {
+                    const res = await iconServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono);
+                    if (!res.data.IsSuccess){
+                        setMessageModal(res.data.Message)
+                        setErrorModal(true);
+                        return;
+                    }
+                } else if (fileInput.files && fileInput.files.length === 0) {
+                    setMessageModal("Por favor, selecciona una imagen");
+                    setErrorModal(true);
+                    return;
+                }
+            } catch (error) {
+                console.log(error);
             }
+
+            
         } else if (modalState.update) {
             if (Image != null) {
                 const res = await iconServices.update(editTitle, editDesc, editLink, editOrden, editState, editId, tipoIcono, Image)
@@ -272,7 +284,7 @@ const IcoPage = () => {
         setSrcImage(null)
         setNameImage('')
         setTipoIcono('')
-        setEditState('1')
+        setEditState('3')
         setEditOrden('')
     }
 
@@ -677,56 +689,32 @@ const IcoPage = () => {
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                         <select id="stateItem" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            {modalState.update ? (
-                                                statesList.map((state: any) =>
-                                                    state.iid_tabla_detalle === state ? (
-                                                    <option
-                                                        key={state.iid_tabla_detalle}
-                                                        value={state.iid_tabla_detalle}
-                                                    >
-                                                        {capitalize(state.vvalor_texto_corto)}
-                                                    </option>
-                                                    ) : null
-                                                )
-                                                ) : (
-                                                <option hidden key="0" value="0">
-                                                    Seleccione
-                                                </option>
-                                                )}
-
-                                                {statesList.map((state: any) => (
-                                                <option
-                                                    key={state.iid_tabla_detalle}
-                                                    value={state.iid_tabla_detalle}
-                                                >
-                                                    {capitalize(state.vvalor_texto_corto)}
-                                                </option>
+                                            <option hidden key="0" value="0">
+                                                Seleccione
+                                            </option>
+                                            {statesList.map((state: any) => (
+                                            <option
+                                                key={state.iid_tabla_detalle}
+                                                value={state.iid_tabla_detalle}
+                                            >
+                                                {capitalize(state.vvalor_texto_corto)}
+                                            </option>
                                             ))}
                                         </select>
                                     </div>
                                     <div className="mb-5 relative">
                                         <label htmlFor="typeIcon" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Tipo Icono</label>
                                         <select id="typeIcon" value={tipoIcono} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setTipoIcono(e.target.value)}>
-                                            {
-                                                modalState.update ? (
-                                                    iconsList.map((icon: any) => ( 
-                                                        icon.iid_tabla_detalle == tipoIcono ? (
-                                                            <option
-                                                                key={icon.iid_tabla_detalle}
-                                                                value={icon.iid_tabla_detalle}
-                                                                hidden
-                                                            >
-                                                                {capitalize(icon.vvalor_texto_corto)}
-                                                            </option>
-                                                        ) : null
-                                                    ))
-                                                ) : (
-                                                    <option hidden value="0" key='0'>Seleccione</option>
-                                                )
-                                            }
+                                            <option hidden key="0" value="0">
+                                                Seleccione
+                                            </option>
                                             {
                                                 iconsList.map((icon: any) => (
-                                                        <option key={icon.iid_tabla_detalle} value={icon.iid_tabla_detalle}>{capitalize(icon.vvalor_texto_corto)}</option>
+                                                    <option 
+                                                        key={icon.iid_tabla_detalle} 
+                                                        value={icon.iid_tabla_detalle}>
+                                                            {capitalize(icon.vvalor_texto_corto)}
+                                                    </option>
                                                 ))
                                             }
                                         </select>

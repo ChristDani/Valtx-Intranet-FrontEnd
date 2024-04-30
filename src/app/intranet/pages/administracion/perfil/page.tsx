@@ -72,7 +72,7 @@ const ProfilesPage = () => {
   const [editId, setEditId] = useState("0");
   const [editTitle, setEditTitle] = useState("");
   const [editDesc, setEditDesc] = useState("");
-  const [editState, setEditState] = useState("0");
+  const [editState, setEditState] = useState("3");
 
   // paginacion
   const [paginas, setPages] = useState(0);
@@ -237,7 +237,7 @@ const ProfilesPage = () => {
     setEditId("0");
     setEditTitle("");
     setEditDesc("");
-    setEditState("1");
+    setEditState("3");
     setSelect([]);
     setOptionId([]);
     setNewOptions([]);
