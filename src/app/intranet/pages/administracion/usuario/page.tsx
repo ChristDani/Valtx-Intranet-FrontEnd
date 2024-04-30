@@ -901,31 +901,20 @@ const UsersPage = () => {
                     onChange={(e) => setIdDocumento(e.target.value)}
                     value={editIdDocumento}
                   >
-                    {modalState.update ? (
-                      documentList.map((document: any) =>
-                        document.iid_tabla_detalle === editIdDocumento ? (
-                          <option  
-                            hidden
+                    <option hidden key="0" value="0">
+                        Seleccione
+                      </option>
+                      {
+                      documentList.map((document: any) =>(
+                          <option
                             key={document.iid_tabla_detalle}
                             value={document.iid_tabla_detalle}
+                            selected={document.iid_tabla_detalle === editIdDocumento}
                           >
                             {capitalize(document.vvalor_texto_corto)}
                           </option>
-                        ) : null
-                      )
-                    ) : (
-                      <option hidden key="0" value="0">
-                        Seleccione
-                      </option>
-                    )}
-                    {documentList.map((document: any) => (
-                      <option
-                        key={document.iid_tabla_detalle}
-                        value={document.iid_tabla_detalle}
-                      >
-                        {capitalize(document.vvalor_texto_corto)}
-                      </option>
-                    ))}
+                      )) 
+                    }
                   </select>
                 </div>
                 <div className="flex-auto relative w-20">
@@ -1014,32 +1003,22 @@ const UsersPage = () => {
                     value={editTipoEmp}
                     required
                   >
-                    {modalState.update ? (
-                      datTempleado.map((item: any) =>
-                        item.iid_tabla_detalle === editTipoEmp ? (
+                    
+                    <option hidden key="0" value="0">
+                        Seleccione
+                      </option>
+                    {
+                      datTempleado.map((item: any) => (
                           <option
-                            hidden
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
+                            selected={item.iid_tabla_detalle === editTipoEmp}
                           >
                             {capitalize(item.vvalor_texto_corto)}
                           </option>
-                        ) : null
+                        ) 
                       )
-                    ) : (
-                      <option hidden key="0" value="0">
-                        Seleccione
-                      </option>
-                    )}
-
-                    {datTempleado.map((item: any) => (
-                      <option
-                        key={item.iid_tabla_detalle}
-                        value={item.iid_tabla_detalle}
-                      >
-                        {capitalize(item.vvalor_texto_corto)}
-                      </option>
-                    ))}
+                    }
                   </select>
                 </div>
                 <div className="flex-auto relative w-14">
@@ -1055,32 +1034,21 @@ const UsersPage = () => {
                     onChange={(e) => setEditEmpresa(e.target.value)}
                     value={editEmpresa}
                   >
-                    {modalState.update ? (
-                      datEmpresa.map((item: any) =>
-                        item.iid_tabla_detalle === editEmpresa ? (
+                    <option hidden key="0" value="0">
+                        Seleccione
+                      </option>
+                    {
+                      datEmpresa.map((item: any) =>(
                           <option
-                            hidden
                             key={item.iid_tabla_detalle}
                             value={item.iid_tabla_detalle}
+                            selected={item.iid_tabla_detalle === editEmpresa}
                           >
                             {capitalize(item.vvalor_texto_corto)}
                           </option>
-                        ) : null
                       )
-                    ) : (
-                      <option hidden key="0" value="0">
-                        Seleccione
-                      </option>
-                    )}
-
-                    {datEmpresa.map((item: any) => (
-                      <option
-                        key={item.iid_tabla_detalle}
-                        value={item.iid_tabla_detalle}
-                      >
-                        {capitalize(item.vvalor_texto_corto)}
-                      </option>
-                    ))}
+                      )
+                    }
                   </select>
                 </div>
               </div>
@@ -1098,29 +1066,21 @@ const UsersPage = () => {
                     onChange={(e) => setEditIdPerfil(e.target.value)}
                     value={editIdPerfil}
                   >
-                    {modalState.update ? (
-                      listPerfil.map((item: any) =>
-                        item.iid_perfil == editIdPerfil ? (
+                    
+                    <option hidden value="0" key="0">
+                        Seleccione
+                      </option>
+                    {
+                      listPerfil.map((item: any) =>(
                           <option
-                            hidden
                             key={item.iid_perfil}
                             value={item.iid_perfil}
+                            selected={item.iid_perfil === editIdPerfil}
                           >
                             {capitalize(item.vnombre_perfil)}
                           </option>
-                        ) : null
-                      )
-                    ) : (
-                      <option hidden value="0" key="0">
-                        Seleccione
-                      </option>
+                        ) 
                     )}
-
-                    {listPerfil.map((item: any) => (
-                      <option key={item.iid_perfil} value={item.iid_perfil}>
-                        {capitalize(item.vnombre_perfil)}
-                      </option>
-                    ))}
                   </select>
                 </div>
                 <div className="mb-5 relative">
@@ -1136,31 +1096,20 @@ const UsersPage = () => {
                     onChange={(e) => setEstado(e.target.value)}
                     value={estado} // Usar la prop value para controlar la opción seleccionada
                   >
-                    {modalState.update ? (
-                      statesList.map((state: any) =>
-                        state.iid_tabla_detalle === state ? (
+                    <option hidden key="0" value="0">
+                        Seleccione
+                      </option>
+                    {
+                      statesList.map((state: any) => (
                           <option
                             key={state.iid_tabla_detalle}
                             value={state.iid_tabla_detalle}
+                            selected={state.iid_tabla_detalle === estado}
                           >
                             {capitalize(state.vvalor_texto_corto)}
                           </option>
-                        ) : null
-                      )
-                    ) : (
-                      <option hidden key="0" value="0">
-                        Seleccione
-                      </option>
-                    )}
-
-                    {statesList.map((state: any) => (
-                      <option
-                        key={state.iid_tabla_detalle}
-                        value={state.iid_tabla_detalle}
-                      >
-                        {capitalize(state.vvalor_texto_corto)}
-                      </option>
-                    ))}
+                        )
+                      )}
                   </select>
                 </div>
               </div>
