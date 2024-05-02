@@ -157,7 +157,7 @@ const NewsViewPage = () => {
                     ))
                 ):(
                     <div className="bg-white border-b hover:bg-gray-50">
-                    <div scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                    <div className="px-6 py-4 font-medium text-gray-900 text-center">
                             Lo sentimos, aún no se han registrado datos!
                         </div>
                     </div>
