@@ -44,7 +44,8 @@ const Articles = () =>{
             <div key={index} className="flex flex-col bg-white my-8 rounded-xl w-[32%]">
 
                 <div className="h-52 overflow-hidden rounded-t-xl w-full">
-                    <img src={`/images/${article.vimagen}`} className="w-full"></img>
+                       
+                    <img src={`/images/${article.vimagen}`} className="object-cover max-h-38 w-full mx-auto"></img>
                 </div>
                 <div className="ml-6">
                     <div className="flex mt-2">

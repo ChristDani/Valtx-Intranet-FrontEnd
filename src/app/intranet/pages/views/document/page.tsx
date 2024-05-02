@@ -93,7 +93,6 @@ const DocuViewPage = () => {
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
-        getRepositories;
     }, [])
 
     const getStates = async () => {
@@ -102,11 +101,6 @@ const DocuViewPage = () => {
         setStatesList(data)
     }
 
-    const getRepositories = async () => {
-        const { data } = await parametrosServices.getRepositoriesTypes()
-
-        setRepositoriesList(data)
-    }
 
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
@@ -330,7 +324,7 @@ const DocuViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="w-full" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
+                    <img className="object-cover max-h-38 w-full mx-auto" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
                         <div className="w-full p-4">
                             <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
                             <p className="text-gray-700 text-base line-clamp-2">
@@ -349,7 +343,7 @@ const DocuViewPage = () => {
                     ))
                 ):(
                     <div className="bg-white border-b hover:bg-gray-50">
-                    <div scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                    <div  className="px-6 py-4 font-medium text-gray-900 text-center">
                             Lo sentimos, aún no se han registrado datos!
                         </div>
                     </div>
