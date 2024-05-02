@@ -143,7 +143,7 @@ const NewsViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="w-full" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
+                    <img className="w-auto mx-auto max-h-48" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
                         <div className="w-full p-4">
                             <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
                             <p className="text-gray-700 text-base line-clamp-2">
