@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { repositorioServices } from "@/app/intranet/services/mantenedores/repositorio.service";
 import { parametrosServices } from "@/app/intranet/services/parametros.service";
 import { detalleServices } from "@/app/intranet/services/administration/detalle.services";
+import { IoWarningOutline } from "react-icons/io5";
 
 interface repositorio {
     iid_tabla_detalle:number,
@@ -45,6 +46,9 @@ const ManagerFolder = ({close, idCabecera,nameCabecera, crear, editar, eliminar}
     const [repositriesList, setRepositoriesList]= useState([]);
     const [state, setState]= useState('create');
     const [openModal, setModalIsOpen] = useState(false);
+    
+    const [errorModal, setErrorModal] = useState(false);
+    const [messageModal, setMessageModal] = useState('');
     const openInterModal = () => {
         setModalIsOpen(true);
     }
@@ -75,7 +79,9 @@ const ManagerFolder = ({close, idCabecera,nameCabecera, crear, editar, eliminar}
        getOneItem(id);
        openInterModal();
     }
-
+    const closeError = () => {
+        setErrorModal(false)
+    }
     const deleteItem = async (e: any, id: number) => {
         setState('delete');
         getOneItem(id);
@@ -85,8 +91,17 @@ const ManagerFolder = ({close, idCabecera,nameCabecera, crear, editar, eliminar}
     const confirmOp = async (e: any) => {
         e.preventDefault();
         if (state === 'create') {
-            if (editTitle != null) {
+            if (editTitle !== "") {
               const res = await detalleServices.create(editTitle,editState,editCabecera,editId);
+              if (!res.data.IsSuccess){
+                setMessageModal(res.data.Message)
+                setErrorModal(true);
+                return;
+                }
+            }else{
+                setMessageModal("Por favor, ingresa el nombre de la carpeta");
+                setErrorModal(true);
+                return;
             }
         } else if (state === 'update') {
             if (editTitle != null) {
@@ -215,9 +230,24 @@ const ManagerFolder = ({close, idCabecera,nameCabecera, crear, editar, eliminar}
                             <form onSubmit={confirmOp}>
                             <div className="flex flex-col justify-start px-4 gap-3">
                                 <div className="mt-4 relative">
-                                    <label className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Titulo</label>
-                                    <input required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" type="text" value={editTitle} placeholder="Ingrese titulo" onChange={(e) =>  setEditTitle(e.target.value)}/>
+                                    <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Titulo</label>
+                                    <input required name="vtextobreve"  className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" type="text" value={editTitle} placeholder="Ingrese titulo" onChange={(e) =>  setEditTitle(e.target.value)}/>
                                 </div>        
+                                <ModalComponent isOpen={errorModal} closeModal={closeError}>
+                                                <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                                    <div className="flex justify-end">
+                                                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
+                                                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-col items-center w-full">
+                                                        <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                                        <div className="text-center">{messageModal}</div>
+                                                    </div>
+                                                </div>
+                                            </ModalComponent>
                                     <div className=" text-right">
                                         <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 hover:bg-[#0C3587] hover:text-white" onClick={closeInterModal}>Cancelar</button>
                                         <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 hover:text-white hover:bg-[#0e0c87]"

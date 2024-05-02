@@ -9,6 +9,7 @@ import Paginacion from '../../../componentes/mantenedores/paginacion'
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import ManagerFolder from "./ManagerFolders";
+import { IoWarningOutline } from "react-icons/io5";
 
 const CabeceraPage = () => {
 
@@ -84,17 +85,23 @@ const CabeceraPage = () => {
     };
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [errorModal, setErrorModal] = useState(false);
+    const [messageModal, setMessageModal] = useState('');
 
     const openModal = () => {
         setModalIsOpen(true);
     };
+    const closeError = () => {
+        setErrorModal(false)
+    }
     const closeModal = () => {
         cleanData()
         setModalState({ create: false, update: false, delete: false })
         setModalIsOpen(false);
         setShow({
             state: false,
-            id_tabla_cabecera: 0
+            id_tabla_cabecera: 0,
+            nameCabecera: ''
         })
     };
 
@@ -176,7 +183,14 @@ const CabeceraPage = () => {
         e.preventDefault();
 
         if (modalState.create) {
+            if (editDesc !== '') {
                 const res = await cabeceraServices.create(editDesc, editAgregacion,editState,editId);
+                if (!res.data.IsSuccess){
+                    setMessageModal(res.data.Message)
+                    setErrorModal(true);
+                    return;
+                }
+            }
         } else if (modalState.update) {
             const res = await cabeceraServices.update(editDesc, editAgregacion,editState,editId);
         } else if (modalState.delete) {
@@ -189,7 +203,7 @@ const CabeceraPage = () => {
     }
 
     const cleanData = () => {
-        setEditId(0)
+        setEditId("0")
         setEditDesc('')
         setEditAgregacion(2)
         setEditState(1)
@@ -345,7 +359,7 @@ const CabeceraPage = () => {
                         {(pagInicio > 2) ? (
                             <>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle)}>1</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle,2)}>1</Link>
                                 </li>
                                 <li>
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
@@ -359,7 +373,7 @@ const CabeceraPage = () => {
                                 </li>
                             ) : (
                                 <li key={key}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle,2)}>{item}</Link>
                                 </li>
                             )
                         ))}
@@ -369,7 +383,7 @@ const CabeceraPage = () => {
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
                                 </li>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle)}>{paginas}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle,2)}>{paginas}</Link>
                                 </li>
                             </>
                         ) : (<span></span>)}
@@ -420,6 +434,21 @@ const CabeceraPage = () => {
                                     <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
                                     <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                 </div>
+                                <ModalComponent isOpen={errorModal} closeModal={closeError}>
+                                                <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                                    <div className="flex justify-end">
+                                                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
+                                                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                                <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex flex-col items-center w-full">
+                                                        <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                                        <div className="text-center">{messageModal}</div>
+                                                    </div>
+                                                </div>
+                                            </ModalComponent>
                                 <div className="text-right">
                                     <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
                                     <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
