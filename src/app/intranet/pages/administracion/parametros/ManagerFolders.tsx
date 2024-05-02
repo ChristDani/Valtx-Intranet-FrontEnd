@@ -4,7 +4,7 @@ import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
 import { repositorioServices } from "@/app/intranet/services/mantenedores/repositorio.service";
 import { parametrosServices } from "@/app/intranet/services/parametros.service";
-import { detalleServices } from "@/app/intranet/services/administration/detalle.services";
+import { detalleServices } from "@/app/intranet/services/administration/detalle.service";
 import { IoWarningOutline } from "react-icons/io5";
 
 interface repositorio {
