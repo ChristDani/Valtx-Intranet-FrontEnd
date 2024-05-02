@@ -149,15 +149,18 @@ const BlogsViewPage = () => {
                             <p className="text-gray-700 text-base line-clamp-2">
                                 {item.vtextobreve}
                             </p>
+                            <div className="flex mt-9 justify-end mr-3 mb-4">
+                                <Link href={`http://${item.vlink}`} className="global-secondary-text">Leer más -{'>'}</Link>
+                            </div>
                         </div>
                     </div> 
                     ))
                 ):(
-                    <tr className="bg-white border-b hover:bg-gray-50">
-                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                    <div className="bg-white border-b hover:bg-gray-50">
+                    <div className="px-6 py-4 font-medium text-gray-900 text-center">
                             Lo sentimos, aún no se han registrado datos!
-                        </th>
-                    </tr>
+                        </div>
+                    </div>
                 )
             }
             </div>

@@ -348,11 +348,11 @@ const DocuViewPage = () => {
                     </div> 
                     ))
                 ):(
-                    <tr className="bg-white border-b hover:bg-gray-50">
-                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
+                    <div className="bg-white border-b hover:bg-gray-50">
+                    <div scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
                             Lo sentimos, aún no se han registrado datos!
-                        </th>
-                    </tr>
+                        </div>
+                    </div>
                 )
             }
             </div>
