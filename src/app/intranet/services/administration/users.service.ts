@@ -35,6 +35,13 @@ export const userServices = {
     return data;
   },
 
+  async getOneConfig(id: any) {
+    tokenAuth(token);
+
+    const { data } = await axiosClient.get(`usuario/getUsuarioIdWeb?iid_usuario=${id}`);
+    return data;
+  },
+
   async setUsuario(id: number, nombre: string, apePat: string, apeMat: string, documento: string, email: string, telefono: string, tperfil: string, tdocumento: string, empresa: string, tusuario: string, state: string, vcip: string) {
     tokenAuth(token);
 
@@ -60,6 +67,30 @@ export const userServices = {
   },
 
   async updateUsuario(id: number, nombre: string, apePat: string, apeMat: string, documento: string, email: string, telefono: string, tperfil: string, tdocumento: string, empresa: string, tusuario: string, state: string, vcip: string) {
+    tokenAuth(token);
+
+    const res = await axiosClient.post('usuario/updateUsuario', {
+      "iid_usuario": id,
+      "vnombres": nombre,
+      "vapellido_paterno": apePat,
+      "vapellido_materno": apeMat,
+      "vnro_documento": documento,
+      "vcorreo_electronico": email,
+      "vnumero_telefonico": telefono,
+      "iid_perfil": +tperfil,
+      "iid_tipo_documento": +tdocumento,
+      "iid_empresa": +empresa,
+      "iid_tipo_usuario": 1,
+      "iid_estado_registro": +state,
+      "vcip": vcip,
+      "itipo_empleado": +tusuario
+    })
+
+    return res
+
+  },
+
+  async updateUsuarioConfig(id: number, nombre: string, apePat: string, apeMat: string, documento: string, email: string, telefono: string, tperfil: string, tdocumento: string, empresa: string, tusuario: string, state: string, vcip: string) {
     tokenAuth(token);
 
     const res = await axiosClient.post('usuario/updateUsuario', {
