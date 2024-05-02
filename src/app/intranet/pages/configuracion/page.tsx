@@ -63,7 +63,7 @@ export default function ConfiguracionPage() {
 
   const getUsuario = async () => {
     const usuario = localStorage.getItem("userId");
-    const userData = await userServices.getOne(usuario);
+    const userData = await userServices.getOneConfig(usuario);
     const userInfo = userData.data;
 
     userInfo.map(
@@ -116,7 +116,7 @@ export default function ConfiguracionPage() {
     const tel = newTelefono.length > 1 ? newTelefono : telefono;
     e.preventDefault();
     try {
-      const res = await userServices.updateUsuario(editId, editNombre, editApePat, editApeMat, editDocumento, email, tel, editIdPerfil, editIdDocumento, editEmpresa, editTipoEmp, estado, editVcip);
+      const res = await userServices.updateUsuarioConfig(editId, editNombre, editApePat, editApeMat, editDocumento, email, tel, editIdPerfil, editIdDocumento, editEmpresa, editTipoEmp, estado, editVcip);
       if(!res.data.IsSuccess) {
         setModalMessage(res.data.Message);
         setAviso(true);
