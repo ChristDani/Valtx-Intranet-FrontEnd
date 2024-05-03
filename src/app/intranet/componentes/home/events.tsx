@@ -55,7 +55,7 @@ const Events = () => {
                                 </div>
                                 <div className="w-5/6">
                                     <h1 className='text-md ml-3 text-[#0C3587]'>
-                                        <b>{new Date(evento.dfecha).getDate()} de {meses[new Date(evento.dfecha).getMonth()]}</b> - {evento.vtitulo}</h1>
+                                        <b>{new Date(evento.dfecha).getUTCDate()} de {meses[new Date(evento.dfecha).getMonth()]}</b> - {evento.vtitulo}</h1>
                                 </div>
                             </li>
                             <hr className="w-full"></hr>
