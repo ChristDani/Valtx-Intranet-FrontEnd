@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { enterateServices } from "../../services/mantenedores/enterate.service";
 import { IEnterate, EnterateResponseDTO } from "../../interfaces/enterate.response.dto";
 import ModalComponent from '../mantenedores/modal';
+import Link from "next/link";
 
 export const Enterate = () => {
 
@@ -59,7 +60,7 @@ export const Enterate = () => {
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom font-bold mt-4">
                 <h1 className="text-lg global-main-text"> Entérate </h1>
-                <span className="cursor-pointer global-secondary-text">Ver todos</span>
+                <Link href="/intranet/pages/views/enterate" className="cursor-pointer global-secondary-text">Ver todos</Link>
             </div>
 
             {/** Contenido */}
@@ -73,7 +74,6 @@ export const Enterate = () => {
                         </span>
                         {item.vimagen && <img className="h-full w-full" src={`/images/${item.vimagen}`} />}
                     </div>))}
-
             </div>
 
             {/* modal */}
