@@ -119,6 +119,8 @@ const UsersPage = () => {
     getOptionsUser(perfilId, pathName);
     gettipoEmpleado();
     getempresa();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const searchData = (e: any) => {

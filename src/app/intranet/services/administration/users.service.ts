@@ -1,17 +1,20 @@
-"use client";
+'use client'
 
 import axiosClient from "../axios.service";
 import { getCookie } from "../get-cookie.service";
 import tokenAuth from "../token.service";
 import crypto from 'crypto'
 
-const token = getCookie("token") || "";
+const token = getCookie('token') || "";
+//console.log(token)
 
 export const userServices = {
-
   async getList(pageNumber: number, itemsPerPage: number, nombre: string, apellidos: string, documento: string, tdocumento: number, tperfil: number, state: number) {
 
-    tokenAuth(token);
+    const token1 = getCookie('token') || "";
+
+    tokenAuth(token1);
+    
 
     const { data } = await axiosClient.post("usuario/getUsuarioList", {
       "inumero_pagina": pageNumber - 1,
