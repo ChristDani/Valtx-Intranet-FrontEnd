@@ -196,8 +196,8 @@ const EventsViewPage = () => {
                             </div>
                             <hr className="my-8 h-0.5 w-full bg-black "/>
                         </div>
-                        {dataList[month].map((item, index) => (
-                        <div key={index} className="flex flex-row w-full ">
+                        {dataList[month].map((item:any) => (
+                        <div key={item} className="flex flex-row w-full ">
                         <div className="w-1/4 h-20 flex flex-col justify-center items-center">
                                 <span className=" text-slate-500">{dayName(item.dayNumber)}</span>
                                 <span className="font-bold text-3xl">{item.day}</span>

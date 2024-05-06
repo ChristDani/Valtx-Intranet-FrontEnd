@@ -20,7 +20,7 @@ const TopNews = () =>{
     const getNews = async () =>{
         try{
 
-            const news: NoticiasResponseDTO = await newsServices.getListWeb(1, 2, "", 3, "asc");
+            const news: NoticiasResponseDTO = await newsServices.getListWeb(1, 2, "", 3, "desc");
             const newsL: Noticias[] = news.data;
             newsL.sort((a:any, b:any)=> a.iorden - b.iorden);
             setDataInfo(news);
@@ -43,12 +43,14 @@ const TopNews = () =>{
                 <h1 className="global-main-text text-lg"> Valtx news </h1>
                 <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/noticias">Ver todos</Link>
             </div>
-            <div className="flex flex-row w-full h-64">
+            <div className="flex gap-3 w-full h-64">
                 {
                     dataInfo.IsSuccess ? (
                         newsList.map((item:Noticias, index)=>(
-                            <div key={index} className="w-1/2 h-full m-2" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
-                                <div className="h-full rounded-2xl overflow-hidden bg-white bg-cover hover:cursor-pointer"><img className="h-full w-full" src={`/images/${item.vimagen}`}/></div>
+                            <div key={index} className="w-1/2 h-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
+                                <div className="h-full rounded-2xl overflow-hidden bg-white bg-cover hover:cursor-pointer">
+                                    <img className="h-full" src={`/images/${item.vimagen}`}/>
+                                </div>
                             </div>
                         ))
                 ):(

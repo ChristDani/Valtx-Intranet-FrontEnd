@@ -265,43 +265,8 @@ const DocuViewPage = () => {
     const [imageSrc, setImageSrc] = useState(null);
     const fileInputRef: any = useRef(null);
 
-    const handleImageChange = (event: any) => {
-        const file = event.target.files[0];
-        const reader: any = new FileReader();
-        reader.onloadend = () => {
-            setImageSrc(reader.result);
-        };
-        if (file) {
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleButtonClick = () => {
-        fileInputRef.current.click();
-    };
-
-    const capitalize = (text: String) => {
-        const first = text.charAt(0);
-        const rest = text.slice(1).toLowerCase();
-        return first + rest
-    }
-
-    const validarOrder = (e: any) => {
-        e.value = e.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');
-        setEditOrden(e.value);
-    }
-
     const imageRef = useRef<any>(null)
 
-    const openInputImage = () => {
-        imageRef.current.click();
-    };
-
-    const deleteImage = () => {
-        setImage(null)
-        setSrcImage(null)
-        setNameImage(editImage)
-    };
 
     const [show, setShow] = useState({
         state: false,
@@ -324,19 +289,16 @@ const DocuViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover max-h-38 w-full mx-auto" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
-                        <div className="w-full p-4">
-                            <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="text-gray-700 text-base line-clamp-2">
+                    <img className="object-cover h-40 w-full" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
+                    <div className="flex flex-col gap-4 w-full p-4">
+                            <div className="h-10 font-bold text-xl">{item.vtitulo}</div>
+                            <div className="h-[70px] text-gray-700 text-base line-clamp-3 overflow-hidden">
                                 {item.vtextobreve}
-                            </p>
+                            </div>
                         </div>
-                        <div>
-                            <Link href="" className="flex flex-row justify-end items-center gap-1 pr-5 text-sm text-sky-600 w-full" onClick={(e) => showDataFiles(e, item.iid_documentacion)}>
-                                <span className="">Ver Documentos</span>
-                                <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
-                                </svg>
+                        <div className="flex justify-end mr-3">
+                            <Link href=""  className="global-secondary-text" onClick={(e) => showDataFiles(e, item.iid_documentacion)}>
+                                Ver Documentos -{'>'}
                             </Link>
                         </div>
                     </div> 

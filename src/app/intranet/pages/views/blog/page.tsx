@@ -142,14 +142,14 @@ const BlogsViewPage = () => {
             {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
-                    <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover max-h-38 w-full mx-auto" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
-                        <div className="w-full p-4">
-                            <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="text-gray-700 text-base line-clamp-2">
+                    <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
+                    <img className="object-cover h-40 w-full mx-auto" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
+                        <div className="flex flex-col gap-4 first-letter:w-full p-4">
+                            <div className="h-10 font-bold text-xl">{item.vtitulo}</div>
+                            <p className="h-[70px] text-gray-700 text-base line-clamp-2">
                                 {item.vtextobreve}
                             </p>
-                            <div className="flex mt-9 justify-end mr-3 mb-4">
+                            <div className="flex justify-end">
                                 <Link href={`http://${item.vlink}`} className="global-secondary-text">Leer más -{'>'}</Link>
                             </div>
                         </div>
