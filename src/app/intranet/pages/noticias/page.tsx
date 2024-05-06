@@ -42,7 +42,7 @@ const NewsViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await newsServices.getListWeb(page, items, titulo, 3, 'asc');
+        const itemsList: any = await newsServices.getListWeb(page, items, titulo, 3, 'desc');
 
         setDataInfo(itemsList);
         setDataList(itemsList.data);
@@ -51,30 +51,6 @@ const NewsViewPage = () => {
         iniciarPaginacion(page, pages);
     }
 
-    const formatFech = (fecha: string) => {
-
-        let diassemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-
-        const dateString = fecha;
-        const date = new Date(dateString);
-        const day = date.getDay();
-        const dateNum = date.getDate();
-        const month = date.getMonth() + 1; // Note: months are 0-based in JavaScript
-        const year = date.getFullYear();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();// < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        const amOrPm = hours > 11 ? 'PM' : 'AM';
-
-        // const formattedHours = hours % 12 || 12; // convert to 12-hour format
-        const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedSeconds = seconds.toString().padStart(2, '0');
-        const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${amOrPm}`;
-
-        setFechaFormat(`${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]} del ${year} / ${formattedTime}`);
-    }
     const iniciarPaginacion = (page: number, pages: number) => {
 
         setPagInicio(1);
@@ -112,23 +88,10 @@ const NewsViewPage = () => {
     }
 
 
-    const capitalize = (text: String) => {
-        const first = text.charAt(0);
-        const rest = text.slice(1).toLowerCase();
-        return first + rest
-    }
-
     const [show, setShow] = useState({
         state: false,
         id_doc: 0
     });
-
-    const showDataFiles = (e: any, id: number) => {
-        setShow({
-            state: true,
-            id_doc: id
-        })
-    }
 
     return (
         <>
@@ -142,18 +105,15 @@ const NewsViewPage = () => {
             {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
-                    <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
+                    <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-gray-50">
                         
-                        
-                        <img className="object-cover max-h-38 w-full mx-auto" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
-                       
-                       
-                        <div className="w-full p-4">
-                            <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="text-gray-700 text-base line-clamp-2">
+                            <img className="object-cover w-full h-40 " src={`/images/${item.vimagen}`} alt={item.vtitulo}/>
+                        <div className="flex flex-col gap-4 w-full p-4">
+                            <div className="min-h-10 font-bold text-xl">{item.vtitulo}</div>
+                            <div className="h-[70px] text-gray-700 text-base line-clamp-3 overflow-hidden">
                                 {item.vtextobreve}
-                            </p>
-                            <div className="flex mt-9 justify-end mr-3 mb-4">
+                            </div>
+                            <div className="flex justify-end ">
                                 <Link href={`http://${item.vlink}`} className="global-secondary-text">Leer más -{'>'}</Link>
                             </div>
                         </div>

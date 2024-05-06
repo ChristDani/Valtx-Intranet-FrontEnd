@@ -140,19 +140,16 @@ const EnterateViewPage = () => {
             {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
-                    <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover max-h-38 w-full mx-auto" src={`/images/${item.vimagen}`}/>
-                        <div className="w-full p-4">
-                            <div className="font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="text-gray-700 text-base line-clamp-2">
+                    <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
+                    <img className="object-cover h-40 w-full" src={`/images/${item.vimagen}`}/>
+                        <div className="flex flex-col gap-4 w-full p-4">
+                            <div className="h-10  font-bold text-xl">{item.vtitulo}</div>
+                            <p className="h-[70px] text-gray-700 text-base line-clamp-2">
                                 {item.vtextobreve}
                             </p>
                         </div>
-                        <div className="flex flex-row justify-end items-center gap-1 pr-5 text-sm text-sky-600 w-full cursor-pointer" onClick={(e) => openModal(item.vlink, item.vtitulo)}>
-                                <span className="">Ver video</span>
-                                <svg className="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
-                                </svg>
+                        <div className="flex justify-end mr-4 global-secondary-text cursor-pointer" onClick={(e) => openModal(item.vlink, item.vtitulo)}>
+                                Ver video-{'>'}
                         </div>
                     </div> 
                     ))
