@@ -130,7 +130,7 @@ export default function AuthenticationPage() {
                                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
                                     focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                     onInput={(e: any) => validarDocument(e)}
-                                                    maxLength={8}
+                                                    maxLength={12}
                                                 ></input>
                                             </div>
                                             <br></br>
