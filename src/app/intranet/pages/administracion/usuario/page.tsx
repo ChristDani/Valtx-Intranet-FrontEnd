@@ -421,7 +421,7 @@ const UsersPage = () => {
   };
 
   const validarDoc = (e: any) => {
-    e.value = e.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1");
+    editIdDocumento == "1" && (e.value = e.value.replace(/[^0-9]/g, "").replace(/(\..*)\./g, "$1"));
     setEditDocumento(e.value);
   };
 
@@ -917,7 +917,7 @@ const UsersPage = () => {
                     }
                   </select>
                 </div>
-                <div className="flex-auto relative w-20">
+                <div className={ editIdDocumento != "" ? "flex-auto relative w-20" : "hidden"}>
                   <label
                     htmlFor="iorden"
                     className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
@@ -928,7 +928,7 @@ const UsersPage = () => {
                     required
                     type="text"
                     name="iorden"
-                    maxLength={8}
+                    maxLength={editIdDocumento == "1" ? 8 : 10}
                     className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2"
                     value={editDocumento}
                     onInput={(e: any) => validarDoc(e.target)}
