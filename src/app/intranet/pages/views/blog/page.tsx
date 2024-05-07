@@ -143,7 +143,7 @@ const BlogsViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover h-40 w-full mx-auto" src={`/images/${item.vimagen}`} alt="Sunset in the mountains"/>
+                    <img className="object-cover h-40 w-full mx-auto" src={`/images/${item.vimagen}`} alt=""/>
                         <div className="flex flex-col gap-4 first-letter:w-full p-4">
                             <div className="h-10 font-bold text-xl">{item.vtitulo}</div>
                             <p className="h-[70px] text-gray-700 text-base line-clamp-2">

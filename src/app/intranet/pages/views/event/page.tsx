@@ -62,8 +62,8 @@ const EventsViewPage = () => {
         setCurrentPage(page);
         setItems(items);
 
-        const itemsList: any = await eventServices.getListWeb(1, items, "", 3, getCurrentDate(), "asc");
-
+        const itemsList: any = await eventServices.getListWeb(1, items, "", 3, "2024-01-01", "asc");
+        
         setDataInfo(itemsList);
         
         // ordernar por dia de mes - pendiente
@@ -78,7 +78,7 @@ const EventsViewPage = () => {
                 'desc' : item.vtextobreve 
             }
         })
-        const groupedByMonth = list.reduce((acc: any, currentItem) => {
+        const groupedByMonth = list.reduce((acc: any, currentItem:any) => {
           const { month, ...rest } = currentItem;
           if (!acc[month]) {
             acc[month] = [];
@@ -88,7 +88,7 @@ const EventsViewPage = () => {
         }, {});
         
         for (const month in groupedByMonth) {
-          groupedByMonth[month].sort((a, b) => a.day - b.day);
+          groupedByMonth[month].sort((a:any, b:any) => a.day - b.day);
         }
         setDataList(groupedByMonth);
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
@@ -96,30 +96,6 @@ const EventsViewPage = () => {
         iniciarPaginacion(page, pages);
     }
 
-    const formatFech = (fecha: string) => {
-
-        let diassemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-
-        const dateString = fecha;
-        const date = new Date(dateString);
-        const day = date.getDay();
-        const dateNum = date.getDate();
-        const month = date.getMonth() + 1; // Note: months are 0-based in JavaScript
-        const year = date.getFullYear();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const seconds = date.getSeconds();// < 10 ? '0' + date.getSeconds() : date.getSeconds();
-        const amOrPm = hours > 11 ? 'PM' : 'AM';
-
-        // const formattedHours = hours % 12 || 12; // convert to 12-hour format
-        const formattedHours = (hours % 12 || 12).toString().padStart(2, '0');
-        const formattedMinutes = minutes.toString().padStart(2, '0');
-        const formattedSeconds = seconds.toString().padStart(2, '0');
-        const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${amOrPm}`;
-
-        setFechaFormat(`${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]} del ${year} / ${formattedTime}`);
-    }
     const iniciarPaginacion = (page: number, pages: number) => {
 
         setPagInicio(1);
@@ -156,23 +132,6 @@ const EventsViewPage = () => {
         getData(page, itemsPorPagina, searchTitle)
     }
 
-    const capitalize = (text: String) => {
-        const first = text.charAt(0);
-        const rest = text.slice(1).toLowerCase();
-        return first + rest
-    }
-
-    const getCurrentDate = () => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-
-        return `${year}-${month}-${day}`;
-    };
-
-
-
     const dayName =(date:number)=>{
         const day = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
         return day[date];
@@ -182,34 +141,38 @@ const EventsViewPage = () => {
         const day = ['En.','Feb.','Abr','May','Jun','Jul','Ag.','Set','Oct','Nov','Dic'];
         return day[date];
     }
+    const year = ()=>{
+        const date = new Date();
+        return date.getFullYear();
+    }
     return (
-        <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-lg overflow-hidden p-4">
+        <div className="w-3/4 mx-auto my-6 bg-slate-50 rounded-xl overflow-hidden px-6 py-4">
         {
             datInfo.IsSuccess ? (
                 <div>
                     {Object.keys(dataList).map((month) => (
                     <div key={month}>
                         <div className="flex flex-row text-2xl items-center gap-4">
-                            <div>
-                                <span className="ml-1">{monthName(parseInt(month) -1 )}</span>
-                                <span className="ml-1">2024</span>
+                            <div className="flex flex-row gap-1">
+                                <span>{monthName(parseInt(month) -1 )}</span>
+                                <span>{year()}</span>
                             </div>
                             <hr className="my-8 h-0.5 w-full bg-black "/>
                         </div>
                         {dataList[month].map((item:any) => (
                         <div key={item} className="flex flex-row w-full ">
-                        <div className="w-1/4 h-20 flex flex-col justify-center items-center">
-                                <span className=" text-slate-500">{dayName(item.dayNumber)}</span>
-                                <span className="font-bold text-3xl">{item.day}</span>
+                            <div className="w-1/4 h-20 flex flex-col justify-center items-center">
+                                    <span className=" text-slate-500 text-xl">{dayName(item.dayNumber)}</span>
+                                    <span className="font-bold text-2xl">{item.day}</span>
+                            </div>
+                            <div className="w-3/4 overflow-hidden flex gap-1 border-b-slate-400 border-b">
+                                <span className="w-2/6 my-auto text-center text-slate-600 max-md:w-full">{item.titulo}</span>
+                                <p className="w-4/6 my-auto font-medium max-md:hidden line-clamp-3">{item.desc}</p>
+                            </div>
                         </div>
-                        <div className="w-3/4 flex border-b border-b-slate-400">
-                            <span className="flex w-2/6 justify-center items-center text-slate-600">{item.titulo}</span>
-                            <span className="flex w-4/6 justify-center items-center font-medium">{item.desc}</span>
-                        </div>
-                    </div>
                         ))}
-              </div>
-            ))}
+                    </div>
+                     ))}
           </div>
             ):(<div className="bg-white border-b hover:bg-gray-50">
             <div className="px-6 py-4 font-medium text-gray-900 text-center">

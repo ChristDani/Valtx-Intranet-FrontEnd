@@ -51,8 +51,8 @@ export const Footer = () =>{
 
     return(
 
-        <footer className="flex bg-[#0C3587] h-60 justify-center w-full">
-            <div className="flex h-full justify-between pt-9 w-[80%]">
+        <footer className="flex flex-row bg-[#0C3587] min-h-60 justify-center w-full ">
+            <div className="flex h-full justify-between pt-9 w-[80%] max-sm:gap-4 max-sm:flex-col max-sm:items-center max-sm:text-center">
                 
                 {/** contenedor de sistemas de apoyo */}
                 <div className="flex flex-col text-xl">

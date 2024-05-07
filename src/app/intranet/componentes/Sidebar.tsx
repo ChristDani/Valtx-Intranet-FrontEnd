@@ -37,7 +37,7 @@ const Sidebar = () => {
   return (
     <div>
       {/* Sidebar */}
-      <div className="flex flex-shrink-0 bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full">
+      <div className="flex bg-white h-16 justify-between left-0 top-[4rem] w-full p-3 rounded-full max-sm:flex-col">
         <ul className="flex align-middle justify-center w-fit">
           <li
             className={`flex px-6 py-3 text-gray-900 rounded-2xl cursor-pointer ${expandedItem === "inicio"
