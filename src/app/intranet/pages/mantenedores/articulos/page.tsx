@@ -63,7 +63,6 @@ const ArticPage = () => {
         setErrorModal(false)
     }
     // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || '';
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -75,7 +74,7 @@ const ArticPage = () => {
 
   
   const getOptionsUser = async (id: any, path : string) => {
-
+    
     const resul = path.split("/");
     const finalPath = resul[resul.length - 1]
     const pathResul = "/" + finalPath
@@ -122,6 +121,8 @@ const ArticPage = () => {
     };
 
     useEffect(() => {
+        
+        const perfilId = localStorage.getItem("perfil") || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();

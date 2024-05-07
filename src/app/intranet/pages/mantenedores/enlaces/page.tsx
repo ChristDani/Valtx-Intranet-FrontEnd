@@ -60,8 +60,6 @@ const LinksPage = () => {
     const [dfecha, setFecha] = useState('');
     const [fechaFormat, setFechaFormat] = useState('');
 
-       // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || '';
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -123,6 +121,9 @@ const LinksPage = () => {
     };
 
     useEffect(() => {
+        
+       // obtener opciones de usuario
+  const perfilId = localStorage.getItem("perfil") || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();

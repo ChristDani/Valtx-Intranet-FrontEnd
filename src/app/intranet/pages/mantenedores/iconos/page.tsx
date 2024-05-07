@@ -64,8 +64,6 @@ const IcoPage = () => {
     const closeError = () => {
         setErrorModal(false)
     }
-       // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || '';
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -124,6 +122,8 @@ const IcoPage = () => {
     };
 
     useEffect(() => {
+        // obtener opciones de usuario
+   const perfilId = localStorage.getItem("perfil") || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();

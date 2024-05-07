@@ -52,8 +52,6 @@ const CabeceraPage = () => {
     const [editState, setEditState] = useState(1);
     const [editAgregacion, setEditAgregacion] = useState(2);
 
-    // obtener opciones de usuario
-    const perfilId = localStorage.getItem("perfil") || '';
 
     // obtener opciones por usuario
     const [optionUser, setOptionUser] = useState({
@@ -106,6 +104,8 @@ const CabeceraPage = () => {
     };
 
     useEffect(() => {
+        // obtener opciones de usuario
+        const perfilId = localStorage.getItem("perfil") || '';
         getData(currentPage, itemsPorPagina, searchTitle, 2);
         obtenerPath();
         getStates();
