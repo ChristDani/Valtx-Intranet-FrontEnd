@@ -1,7 +1,7 @@
 // components/VideoModal.js
 import React from 'react';
 
-const VideoModal = ({ onClose, videoUrl }) => {
+const VideoModal = ({ onClose, videoUrl }:{onClose: ()=>void, videoUrl:string}) => {
   return (
     <>
       <div className="flex fixed align-middle justify-center m-auto top-0 left-0 w-full h-full modal z-40">
