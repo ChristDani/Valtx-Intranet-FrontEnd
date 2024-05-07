@@ -1,4 +1,5 @@
-export const Construction = () => {
+"use client";
+const Construction = () => {
     return (
         <div className="h-full bg-gray-50 rounded-2xl w-9/12 mx-auto my-4">
             <img src="/construction.svg" className="h-[350px] mx-auto" alt="En construcción" />
@@ -9,3 +10,5 @@ export const Construction = () => {
         </div>
     )
 }
+
+export default Construction;

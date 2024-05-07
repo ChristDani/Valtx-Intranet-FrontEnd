@@ -1,4 +1,5 @@
-import { Construction } from "../../views/construc/page";
+"use client";
+import Construction from "../../views/construc/page";
 
 const AuxPage = () =>{
     
