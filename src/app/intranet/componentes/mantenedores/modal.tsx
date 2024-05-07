@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-const customStyles = {
+const customStyles:any = {
   overlay: {
     position: 'fixed',
     top: 0,
@@ -23,7 +23,7 @@ const customStyles = {
   },
 };
 
-const ModalComponent = ({ isOpen, closeModal, children }) => {
+const ModalComponent = ({ isOpen, closeModal, children }:{isOpen:boolean, closeModal:any, children:any}) => {
   return (
     <Modal
       isOpen={isOpen}

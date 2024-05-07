@@ -336,13 +336,13 @@ const DocuViewPage = () => {
                                 </li>
                             </>
                         ) : (<span></span>)}
-                        {pagesToShow.map((item) => (
+                        {pagesToShow.map((item:any) => (
                             (currentPage == item) ? (
-                                <li>
+                                <li key={item}>
                                     <Link href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700">{item}</Link>
                                 </li>
                             ) : (
-                                <li>
+                                <li key={item}>
                                     <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle)}>{item}</Link>
                                 </li>
                             )
