@@ -62,15 +62,10 @@ export default function Navbar() {
         try {
             
             const icons: IconsResponseDTO = await iconServices.getListWeb(1,10,"",3,7,"asc");
-            const iconsL: Icons[] = icons.data;
-
-            if (iconsL.length > 0) {
-                const primerIcono = iconsL[0]; // Obtener el primer elemento del array
-                setIconList([primerIcono]); // Establecer el estado con un array que contiene solo el primer icono
-            } else {
-                console.log("La lista de iconos está vacía.");
-            }
+            console.log(icons.data);
             
+            const iconsL: Icons[] = icons.data;
+            iconsL.length>0 ? setIconList([iconsL[0]]) : setIconList([]); 
         } catch (error) {
             
         }
@@ -114,7 +109,7 @@ export default function Navbar() {
         <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div className="justify-center flex-col w-[400px]  mx-auto block p-6 bg-white border border-gray-200 rounded-lg shadow">
             <h1 className=''><strong>Cerrar sesión</strong></h1>
-            <p className='text-xs mt-2'>¿Quieres salir de tu banca por internet?</p>
+            <p className='text-xs mt-2'>¿Quieres cerrar la sesión en Intranet?</p>
             <div className="flex mt-5 justify-end">
                 <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 w-20 hover:bg-[#0C3587] hover:text-white"  onClick={closeModal}>No</button>
                 <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 w-20 hover:text-white hover:bg-[#0e0c87]" onClick={confirmLogout}>Si</button>

@@ -48,8 +48,8 @@ const TopNews = () =>{
                     dataInfo.IsSuccess ? (
                         newsList.map((item:Noticias, index)=>(
                             <div key={index} className="w-1/2 h-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
-                                <div className="h-full rounded-2xl overflow-hidden bg-white bg-cover hover:cursor-pointer">
-                                    <img className="h-full" src={`/images/${item.vimagen}`}/>
+                                <div className="flex align-middle h-full overflow-hidden rounded-2xl justify-center bg-white hover:cursor-pointer">
+                                    <img className="h-full w-full" src={`/images/${item.vimagen}`}/>
                                 </div>
                             </div>
                         ))

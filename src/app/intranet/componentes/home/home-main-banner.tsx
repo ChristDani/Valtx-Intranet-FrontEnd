@@ -65,7 +65,7 @@ const HomeMainBanner = () =>{
       
       // Ejecutar nextSlide cada 4000ms
       const intervalId = setTimeout(() => {
-        goToNextSlide();
+        //goToNextSlide();
       }, 4000);
       
     
@@ -75,7 +75,7 @@ const HomeMainBanner = () =>{
 
     return(
     <div className='relative cursor-pointer h-[500px] w-full group rounded-xl overflow-hidden'>
-        <div className='w-full h-full bg-cover'onClick={()=>goLink()}>
+        <div className='flex h-full'onClick={()=>goLink()}>
           <img className="w-full" src={`/images/${banners[currentIndex]?.vimagen}`} />
         </div>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
@@ -85,7 +85,7 @@ const HomeMainBanner = () =>{
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
           <BsChevronCompactRight onClick={()=>goToNextSlide()} size={30} />
         </div>
-        <div className='absolute flex bottom-10 right-10 py-2'>
+        <div className='absolute flex bottom-10 right-10 w-full justify-end' >
           {banners.map((banner, slideIndex) => (
             <div
               key={slideIndex}
