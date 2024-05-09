@@ -17,16 +17,19 @@ export default function IntranetPage() {
 
             {/** Parte superior del home - Banner principal y Noticias **/}
             <div className="flex w-full flex-row">
-                <div className="flex flex-col w-3/4 mt-4">
+                <div className="flex flex-col w-3/4 mt-4 max-md:w-full">
 
                     <HomeMainBanner></HomeMainBanner>
-
+                        <div className='hidden max-md:flex max-md:flex-col'>
+                            <Events></Events>
+                            <Documentacion></Documentacion>
+                        </div>
                     <TopNews></TopNews>
 
                     <Novedades></Novedades>
 
                 </div>
-                <div className="w-1/4 pl-7">
+                <div className="w-1/4 pl-7 max-md:hidden">
 
                     <Enterate></Enterate>
 

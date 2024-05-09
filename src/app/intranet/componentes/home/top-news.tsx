@@ -43,11 +43,11 @@ const TopNews = () =>{
                 <h1 className="global-main-text text-lg"> Valtx news </h1>
                 <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/noticias">Ver todos</Link>
             </div>
-            <div className="flex gap-3 w-full h-64">
+            <div className="flex gap-3 w-full min-h-64 max-md:flex-col">
                 {
                     dataInfo.IsSuccess ? (
                         newsList.map((item:Noticias, index)=>(
-                            <div key={index} className="w-1/2 h-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
+                            <div key={index} className="w-1/2 h-full max-md:w-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
                                 <div className="flex align-middle h-full overflow-hidden rounded-2xl justify-center bg-white hover:cursor-pointer">
                                     <img className="h-full w-full" src={`/images/${item.vimagen}`}/>
                                 </div>
