@@ -17,7 +17,6 @@ export const Novedades = () =>{
     const getData= async () => {
         const info = await novedadesServices.getListWeb(1,10,"",3,"desc");
         const data = info.data
-        const list: any = data.reverse((item:novedad)=>item.vdescripcion_estado==='ACTIVO');
         setDataInfo(info);
         setNovedades(data);
     }
@@ -40,13 +39,13 @@ export const Novedades = () =>{
             {/** Contenido */}
             {
                 dataInfo.IsSuccess ? (
-                <div className=" relative flex w-full h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden" onClick={()=>goToLink(novedades[0]?.vlink)}>
+                <div className=" relative flex w-full max-h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden max-md:h-[300px]" onClick={()=>goToLink(novedades[0]?.vlink)}>
                     <img className="w-full h-full object-cover" src={`/images/${novedades[0]?.vimagen}`}/>
-                    <div className="absolute h-full w-1/2 text-white">
-                                <div className="bg-[#31BAFF] h-40 p-6 rounded-br-full rounded-tl-lg w-full">
-                                    <h1 className="flex text-5xl font-bold justify-center"> {novedades[0]?.vtitulo}</h1>
+                    <div className="absolute h-full w-1/2 text-white max-md:w-3/4">
+                                <div className="flex items-center bg-[#31BAFF] h-1/2 p-6 rounded-br-full rounded-tl-lg w-full max-sm:h-2/5">
+                                    <h1 className="w-1/2 text-5xl font-bold max-sm:text-3xl max-sm:w-full"> {novedades[0]?.vtitulo}</h1>
                                 </div>
-                                <div className="mt-4 p-4 text-xl">
+                                <div className="mt-4 p-4 text-xl max-sm:text-base">
                                     <h3><b>{novedades[0]?.vtextobreve}</b></h3>
                                 </div>
                 

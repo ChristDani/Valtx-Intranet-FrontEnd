@@ -74,7 +74,7 @@ const HomeMainBanner = () =>{
       };
 
     return(
-    <div className='relative cursor-pointer h-[500px] w-full group rounded-xl overflow-hidden'>
+    <div className='relative cursor-pointer max-h-[500px] w-full group rounded-xl overflow-hidden max-sm:h-[300px]'>
         <div className='flex h-full'onClick={()=>goLink()}>
           <img className="w-full" src={`/images/${banners[currentIndex]?.vimagen}`} />
         </div>
@@ -85,7 +85,7 @@ const HomeMainBanner = () =>{
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] right-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
           <BsChevronCompactRight onClick={()=>goToNextSlide()} size={30} />
         </div>
-        <div className='absolute flex bottom-10 right-10 w-full justify-end' >
+        <div className='absolute flex bottom-10 right-10 w-full justify-end max-sm:hidden' >
           {banners.map((banner, slideIndex) => (
             <div
               key={slideIndex}
