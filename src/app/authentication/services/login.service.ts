@@ -1,6 +1,7 @@
 import axios from 'axios'
 import crypto from 'crypto'
 import { cookies } from 'next/headers';
+import secureLocalStorage from 'react-secure-storage';
 
 
 export const loginService = {
@@ -8,7 +9,6 @@ export const loginService = {
     encryptPassword: (password: any) => {
         return crypto.createHash('sha512').update(password).digest('hex').toUpperCase();
     },
-
     setCookie: (name: string, value: string, days: number) => {
         const date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
@@ -34,6 +34,8 @@ export const loginService = {
             localStorage.setItem("userSecondLastName", res.data.data.vapellido_materno);
             localStorage.setItem("perfil", res.data.data.iid_perfil);
             localStorage.setItem("permisosMenu", JSON.stringify(res.data.data.perfil.permisos));
+            secureLocalStorage.setItem("encryptTest", res.data.data.iid_usuario);
+            secureLocalStorage.setItem("encrytJson", JSON.stringify(res.data.data.perfil.permisos));
         } else {
             return res.data.Message
         }

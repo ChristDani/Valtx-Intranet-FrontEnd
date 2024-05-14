@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import secureLocalStorage from "react-secure-storage";
 
 // Definimos un tipo para el estado
 interface ExpandedItems {
@@ -20,6 +21,8 @@ const Sidebar = () => {
     // obtener opciones de usuario
     const perfilOptions = JSON.parse(localStorage.getItem("permisosMenu") || '');
     setTitulos(perfilOptions)
+    console.log(secureLocalStorage.getItem("encrytJson"));
+    
   }
 
   const toggleItem = (item: string) => {
