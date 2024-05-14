@@ -1,3 +1,4 @@
+import axiosClient from '@/app/intranet/services/axios.service';
 import axios from 'axios'
 import crypto from 'crypto'
 import { cookies } from 'next/headers';
@@ -19,7 +20,7 @@ export const loginService = {
     validate: async (credentials: any): Promise<string | null>  => {
         const userDocument = credentials.document
         const userPassword = loginService.encryptPassword(credentials.password);
-        const res = await axios.post('http://localhost:4000/api/v1/seguridad/login', {
+        const res = await axiosClient.post('seguridad/login', {
             email: userDocument,
             password: userPassword
         })
