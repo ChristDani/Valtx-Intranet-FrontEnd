@@ -62,8 +62,6 @@ export default function Navbar() {
         try {
             
             const icons: IconsResponseDTO = await iconServices.getListWeb(1,10,"",3,7,"asc");
-            console.log(icons.data);
-            
             const iconsL: Icons[] = icons.data;
             iconsL.length>0 ? setIconList([iconsL[0]]) : setIconList([]); 
         } catch (error) {
