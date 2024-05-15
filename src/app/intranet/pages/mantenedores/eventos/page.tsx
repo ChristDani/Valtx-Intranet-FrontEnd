@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { format } from "path";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 const EventPage = () => {
   // obtener la ruta
@@ -120,7 +121,7 @@ const EventPage = () => {
 
   useEffect(() => {
     // obtener opciones de usuario
-    const perfilId = localStorage.getItem("perfil") || "";
+    const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
     getData(currentPage, itemsPorPagina, searchTitle);
     obtenerPath();
     getStates();

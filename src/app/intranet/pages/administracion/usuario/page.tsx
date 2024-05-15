@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 const UsersPage = () => {
   // busqueda
@@ -110,7 +111,8 @@ const UsersPage = () => {
   };
   useEffect(() => {
     // obtener opciones de usuario
-    const perfilId = localStorage.getItem("perfil") || "";
+    
+    const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || ''; 
     getData(currentPage, itemsPorPagina, searchTitle);
     obtenerPath();
     getStates();

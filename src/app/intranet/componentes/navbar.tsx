@@ -10,7 +10,7 @@ import { PerfilesService } from '../services/administration/perfiles.service';
 import Link from 'next/link';
 import { Icons, IconsResponseDTO } from '../interfaces/icons.response.dto';
 import { iconServices } from '../services/mantenedores/iconos.service';
-
+import secureLocalStorage from 'react-secure-storage';
 
 export default function Navbar() {
 
@@ -28,14 +28,14 @@ export default function Navbar() {
     }, []);
 
     const validatePerfil = async () =>{
-        const perfilId = localStorage.getItem("perfil") || '';
+        const perfilId : any= secureLocalStorage.getItem("perfil") || "";
         const perfil = await PerfilesService.getPerfilById(perfilId);
-        
     }
 
     const UserName = async () => {
-        const userdoc = localStorage.getItem("userDocument");
-        const userName = localStorage.getItem("userName") + ' ' + localStorage.getItem("userFirstLastName") + ' ' + localStorage.getItem("userSecondLastName");
+        const {vnombres, vapellido_paterno, vapellido_materno}: any = secureLocalStorage.getItem("user");
+        const userName = vnombres + ' ' + vapellido_paterno + ' ' + vapellido_materno;
+        
         setNombre(userName);
     }
 

@@ -27,15 +27,9 @@ export const loginService = {
 
         if (res.data.IsSuccess) {
             loginService.setCookie("token", res.data.tokens.access.token, 1);
-            localStorage.setItem("userId", res.data.data.iid_usuario);
-            localStorage.setItem("userDocument", res.data.data.vnro_documento);
-            localStorage.setItem("userName", res.data.data.vnombres);
-            localStorage.setItem("userFirstLastName", res.data.data.vapellido_paterno);
-            localStorage.setItem("userSecondLastName", res.data.data.vapellido_materno);
-            localStorage.setItem("perfil", res.data.data.iid_perfil);
-            localStorage.setItem("permisosMenu", JSON.stringify(res.data.data.perfil.permisos));
-            secureLocalStorage.setItem("encryptTest", res.data.data.iid_usuario);
-            secureLocalStorage.setItem("encrytJson", JSON.stringify(res.data.data.perfil.permisos));
+            secureLocalStorage.setItem("user", res.data.data);
+            secureLocalStorage.setItem("perfil", res.data.data.iid_perfil);
+            secureLocalStorage.setItem("permisosMenu", JSON.stringify(res.data.data.perfil.permisos));
         } else {
             return res.data.Message
         }

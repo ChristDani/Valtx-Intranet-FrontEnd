@@ -19,9 +19,8 @@ const Sidebar = () => {
 
   const getOptionsUser = () => {
     // obtener opciones de usuario
-    const perfilOptions = JSON.parse(localStorage.getItem("permisosMenu") || '');
-    setTitulos(perfilOptions)
-    console.log(secureLocalStorage.getItem("encrytJson"));
+    const perfilOptions:any = secureLocalStorage.getItem("permisosMenu") || '';
+    setTitulos(JSON.parse(perfilOptions));
     
   }
 

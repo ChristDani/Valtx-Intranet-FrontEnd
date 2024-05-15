@@ -5,6 +5,7 @@ import { userServices } from "../../services/administration/users.service";
 import Link from "next/link";
 import ModalComponent from "../../componentes/mantenedores/modal";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 export default function ConfiguracionPage() {
   // datosUsuario
@@ -62,9 +63,9 @@ export default function ConfiguracionPage() {
   
 
   const getUsuario = async () => {
-    const usuario = localStorage.getItem("userId");
-    const userData = await userServices.getOneConfig(usuario);
-    const userInfo = userData.data;
+    const {userId}:any = secureLocalStorage.getItem("user");
+    const {data} = await userServices.getOneConfig(userId);
+    const userInfo = data;
 
     userInfo.map(
       (item: any) => (

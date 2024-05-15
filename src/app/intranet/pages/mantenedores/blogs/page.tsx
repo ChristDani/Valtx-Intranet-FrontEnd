@@ -8,6 +8,7 @@ import ModalComponent from "../../../componentes/mantenedores/modal";
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 const BlogPage = () => {
   // obtener la ruta
@@ -119,7 +120,7 @@ const BlogPage = () => {
   useEffect(() => {
     
   // obtener opciones de usuario
-  const perfilId = localStorage.getItem("perfil") || "";
+    const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
     getData(currentPage, itemsPorPagina, searchTitle);
     getCategories();
     getStates();
