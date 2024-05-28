@@ -32,7 +32,8 @@ export const userServices = {
   },
 
   async getOne(id: any) {
-    tokenAuth(token);
+    const token1 = getCookie('token') || "";
+    tokenAuth(token1);
 
     const { data } = await axiosClient.get(`usuario/getUsuarioId?iid_usuario=${id}`);
     return data;
