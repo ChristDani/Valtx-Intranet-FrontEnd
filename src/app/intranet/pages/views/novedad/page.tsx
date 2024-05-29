@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { novedadesServices } from "@/app/intranet/services/mantenedores/novedades.service";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const NovedadesViewPage = () => {
 
@@ -130,7 +131,7 @@ const NovedadesViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover h-40 w-full" src={`/images/${item.vimagen}`}/>
+                    <ImagenFront className="object-cover h-40 w-full" src={item.vimagen}/>
                         <div className="flex flex-col gap-4 w-full p-4">
                             <div className="min-h-10 font-bold text-xl mb-2">{item.vtitulo}</div>
                             <p className="h-[70px]text-gray-700 text-base line-clamp-2">

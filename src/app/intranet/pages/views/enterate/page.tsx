@@ -4,6 +4,7 @@ import { enterateServices } from "@/app/intranet/services/mantenedores/enterate.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ModalComponent from "@/app/intranet/componentes/mantenedores/modal";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const EnterateViewPage = () => {
 
@@ -141,7 +142,7 @@ const EnterateViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <img className="object-cover h-40 w-full" src={`/images/${item.vimagen}`}/>
+                    <ImagenFront className="object-cover h-40 w-full" src={item.vimagen}/>
                         <div className="flex flex-col gap-4 w-full p-4">
                             <div className="h-10  font-bold text-xl">{item.vtitulo}</div>
                             <p className="h-[70px] text-gray-700 text-base line-clamp-2">
@@ -238,7 +239,7 @@ const EnterateViewPage = () => {
                 justify-center rounded-full translate-x-4 -translate-y-4 w-[30px] h-[30px]"
                                 onClick={closeModal}
                             >X</span>
-
+                            {/*
                             <iframe
                                 width={700}
                                 height={400}
@@ -247,7 +248,10 @@ const EnterateViewPage = () => {
                                 frameBorder={0}
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
-                            />
+                    >*/}
+                            <video width="700" height={400} controls crossOrigin="anonymous" autoPlay>
+                                <source  src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`} type="video/mp4" />
+                            </video>
                         </div>
 
                     </div>

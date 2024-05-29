@@ -119,7 +119,7 @@ export const Footer = () =>{
                                     className="bg-contain cursor-pointer h-16 w-16 rounded-xl mr-2"
                                     onClick={()=>{goToLink(icon.vlink)}}
                                     >
-                                    <img src={`/images/${icon.vimagen}`}
+                                    <ImagenFront src={icon.vimagen}
                                         alt={icon.vtitulo}
                                     />
                                 </div>

@@ -6,6 +6,7 @@ import { Documentation, DocumentationResponseDTO } from "../../interfaces/docume
 import ModalComponent from "../mantenedores/modal";
 import ManagerDoc from "../../pages/views/document/ManagerDocument";
 import Link from "next/link";
+import ImagenFront from "../mantenedores/imagenFront";
 export const Documentacion = () => {
     const [openIsModal, setModalIsOpen] = useState(false);
     const [idDoc, setIdDoc] = useState(0);
@@ -57,7 +58,7 @@ export const Documentacion = () => {
                                 {docum.vtitulo}
                             </h1>
                         </span>
-                        <img src={`/images/${docum.vimagen}`} className=" object-cover w-full h-full max-md:hidden"></img>
+                        <ImagenFront src={docum.vimagen} className=" object-cover w-full h-full max-md:hidden"/>
                     </div>
                 ))}
 

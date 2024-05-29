@@ -10,6 +10,7 @@ import { PerfilesService } from '../services/administration/perfiles.service';
 import Link from 'next/link';
 import { Icons, IconsResponseDTO } from '../interfaces/icons.response.dto';
 import { iconServices } from '../services/mantenedores/iconos.service';
+import ImagenFront from './mantenedores/imagenFront';
 
 
 export default function Navbar() {
@@ -78,7 +79,7 @@ export default function Navbar() {
                 {
                     iconList.map((icon) => (
                         <Link key={icon.iid_icono} href={icon.vlink}>
-                            <img src={`/images/${icon.vimagen}`} alt={icon.vtitulo} height={200} width={200} />
+                            <ImagenFront src={icon.vimagen} alt={icon.vtitulo} className='w-[200px] h-[200px]:'/>
                         </Link>
                     ))
                 }

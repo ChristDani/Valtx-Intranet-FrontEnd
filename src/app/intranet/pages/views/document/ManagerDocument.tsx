@@ -109,17 +109,6 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
         ))
     }
 
-    const editItem = (e: any, id: number) => {
-        setState('update')
-        getOneItem(id);
-        openInterModal();
-    }
-
-    const deleteItem = async (e: any, id: number) => {
-        setState('delete');
-        getOneItem(id);
-        openInterModal();
-    }
 
     const confirmOp = async (e: any) => {
         e.preventDefault();
@@ -173,9 +162,6 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
         <>
             <div className="flex flex-col m-auto bg-white rounded-xl p-4 w-full h-[500px]">
                 <div className="flex flex-row justify-between items-center">
-                    <div className="mt-4 ml-5 capitalize">
-                        Mantenedores › {pathFinal} › <strong>Repositorio</strong>
-                    </div>
                     <div className="cursor-pointer  rounded-full p-1 " onClick={close}>
                         <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
@@ -242,7 +228,7 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
                                                             }
                                                         </td>
                                                         <td className="flex gap-1 items-center justify-center my-auto px-4 h-14">
-                                                            <Link href={`/docs/${item.vdescripcion_cabeceraMaestra}/${item.vdescripcion_cabecera}/${item.vdocumento}`}
+                                                            <Link href={`https://intranetconexion.valtx.pe:9021/public/documentación/${item.vdocumento}`}
                                                                 target="_blank"
                                                                 className="font-medium text-blue-600 hover:underline">
                                                                 <svg className=" text-dark" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

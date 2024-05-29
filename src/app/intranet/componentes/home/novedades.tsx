@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { novedadesServices } from "../../services/mantenedores/novedades.service";
 import Link from "next/link";
+import ImagenFront from "../mantenedores/imagenFront";
 interface novedad{
     iid_novedad: number,
     vtitulo: string,
@@ -40,7 +41,7 @@ export const Novedades = () =>{
             {
                 dataInfo.IsSuccess ? (
                 <div className=" relative flex w-full max-h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden max-md:h-[300px]" onClick={()=>goToLink(novedades[0]?.vlink)}>
-                    <img className="w-full h-full object-cover" src={`/images/${novedades[0]?.vimagen}`}/>
+                    <ImagenFront className="w-full h-full object-cover" src={novedades[0]?.vimagen}/>
                     <div className="absolute h-full w-1/2 text-white max-md:w-3/4">
                                 <div className="flex items-center bg-[#31BAFF] h-1/2 p-6 rounded-br-full rounded-tl-lg w-full max-sm:h-2/5">
                                     <h1 className="w-1/2 text-5xl font-bold max-sm:text-3xl max-sm:w-full"> {novedades[0]?.vtitulo}</h1>

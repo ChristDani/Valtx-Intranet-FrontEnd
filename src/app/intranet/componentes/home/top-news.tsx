@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { newsServices } from "../../services/mantenedores/news.service";
 import { Noticias, NoticiasResponseDTO } from "../../interfaces/news.response.dto";
 import Link from "next/link";
+import ImagenFront from "../mantenedores/imagenFront";
 const TopNews = () =>{
 
 
@@ -49,7 +50,7 @@ const TopNews = () =>{
                         newsList.map((item:Noticias, index)=>(
                             <div key={index} className="w-1/2 h-full max-md:w-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
                                 <div className="flex align-middle h-full overflow-hidden rounded-2xl justify-center bg-white hover:cursor-pointer">
-                                    <img className="h-full w-full" src={`/images/${item.vimagen}`}/>
+                                    <ImagenFront className="h-full w-full" src={item.vimagen}/>
                                 </div>
                             </div>
                         ))

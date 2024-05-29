@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa";
 import { EventResponseDTO, Evento } from "../../interfaces/event.response.dto";
 import Link from "next/link";
+import ImagenFront from "../mantenedores/imagenFront";
 
 const meses = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -51,7 +52,7 @@ const Events = () => {
                         <div  key={evento.iid_evento}>
                             <li className="flex justify-center items-center p-4">
                                 <div className="flex justify-center h-full w-1/6">
-                                    <img src={`images/${evento.vimagen}`}></img>
+                                    <ImagenFront src={evento.vimagen}/>
                                 </div>
                                 <div className="w-5/6">
                                     <h1 className='text-md ml-3 text-[#0C3587]'>

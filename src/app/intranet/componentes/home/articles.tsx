@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { blogServices } from "../../services/mantenedores/blogs.service";
 import { Article, ArticleResponseDTO } from "../../interfaces/article.response.dto";
+import ImagenFront from "../mantenedores/imagenFront";
 
 const Articles = () => {
 
@@ -42,7 +43,7 @@ const Articles = () => {
                 {articles ? articles.map((article, index) => (
 
                     <div key={index} className="max-w-xs my-4 max-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50 max-md:w-full">
-                        <img src={`/images/${article.vimagen}`} className="object-cover max-h-40 w-full mx-auto"></img>
+                        <ImagenFront src={article.vimagen} className="object-cover max-h-40 w-full mx-auto"/>
                         <div className="flex flex-col gap-4 first-letter:w-full p-4">
                             <div className="h-10 font-bold text-xl">{article.vtitulo}</div>
                             <p className="h-[70px] text-gray-700 text-base line-clamp-3">
