@@ -95,7 +95,7 @@ export const Enterate = () => {
                                 onClick={closeModal}
                             >X</span>
 
-                            <iframe
+                            {/* <iframe
                                 width={700}
                                 height={400}
                                 src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`}
@@ -105,7 +105,11 @@ export const Enterate = () => {
                                 allowFullScreen
                                 referrerPolicy="no-referrer"
 
-                            />
+                            /> */}
+                            <video width="600" controls crossOrigin="anonymous" autoPlay>
+                                <source  src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`} type="video/mp4" />
+                                Tu navegador no soporta el elemento de video.
+                            </video>
                         </div>
 
                     </div>

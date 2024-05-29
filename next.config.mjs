@@ -23,22 +23,22 @@ const nextConfig = {
       }
     ]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/images/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
-        destination: 'https://intranetconexion.valtx.pe:9021/public/:path*', // Especifica la URL del backend
-      },
-      {
-        source: '/videos/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
-        destination: 'https://intranetconexion.valtx.pe:9021/public/enterate/videos/:path*', // Especifica la URL del backend
-      },
-      {
-        source: '/docs/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
-        destination: 'https://intranetconexion.valtx.pe:9021/public/documentacion/:path*', // Especifica la URL del backend
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/images/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
+  //       destination: 'https://intranetconexion.valtx.pe:9021/public/:path*', // Especifica la URL del backend
+  //     },
+  //     {
+  //       source: '/videos/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
+  //       destination: 'https://intranetconexion.valtx.pe:9021/public/enterate/videos/:path*', // Especifica la URL del backend
+  //     },
+  //     {
+  //       source: '/docs/:path*', // Define la ruta para las solicitudes que serán redirigidas al backend
+  //       destination: 'https://intranetconexion.valtx.pe:9021/public/documentacion/:path*', // Especifica la URL del backend
+  //     },
+  //   ];
+  // },
   
 };
 
