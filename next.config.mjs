@@ -11,6 +11,7 @@ const nextConfig = {
   //     hostname: 'localhost',
   //     port: '4000',
   //     pathname: '/public/banners/**',
+  
   //   }]
   // },
   async redirects() {
@@ -38,6 +39,7 @@ const nextConfig = {
       },
     ];
   },
+  
 };
 
 export default nextConfig;

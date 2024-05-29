@@ -5,6 +5,7 @@ import { Icons, IconsResponseDTO } from "../interfaces/icons.response.dto";
 import { iconServices } from "../services/mantenedores/iconos.service";
 import { Links, LinksResponseDTO } from "../interfaces/links.response.dto";
 import { linkServices } from "../services/mantenedores/enlaces.service";
+import ImagenFront from "./mantenedores/imagenFront";
 
 export const Footer = () =>{
 
@@ -68,7 +69,7 @@ export const Footer = () =>{
                                     className="h-16 w-20 bg-gray-300 rounded-xl mr-2 cursor-pointer"
                                     onClick={()=>{goToLink(link.vlink)}}
                                 >
-                                    <img src={`/images/${link.vimagen}`} alt={link.vtitulo}/>
+                                    <ImagenFront src={link.vimagen} alt={link.vtitulo} className=""/>
                                 </div>
                             ))
                         }

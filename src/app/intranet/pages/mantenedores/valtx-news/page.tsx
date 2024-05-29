@@ -8,6 +8,7 @@ import ModalComponent from "../../../componentes/mantenedores/modal";
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { IoWarningOutline } from "react-icons/io5";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const NewsPage = () => {
   //obtener la ruta
@@ -478,11 +479,11 @@ const NewsPage = () => {
                   </th>
                   <td className="px-6 py-4 text-start ">{item.vtextobreve}</td>
                   <td className="px-6 py-4 text-center">
-                    <img
+                    <ImagenFront
                       className="rounded-lg h-20 w-auto mx-auto content-center"
-                      src={`/images/${item.vimagen}`}
+                      src={item.vimagen}
                       alt={`${item.vtextobreve}`}
-                    ></img>
+                    ></ImagenFront>
                   </td>
                   <td className="px-6 py-4">
                     {statesList.map((state: any) => (
@@ -966,10 +967,10 @@ const NewsPage = () => {
                   </>
                 ) : editImage != "" ? (
                   <>
-                    <img
+                    <ImagenFront
                       className="max-h-44 max-w-[60%] mx-auto relative"
-                      src={`/images/valtx-news/${editImage}`}
-                    ></img>
+                      src={`valtx-news/${editImage}`}
+                    ></ImagenFront>
                     <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
                       {nameImage}
                     </label>
@@ -1099,11 +1100,11 @@ const NewsPage = () => {
           ) : (
             <>
               <Link href={editLink} target={redirecction}>
-                <img
+                <ImagenFront
                   className="rounded-lg max-h-72 w-auto mx-auto my-3"
-                  src={`/images/valtx-news/${editImage}`}
+                  src={`valtx-news/${editImage}`}
                   alt=""
-                ></img>
+                ></ImagenFront>
               </Link>
               <hr />
               <div className="px-5 py-3">

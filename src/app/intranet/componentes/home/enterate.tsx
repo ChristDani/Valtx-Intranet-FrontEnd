@@ -5,6 +5,7 @@ import { enterateServices } from "../../services/mantenedores/enterate.service";
 import { IEnterate, EnterateResponseDTO } from "../../interfaces/enterate.response.dto";
 import ModalComponent from '../mantenedores/modal';
 import Link from "next/link";
+import ImagenFront from "../mantenedores/imagenFront";
 
 export const Enterate = () => {
 
@@ -72,7 +73,7 @@ export const Enterate = () => {
                         <span className="flex absolute align-middle h-full justify-center  w-full">
                             <img src="/icons/play-icon.svg" className="hover:w-11 w-10"></img>
                         </span>
-                        {item.vimagen && <img className="h-full w-full" src={`/images/${item.vimagen}`} />}
+                        {item.vimagen && <ImagenFront className="h-full w-full" src={item.vimagen} alt={item.vtitulo} />}
                     </div>))}
             </div>
 
@@ -97,11 +98,13 @@ export const Enterate = () => {
                             <iframe
                                 width={700}
                                 height={400}
-                                src={`/videos/${urlvideo}`}
+                                src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`}
                                 title={Title}
                                 frameBorder={0}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture "
                                 allowFullScreen
+                                referrerPolicy="no-referrer"
+
                             />
                         </div>
 

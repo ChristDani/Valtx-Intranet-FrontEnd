@@ -8,6 +8,7 @@ import ModalComponent from '../../../componentes/mantenedores/modal';
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { IoWarningOutline } from "react-icons/io5";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const LinksPage = () => {
 
@@ -400,7 +401,7 @@ const LinksPage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
+                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
                                         </td>
                                         <td className='px-6 py-4'>
                                             {
