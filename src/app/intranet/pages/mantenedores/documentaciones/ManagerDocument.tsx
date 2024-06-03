@@ -106,12 +106,14 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
     const getOneItem = async (id: number) => {
         const onlyOneItem = await repositorioServices.getOne(id);
         const edit = onlyOneItem.data
+        console.log(onlyOneItem.data);
+        
         edit.map((item: any) => (
             setEditId(item.iid_repo), // idrepositorio
             setEditCabecera(item.iid_tabla_cabecera), // idcabecera
             setIdDoc(item.iid_documentacion), // iddoc
             setEditTitle(item.vtitulo),
-            setEditDoc(item.vdocumento),
+            //setEditDoc(item.vdocumento),
             setEditState(item.iid_estado_registro),
             setNameDoc(nombredoc(item.vdocumento)),
             setEditCabeceraMaestra(item.iid_tabla_cabeceraMaestra)
