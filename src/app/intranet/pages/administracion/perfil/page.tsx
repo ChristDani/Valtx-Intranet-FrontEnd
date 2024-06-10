@@ -181,7 +181,7 @@ const ProfilesPage = () => {
     const onlyOneItem = await PerfilesService.getPerfilById(id);
 
     const data = onlyOneItem.data;
-
+    
     data.map(
       (item: any) => (
         setEditId(item.iid_perfil),
@@ -266,7 +266,7 @@ const ProfilesPage = () => {
       
     } else if (modalState.update) {
       
-        await PerfilesService.update(editTitle, editDesc, editId);
+        await PerfilesService.update(editTitle, editDesc, editId, editState);
         const data = await optionsServices.setPefilOptions(newOptions);
         closeModal();
       
