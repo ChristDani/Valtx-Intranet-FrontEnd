@@ -16,7 +16,7 @@ import DataTable, { TableColumn } from 'react-data-table-component';
 
 type DataRow = {
     id: number;
-	order: string;
+    order: string;
     title: string;
     description: string;
     image: string;
@@ -134,7 +134,7 @@ const BannPage = () => {
     }
     useEffect(() => {
         // obtener opciones de usuario
-        const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+        const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
@@ -146,7 +146,6 @@ const BannPage = () => {
 
         setStatesList(data)
     }
-
     const getData = async (page: number, items: number, titulo: string) => {
         setCurrentPage(page);
         setItems(items);
@@ -154,13 +153,22 @@ const BannPage = () => {
         const itemsList: any = await bannerServices.getList(page, items, titulo, -1, 'asc');
 
         setDataInfo(itemsList);
-        setDataList(itemsList.data);
+        setDataList(itemsList.data.map((item: any) => {
+            return {
+                id: item.iid_banner,
+                order: item.iorden,
+                title: item.vtitulo,
+                description: item.vtextobreve,
+                image: item.vimagen,
+                status: item.iid_estado_registro
+            }
+        }))
+
         const pages = Math.ceil(itemsList.TotalRecords / items) != 0 ? Math.ceil(itemsList.TotalRecords / items) : 1;
         setPages(pages);
         iniciarPaginacion(page, pages);
     }
-
-    const searchData = (e:any) => {
+    const searchData = (e: any) => {
         const title = e.target.value
         setSearchTitle(title)
         getData(1, itemsPorPagina, title)
@@ -362,63 +370,98 @@ const BannPage = () => {
         expanded === title ? setExpanded("") : setExpanded(title);
     }
 
-    
-const columns: TableColumn<DataRow>[] = [
-	{
-		name: 'ORDEN',
-		selector: row => row.order,
-	},
-	{
-		name: 'TITULO',
-		selector: (row: { title: any; }) => row.title,
-	},
-    {
-        name: 'DESCRIPCION',
-        selector: (row: { description: any; }) => row.description,
-    },
-    {
-        name: 'IMAGEN',
-        cell: (row) => <img crossOrigin="anonymous" src={row.image} style={{width:"100px"}}/>,
-    },
-    {
-        name: 'ESTADO',
-        selector: (row: { status: any; }) => row.status,
-    },
-    {
-        name: 'ACCION',
-        cell: (row) =>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=> alert(`action ${row.id}`)}>Action</button>,
-            button: true
-        
+
+    const columns: TableColumn<DataRow>[] = [
+        {
+            name: 'ORDEN',
+            selector: row => row.order,
+        },
+        {
+            name: 'TITULO',
+            selector: (row: { title: any; }) => row.title,
+        },
+        {
+            name: 'DESCRIPCION',
+            selector: (row: { description: any; }) => row.description,
+        },
+        {
+            name: 'IMAGEN',
+            cell: (row) => <img crossOrigin="anonymous" src={`/images/${row.image}`} style={{ width: "100px" }} />,
+        },
+        {
+            name: 'ESTADO',
+            cell: (row) => (
+                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${row.status === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                    {statesList.map((state: any) => (
+                        <div key={state.iid_tabla_detalle}>
+                            {
+                                state.iid_tabla_detalle == row.status ? (
+                                    <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
+                                        {
+                                            state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
+                                        }
+                                    </div>
+                                ) : (
+                                    <>
+                                    </>
+                                )
+                            }
+                        </div>))
+                    }
+                </div>
+            )
+        },
+        {
+            name: 'ACCION',
+            cell: (row) =>
+                <div className="flex gap-2 max-lg:hidden">
+                    {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, row.id)}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587" />
+                        </svg>
+                    </Link>}
+                    {optionUser.editar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, row.id)}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clipPath="url(#clip0_191_168)">
+                                <path d="M2.81326 15.4667L1.54659 20.9333C1.50289 21.1332 1.50439 21.3403 1.55097 21.5394C1.59756 21.7386 1.68805 21.9249 1.81583 22.0846C1.94362 22.2444 2.10547 22.3735 2.28957 22.4627C2.47368 22.5519 2.67537 22.5988 2.87992 22.6C2.97524 22.6096 3.07128 22.6096 3.16659 22.6L8.66659 21.3334L19.2266 10.8133L13.3333 4.93335L2.81326 15.4667Z" fill="#31BAFF" />
+                                <path d="M22.5466 5.54667L18.6133 1.61333C18.3547 1.35604 18.0048 1.21161 17.64 1.21161C17.2752 1.21161 16.9252 1.35604 16.6666 1.61333L14.48 3.8L20.3666 9.68667L22.5533 7.5C22.6813 7.37139 22.7826 7.2188 22.8516 7.05098C22.9205 6.88315 22.9557 6.70338 22.955 6.52195C22.9544 6.34052 22.918 6.161 22.848 5.99365C22.7779 5.82629 22.6755 5.6744 22.5466 5.54667Z" fill="#31BAFF" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_191_168">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+
+                    </Link>}
+                    {optionUser.eliminar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, row.id)}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g clipPath="url(#clip0_191_172)">
+                                <path d="M20 5C20.2652 5 20.5196 5.10536 20.7071 5.29289C20.8946 5.48043 21 5.73478 21 6C21 6.26522 20.8946 6.51957 20.7071 6.70711C20.5196 6.89464 20.2652 7 20 7H19L18.997 7.071L18.064 20.142C18.0281 20.6466 17.8023 21.1188 17.4321 21.4636C17.0619 21.8083 16.5749 22 16.069 22H7.93C7.42414 22 6.93707 21.8083 6.56688 21.4636C6.1967 21.1188 5.97092 20.6466 5.935 20.142L5.002 7.072C5.00048 7.04803 4.99982 7.02402 5 7H4C3.73478 7 3.48043 6.89464 3.29289 6.70711C3.10536 6.51957 3 6.26522 3 6C3 5.73478 3.10536 5.48043 3.29289 5.29289C3.48043 5.10536 3.73478 5 4 5H20ZM14 2C14.2652 2 14.5196 2.10536 14.7071 2.29289C14.8946 2.48043 15 2.73478 15 3C15 3.26522 14.8946 3.51957 14.7071 3.70711C14.5196 3.89464 14.2652 4 14 4H10C9.73478 4 9.48043 3.89464 9.29289 3.70711C9.10536 3.51957 9 3.26522 9 3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2H14Z" fill="#EA5065" />
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_191_172">
+                                    <rect width="24" height="24" fill="white" />
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </Link>}
+                </div>
+
+        }
+    ];
+
+    const customStyles = {
+        cells :{
+            style: {
+                minHeight: '72px'
+            }
+        }
     }
-];
-
-const data = [
-  	{
-		id: 5,
-        order: '1',
-		title: 'Beetlejuice',
-        description: 'desc',
-        image: 'http://localhost:3000/images/banners/1716908031835-1.png',
-        status: 'Activo',
-        
-        
-	},
-	{
-		id: 2,
-        order: '2',
-        title: 'Ghostbusters',
-        description: 'desc',
-        image: 'http://localhost:3000/images/banners/1716908031835-1.png',
-        status: 'Activo',
-      
-	},
-
-]
-
-
     return (
         <>
+        
+            {/* top tabla */}
             <TopTable
                 title="Buscar por título"
                 search={searchTitle}
@@ -427,141 +470,12 @@ const data = [
                 crear={optionUser.crear}
             />
 
+            {/* tabla */}
             <DataTable
                 columns={columns}
-                data={data}
-                />
+                data={dataList}
+            />
 
-            {/* tabla */}
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3 text-center max-sm:hidden ">
-                                Orden
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Titulo
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center max-lg:hidden">
-                                Descripción
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Imagen
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center max-xl:hidden">
-                                Estado
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-center">
-                                Acción
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {/* Replace the following <tr> elements with your actual product data */}
-                        {
-                            datInfo.IsSuccess ? (
-                                dataList.map((item: any) => (
-                                    <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_banner}>
-                                        <th scope="row" className="px-6 py-4 text-center max-sm:hidden">
-                                            {item.iorden}
-                                        </th>
-                                        <th scope="row" className="px-6 py-4 font-medium text-gray-900">
-                                            {item.vtitulo}
-                                        </th>
-                                        <td className="px-6 py-2 text-start max-lg:hidden">
-                                            {item.vtextobreve}
-                                        </td>
-                                        <td scope="row" className="px-6 py-4 text-center">
-                                            <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
-                                        </td>
-                                        <td scope="row" className='px-6 py-4 max-xl:hidden'>
-                                            {
-                                                statesList.map((state: any) => (
-                                                    <div key={state.iid_tabla_detalle}>
-                                                        {
-                                                            state.iid_tabla_detalle == item.iid_estado_registro ? (
-                                                                <div className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === 'ACTIVO' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-200 text-rose-800'}`}>
-                                                                    {
-                                                                        state.vvalor_texto_corto != null ? capitalize(state.vvalor_texto_corto) : 'Sin estado'
-                                                                    }
-                                                                </div>
-                                                            ) : (
-                                                                <>
-                                                                </>
-                                                            )
-                                                        }
-                                                    </div>
-                                                ))
-                                            }
-                                        </td>
-                                        <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
-                                            {
-                                                <div className="hidden max-lg:block">
-                                                    <div onClick={() => expand(item.vtitulo)}>
-                                                        <svg className="w-6 h-6 text-black cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                            <path stroke="currentColor" strokeLinecap="round" strokeWidth="2" d="M12 6h.01M12 12h.01M12 18h.01" />
-                                                        </svg>
-                                                    </div>
-                                                    {
-                                                        expanded === item.vtitulo && (
-                                                            <div className=" absolute bg-white shadow-sm border-b hover:bg-gray-50 rounded-lg -ml-24 -mt-14 p-3">
-                                                                <p className="border-b border-b-slate-300 hover:bg-slate-100 cursor-pointer" onClick={(e) => itemDetails(e, item.iid_banner)}>Visualizar</p>
-                                                                <p className="border-b border-b-slate-300 hover:bg-slate-100  cursor-pointer" onClick={(e) => editItem(e, item.iid_banner)}>Editar</p>
-                                                                <p className="hover:bg-slate-100 cursor-pointer" onClick={(e) => deleteItem(e, item.iid_banner)}>Eliminar</p>
-                                                            </div>)
-                                                    }
-                                                </div>
-                                            }
-                                            <div className="flex gap-2 max-lg:hidden">
-                                                {optionUser.visualizar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => itemDetails(e, item.iid_banner)}>
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z" fill="#0C3587" />
-                                                    </svg>
-                                                </Link>}
-                                                {optionUser.editar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => editItem(e, item.iid_banner)}>
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g clipPath="url(#clip0_191_168)">
-                                                            <path d="M2.81326 15.4667L1.54659 20.9333C1.50289 21.1332 1.50439 21.3403 1.55097 21.5394C1.59756 21.7386 1.68805 21.9249 1.81583 22.0846C1.94362 22.2444 2.10547 22.3735 2.28957 22.4627C2.47368 22.5519 2.67537 22.5988 2.87992 22.6C2.97524 22.6096 3.07128 22.6096 3.16659 22.6L8.66659 21.3334L19.2266 10.8133L13.3333 4.93335L2.81326 15.4667Z" fill="#31BAFF" />
-                                                            <path d="M22.5466 5.54667L18.6133 1.61333C18.3547 1.35604 18.0048 1.21161 17.64 1.21161C17.2752 1.21161 16.9252 1.35604 16.6666 1.61333L14.48 3.8L20.3666 9.68667L22.5533 7.5C22.6813 7.37139 22.7826 7.2188 22.8516 7.05098C22.9205 6.88315 22.9557 6.70338 22.955 6.52195C22.9544 6.34052 22.918 6.161 22.848 5.99365C22.7779 5.82629 22.6755 5.6744 22.5466 5.54667Z" fill="#31BAFF" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip0_191_168">
-                                                                <rect width="24" height="24" fill="white" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-
-                                                </Link>}
-                                                {optionUser.eliminar && <Link href="" className="font-medium text-blue-600 hover:underline" onClick={(e) => deleteItem(e, item.iid_banner)}>
-                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g clipPath="url(#clip0_191_172)">
-                                                            <path d="M20 5C20.2652 5 20.5196 5.10536 20.7071 5.29289C20.8946 5.48043 21 5.73478 21 6C21 6.26522 20.8946 6.51957 20.7071 6.70711C20.5196 6.89464 20.2652 7 20 7H19L18.997 7.071L18.064 20.142C18.0281 20.6466 17.8023 21.1188 17.4321 21.4636C17.0619 21.8083 16.5749 22 16.069 22H7.93C7.42414 22 6.93707 21.8083 6.56688 21.4636C6.1967 21.1188 5.97092 20.6466 5.935 20.142L5.002 7.072C5.00048 7.04803 4.99982 7.02402 5 7H4C3.73478 7 3.48043 6.89464 3.29289 6.70711C3.10536 6.51957 3 6.26522 3 6C3 5.73478 3.10536 5.48043 3.29289 5.29289C3.48043 5.10536 3.73478 5 4 5H20ZM14 2C14.2652 2 14.5196 2.10536 14.7071 2.29289C14.8946 2.48043 15 2.73478 15 3C15 3.26522 14.8946 3.51957 14.7071 3.70711C14.5196 3.89464 14.2652 4 14 4H10C9.73478 4 9.48043 3.89464 9.29289 3.70711C9.10536 3.51957 9 3.26522 9 3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2H14Z" fill="#EA5065" />
-                                                        </g>
-                                                        <defs>
-                                                            <clipPath id="clip0_191_172">
-                                                                <rect width="24" height="24" fill="white" />
-                                                            </clipPath>
-                                                        </defs>
-                                                    </svg>
-                                                </Link>}
-                                            </div>
-
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr className="bg-white border-b hover:bg-gray-50">
-                                    <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
-                                        Lo sentimos, aún no se han registrado datos!
-                                    </th>
-                                </tr>
-
-                            )
-                        }
-                    </tbody>
-                </table>
-            </div>
 
             {/* paginacion */}
 
