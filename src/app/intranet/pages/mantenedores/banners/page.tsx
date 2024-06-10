@@ -12,6 +12,18 @@ import { IoWarningOutline } from "react-icons/io5";
 import secureLocalStorage from "react-secure-storage";
 import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 
+import DataTable, { TableColumn } from 'react-data-table-component';
+
+type DataRow = {
+    id: number;
+	order: string;
+    title: string;
+    description: string;
+    image: string;
+    status: string;
+};
+
+
 const BannPage = () => {
 
     // obtener la ruta
@@ -349,6 +361,62 @@ const BannPage = () => {
     const expand = (title: string) => {
         expanded === title ? setExpanded("") : setExpanded(title);
     }
+
+    
+const columns: TableColumn<DataRow>[] = [
+	{
+		name: 'ORDEN',
+		selector: row => row.order,
+	},
+	{
+		name: 'TITULO',
+		selector: (row: { title: any; }) => row.title,
+	},
+    {
+        name: 'DESCRIPCION',
+        selector: (row: { description: any; }) => row.description,
+    },
+    {
+        name: 'IMAGEN',
+        cell: (row) => <img crossOrigin="anonymous" src={row.image} style={{width:"100px"}}/>,
+    },
+    {
+        name: 'ESTADO',
+        selector: (row: { status: any; }) => row.status,
+    },
+    {
+        name: 'ACCION',
+        cell: (row) =>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={()=> alert(`action ${row.id}`)}>Action</button>,
+            button: true
+        
+    }
+];
+
+const data = [
+  	{
+		id: 5,
+        order: '1',
+		title: 'Beetlejuice',
+        description: 'desc',
+        image: 'http://localhost:3000/images/banners/1716908031835-1.png',
+        status: 'Activo',
+        
+        
+	},
+	{
+		id: 2,
+        order: '2',
+        title: 'Ghostbusters',
+        description: 'desc',
+        image: 'http://localhost:3000/images/banners/1716908031835-1.png',
+        status: 'Activo',
+      
+	},
+
+]
+
+
     return (
         <>
             <TopTable
@@ -358,6 +426,11 @@ const BannPage = () => {
                 createItem={createItem}
                 crear={optionUser.crear}
             />
+
+            <DataTable
+                columns={columns}
+                data={data}
+                />
 
             {/* tabla */}
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
