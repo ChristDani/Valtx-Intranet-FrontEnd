@@ -1,6 +1,6 @@
 export const TopTable = ({title,search,searchData,createItem,crear}:{title:string,search:any,searchData:(e:any)=>void,createItem:(e:any)=>void,crear:boolean}) => {
     return (
-        <>
+        <div className="max-w mt-4 flex flex-wrap items-center justify-between">
         <div className="mb-5 w-96 relative flex ">
           <input
             type="text"
@@ -51,6 +51,6 @@ export const TopTable = ({title,search,searchData,createItem,crear}:{title:strin
             </svg>
             <span className=" text-white font-bold">Agregar</span>
           </button>}
-        </>
+        </div>
     );
 }
