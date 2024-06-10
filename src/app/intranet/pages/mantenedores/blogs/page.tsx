@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { IoWarningOutline } from "react-icons/io5";
 import secureLocalStorage from "react-secure-storage";
+import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 
 const BlogPage = () => {
   // obtener la ruta
@@ -118,9 +119,9 @@ const BlogPage = () => {
   };
 
   useEffect(() => {
-    
-  // obtener opciones de usuario
-    const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+
+    // obtener opciones de usuario
+    const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
     getData(currentPage, itemsPorPagina, searchTitle);
     getCategories();
     getStates();
@@ -162,12 +163,15 @@ const BlogPage = () => {
     iniciarPaginacion(page, pages);
   };
 
-  const searchData = (title: string) => {
-    setSearchTitle(title);
-    getData(1, itemsPorPagina, title);
-  };
+  const searchData = (e: any) => {
+    const title = e.target.value
+    setSearchTitle(title)
+    getData(1, itemsPorPagina, title)
+}
 
-  const createItem = async () => {
+
+  const createItem = async (e:any) => {
+    e.preventDefault()
     setModalState({ create: true, update: false, delete: false });
     openModal();
   };
@@ -271,28 +275,28 @@ const BlogPage = () => {
         } else
           if (Image != null) {
             const res = await blogServices.create(
-            Image,
-            editTitle,
-            editDesc,
-            editLink,
-            editOrden,
-            editState,
-            editId,
-            editCategory
+              Image,
+              editTitle,
+              editDesc,
+              editLink,
+              editOrden,
+              editState,
+              editId,
+              editCategory
             );
-          if (!res.data.IsSuccess){
-            setMessageModal(res.data.Message)
+            if (!res.data.IsSuccess) {
+              setMessageModal(res.data.Message)
+              setErrorModal(true);
+              return;
+            }
+          } else if (fileInput.files && fileInput.files.length === 0) {
+            setMessageModal("Por favor, selecciona una imagen");
             setErrorModal(true);
             return;
           }
-        } else if (fileInput.files && fileInput.files.length === 0) {
-          setMessageModal("Por favor, selecciona una imagen");
-          setErrorModal(true);
-          return;
-        }
       } catch (error) {
         console.log(error);
-        
+
       }
     } else if (modalState.update) {
       if (Image != null) {
@@ -327,7 +331,7 @@ const BlogPage = () => {
   };
   const closeError = () => {
     setErrorModal(false)
-}
+  }
   const cleanData = () => {
     setEditId("0");
     setEditTitle("");
@@ -402,70 +406,13 @@ const BlogPage = () => {
 
   return (
     <>
-      <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-        {/*<div>
-                    <label htmlFor="numberOfItems">Mostrar </label>
-                    <select name="numberOfItems" id="numberOfItems" onChange={(e) => getData(1, Number(e.target.value), searchTitle)}>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                    <label htmlFor="numberOfItems"> Registros</label>
-                </div>*/}
-        <div className="mb-5 w-96 relative flex ">
-          <input
-            type="text"
-            name="itemtitle"
-            className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
-            placeholder="Buscar por título"
-            value={searchTitle}
-            onInput={(e: any) => searchData(e.target.value)}
-          ></input>
-          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z"
-                stroke="#7D7E8A"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-        {optionUser.crear && (
-          <button
-            className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
-            onClick={createItem}
-          >
-            <svg
-              className="text-gray-800  dark:text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M5 12h14m-7 7V5"
-              />
-            </svg>
-            <span className=" text-white font-bold">Agregar</span>
-          </button>
-        )}
-      </div>
-
+      <TopTable
+        title="Buscar por título"
+        search={searchTitle}
+        searchData={searchData}
+        createItem={createItem}
+        crear={optionUser.crear}
+      />
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -536,8 +483,8 @@ const BlogPage = () => {
                         {state.iid_tabla_detalle == item.iid_estado_registro ? (
                           <div
                             className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === "ACTIVO"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : "bg-rose-200 text-rose-800"
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-rose-200 text-rose-800"
                               }`}
                           >
                             {state.vvalor_texto_corto != null
@@ -782,10 +729,10 @@ const BlogPage = () => {
       <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
           className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update
-              ? "w-[700px]"
-              : modalState.delete
-                ? "w-[500px]"
-                : "w-[600px]"
+            ? "w-[700px]"
+            : modalState.delete
+              ? "w-[500px]"
+              : "w-[600px]"
             }`}
         >
           <div className="flex justify-between">
@@ -1048,17 +995,17 @@ const BlogPage = () => {
                     onChange={(e) => setEditState(e.target.value)}
                   >
                     <option hidden key="0" value="0">
-                        Seleccione
+                      Seleccione
+                    </option>
+                    {statesList.map((state: any) => (
+                      <option
+                        key={state.iid_tabla_detalle}
+                        value={state.iid_tabla_detalle}
+                      >
+                        {capitalize(state.vvalor_texto_corto)}
                       </option>
-                    { statesList.map((state: any) => (
-                          <option
-                            key={state.iid_tabla_detalle}
-                            value={state.iid_tabla_detalle}
-                          >
-                            {capitalize(state.vvalor_texto_corto)}
-                          </option>
-                      )
-                    ) 
+                    )
+                    )
                     }
                   </select>
                 </div>
@@ -1075,19 +1022,19 @@ const BlogPage = () => {
                     value={editCategory}
                     onChange={(e) => setEditCategory(e.target.value)}
                   >
-                    
+
                     <option hidden value="0" key="0">
-                        Seleccione
-                      </option>
+                      Seleccione
+                    </option>
                     {
-                      categoriesList.map((category: any) =>(
-                          <option
-                            key={category.iid_tabla_detalle}
-                            value={category.iid_tabla_detalle}
-                          >
-                            {category.vvalor_texto_corto}
-                          </option>
-                        ) )
+                      categoriesList.map((category: any) => (
+                        <option
+                          key={category.iid_tabla_detalle}
+                          value={category.iid_tabla_detalle}
+                        >
+                          {category.vvalor_texto_corto}
+                        </option>
+                      ))
                     }
                   </select>
                 </div>

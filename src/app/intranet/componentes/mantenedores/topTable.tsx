@@ -1,7 +1,7 @@
 export const TopTable = ({title,search,searchData,createItem,crear}:{title:string,search:any,searchData:(e:any)=>void,createItem:(e:any)=>void,crear:boolean}) => {
     return (
-        <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-        <div className="mb-5 w-96 relative flex ">
+        <div className="max-w mt-4 mb-2 flex flex-wrap justify-between">
+        <div className="w-96 relative flex">
           <input
             type="text"
             name="itemtitle"
@@ -29,7 +29,7 @@ export const TopTable = ({title,search,searchData,createItem,crear}:{title:strin
         </div>
         {
             crear && <button
-            className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
+            className=" flex w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
             onClick={createItem}
           >
             <svg

@@ -446,15 +446,13 @@ const UsersPage = () => {
 
   return (
     <>
-      <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-        <TopTable
-        title="Buscar por documento"
-        search={searchTitle}
-        searchData={searchData}
-        createItem ={createItem}
-        crear={optionUser.crear}
-        />
-      </div>
+          <TopTable
+          title="Buscar por documento"
+          search={searchTitle}
+          searchData={searchData}
+          createItem ={createItem}
+          crear={optionUser.crear}
+          />
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">

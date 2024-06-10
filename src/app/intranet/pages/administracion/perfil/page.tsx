@@ -16,7 +16,7 @@ const ProfilesPage = () => {
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
 
- 
+
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -137,8 +137,8 @@ const ProfilesPage = () => {
   };
 
   useEffect(() => {
-     // obtener opciones de usuario
-    const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+    // obtener opciones de usuario
+    const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
     getData(currentPage, itemsPorPagina, searchTitle);
     getOptionsData();
     obtenerPath();
@@ -183,7 +183,7 @@ const ProfilesPage = () => {
     const onlyOneItem = await PerfilesService.getPerfilById(id);
 
     const data = onlyOneItem.data;
-    
+
     data.map(
       (item: any) => (
         setEditId(item.iid_perfil),
@@ -251,7 +251,7 @@ const ProfilesPage = () => {
     e.preventDefault();
 
     if (modalState.create) {
-      if(optionsChange){
+      if (optionsChange) {
         const datos = await PerfilesService.create(
           editTitle,
           editDesc,
@@ -265,13 +265,13 @@ const ProfilesPage = () => {
         setModalMessage('No hay cambios en lista de opciones');
         setAviso(true);
       }
-      
+
     } else if (modalState.update) {
-      
-        await PerfilesService.update(editTitle, editDesc, editId, editState);
-        const data = await optionsServices.setPefilOptions(newOptions);
-        closeModal();
-      
+
+      await PerfilesService.update(editTitle, editDesc, editId, editState);
+      const data = await optionsServices.setPefilOptions(newOptions);
+      closeModal();
+
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
       closeModal();
@@ -383,15 +383,13 @@ const ProfilesPage = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-                <TopTable
-                    title="Buscar por perfil"    
-                    search={searchTitle}
-                    searchData={searchData}
-                    createItem ={createItem}
-                    crear={optionUser.crear}
-                />
-      </div>
+      <TopTable
+        title="Buscar por perfil"
+        search={searchTitle}
+        searchData={searchData}
+        createItem={createItem}
+        crear={optionUser.crear}
+      />
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -433,11 +431,10 @@ const ProfilesPage = () => {
                       <div key={state.iid_tabla_detalle}>
                         {state.iid_tabla_detalle == item.iid_estado_registro ? (
                           <div
-                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
-                              state.vvalor_texto_corto === "ACTIVO"
+                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === "ACTIVO"
                                 ? "bg-emerald-100 text-emerald-700"
                                 : "bg-rose-200 text-rose-800"
-                            }`}
+                              }`}
                           >
                             {state.vvalor_texto_corto != null
                               ? capitalize(state.vvalor_texto_corto)
@@ -685,13 +682,12 @@ const ProfilesPage = () => {
       {/* modal */}
       <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
-          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${
-            modalState.create || modalState.update
+          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update
               ? "w-[700px]"
               : modalState.delete
-              ? "w-[500px]"
-              : "w-[600px]"
-          }`}
+                ? "w-[500px]"
+                : "w-[600px]"
+            }`}
         >
           <div className="flex justify-between">
             <div className="capitalize">
@@ -700,10 +696,10 @@ const ProfilesPage = () => {
                 {modalState.create
                   ? "Agregar"
                   : modalState.update
-                  ? "Actualizar"
-                  : modalState.delete
-                  ? "Eliminar"
-                  : "Detalles"}
+                    ? "Actualizar"
+                    : modalState.delete
+                      ? "Eliminar"
+                      : "Detalles"}
               </strong>
             </div>
             <div
@@ -824,140 +820,140 @@ const ProfilesPage = () => {
                     {modalState.create
                       ? optionInfo.IsSuccess
                         ? optionList.map((item: any) => (
-                            <tr
-                              key={item.iid_opcion}
-                              className="bg-gray-100 hover:bg-gray-50"
-                            >
-                              <th className="text-start border-2">
-                                {item.vtitulo_modulo}
-                              </th>
-                              <td className="text-start border-2">
-                                {item.vtitulo}
-                              </td>
-                              <td className="border-b-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_visualizar"
-                                    className=""
-                                    value={item.ivisualizar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Ver
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_crear"
-                                    className=""
-                                    value={item.icrear}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Crear
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_actualizar"
-                                    className=""
-                                    value={item.iactualizar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Editar
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_eliminar"
-                                    className=""
-                                    value={item.ieliminar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Eliminar
-                                </label>
-                              </td>
-                            </tr>
-                          ))
-                        : ""
-                      : optionId.map((item: any) => (
                           <tr
                             key={item.iid_opcion}
                             className="bg-gray-100 hover:bg-gray-50"
                           >
-                            <th>{item.vtitulo_modulo}</th>
-                            <td>{item.vtitulo}</td>
-                            <td>
+                            <th className="text-start border-2">
+                              {item.vtitulo_modulo}
+                            </th>
+                            <td className="text-start border-2">
+                              {item.vtitulo}
+                            </td>
+                            <td className="border-b-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="ivisualizar"
-                                  value="iacceso_visualizar"
-                                  defaultChecked={item.ivisualizar}
+                                  name="iacceso_visualizar"
+                                  className=""
+                                  value={item.ivisualizar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Ver
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="icrear"
-                                  value="iacceso_crear"
-                                  defaultChecked={item.icrear}
+                                  name="iacceso_crear"
+                                  className=""
+                                  value={item.icrear}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Crear
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="iactualizar"
-                                  value="iacceso_actualizar"
-                                  defaultChecked={item.iactualizar}
+                                  name="iacceso_actualizar"
+                                  className=""
+                                  value={item.iactualizar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Editar
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="ieliminar"
-                                  value="iacceso_eliminar"
-                                  defaultChecked={item.ieliminar}
+                                  name="iacceso_eliminar"
+                                  className=""
+                                  value={item.ieliminar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Eliminar
                               </label>
                             </td>
                           </tr>
-                        ))}
+                        ))
+                        : ""
+                      : optionId.map((item: any) => (
+                        <tr
+                          key={item.iid_opcion}
+                          className="bg-gray-100 hover:bg-gray-50"
+                        >
+                          <th>{item.vtitulo_modulo}</th>
+                          <td>{item.vtitulo}</td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="ivisualizar"
+                                value="iacceso_visualizar"
+                                defaultChecked={item.ivisualizar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Ver
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="icrear"
+                                value="iacceso_crear"
+                                defaultChecked={item.icrear}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Crear
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="iactualizar"
+                                value="iacceso_actualizar"
+                                defaultChecked={item.iactualizar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Editar
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="ieliminar"
+                                value="iacceso_eliminar"
+                                defaultChecked={item.ieliminar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Eliminar
+                            </label>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -1027,19 +1023,19 @@ const ProfilesPage = () => {
         </div>
       </ModalComponent>
       {
-        aviso && 
+        aviso &&
         <ModalComponent isOpen={aviso} closeModal={closeAviso} >
           <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
             <div className="flex justify-end">
-                <div className="cursor-pointer  rounded-full p-1 " onClick={closeAviso}>
-                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
-                    </svg>
-                </div>
+              <div className="cursor-pointer  rounded-full p-1 " onClick={closeAviso}>
+                <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                </svg>
+              </div>
             </div>
             <div className="flex flex-col items-center w-full">
-                <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                <div className="text-center">{modalMessage}</div>
+              <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+              <div className="text-center">{modalMessage}</div>
             </div>
           </div>
         </ModalComponent>
