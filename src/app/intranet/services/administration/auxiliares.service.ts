@@ -27,9 +27,10 @@ export const auxiliaresServices = {
     async getOne(id: any) {
         try{
             tokenAuth(token);
-            const { data } = await axiosClient.post(`parametro/getParametroId`,{
-                "iid_parametro":id
-            });
+            const {data} = await axiosClient.post("parametro/getParametroId",{
+                "iid_parametro": id
+            }
+            );
             return data;
         } catch (error) {
             console.error('An error occurred:', error);
@@ -37,23 +38,26 @@ export const auxiliaresServices = {
         }
     },
 
-    async setParametro(id: string,descripcion: string,empresa: string, cadena: string, cadena1: string, cadena2: string, entero: string, entero1: string, decimal: string, estado:  number) {
+    async setParametro(id: string,empresa: string,descripcion: string, cadena: string, cadena1: string, cadena2: string, entero: number, entero1: number, decimal: number, estado:  number) {
         try{
-            tokenAuth(token, 'multipart/form-data');
-            const formData = new FormData()
-
-            formData.append('iid_parametro', id);
-            formData.append('iid_empresa', empresa);
-            formData.append('vdescripcion', descripcion);
-            formData.append('vvalor_cadena',cadena);
-            formData.append('vvalor_cadena1',cadena1);
-            formData.append('vvalor_cadena2',cadena2);
-            formData.append('ivalor_entero',entero);
-            formData.append('ivalor_entero_1',entero1);
-            formData.append('nvalor_decimal',decimal);
-            formData.append('iid_estado_registro', estado.toString());
-        
-            const res = await axiosClient.post('parametro/setParametro', formData);
+            tokenAuth(token, 'aplication/json');
+            const data = {
+            iid_parametro: id,
+            iid_empresa: empresa,
+            vdescripcion: descripcion,
+            vvalor_cadena: cadena,
+            vvalor_cadena1: cadena1,
+            vvalor_cadena2: cadena2,
+            ivalor_entero: entero, 
+            ivalor_entero_1: entero1,
+            nvalor_decimal: decimal,
+            iid_estado_registro: estado
+            }
+            const res = await axiosClient.post('parametro/setParametro', data,{
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
         
         return res;
         } catch (error) {
@@ -67,7 +71,8 @@ export const auxiliaresServices = {
         try {
             
         tokenAuth(token);
-        const res = await axiosClient.delete(`parametro/delParametro?iid_parametro=${id}`);
+        const res = await axiosClient.delete('parametro/delParametroId?iid_parametro='+id);
+        return res;
         } catch (error) {
             console.error('An error occurred:', error);
             throw error;

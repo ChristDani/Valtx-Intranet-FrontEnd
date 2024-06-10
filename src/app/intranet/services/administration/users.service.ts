@@ -37,6 +37,7 @@ export const userServices = {
 
     const { data } = await axiosClient.get(`usuario/getUsuarioId?iid_usuario=${id}`);
     return data;
+    
   },
 
   async getOneConfig(id: any) {
