@@ -2,6 +2,8 @@ import Sidebar from "./componentes/Sidebar";
 import Navbar from "./componentes/navbar";
 import "./../globals.css";
 import { Footer } from "./componentes/footer";
+import { Suspense } from "react";
+import Loader from "./componentes/loader";
 
 export default function IntranetLayout( {children} : {children: React.ReactNode} ){
 
@@ -17,9 +19,8 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
 
                 {/* Sidebar */}
                 <Sidebar />
-
-                {children}
-
+                    <Suspense fallback={<Loader />}/>
+                        {children}
                 </div>
                 <div className="">
                     <Footer></Footer>
