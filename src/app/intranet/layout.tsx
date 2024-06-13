@@ -12,8 +12,13 @@ import { IdleTimer } from "./timer";
 
 export default function IntranetLayout( {children} : {children: React.ReactNode}){
         
-        const {dtiempo_inactividad}:any = secureLocalStorage.getItem("user");
-        const time = dtiempo_inactividad*1000*60;
+  const [time, setTime] = useState(5000);
+
+  const handleTime = (numero: number) => {
+    setTime(numero * 1000 * 60);
+  }
+        
+       
         
       
       const handleIdle = () => {
@@ -26,7 +31,9 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
       const [data, setData] = useState(true);
 
       useEffect(() => {
-        // Simula una llamada a una API
+        const {dtiempo_inactividad}:any = secureLocalStorage.getItem("user") || null;
+        handleTime(dtiempo_inactividad);
+ 
         setTimeout(() => {
           setData(false)}, 1500); // Simula un retraso de 2 segundos
       }, []);
