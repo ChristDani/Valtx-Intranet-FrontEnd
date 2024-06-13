@@ -17,4 +17,5 @@ const Loader = () => {
       </ContentLoader>
     );
 }
-export default Loader
+
+export default Loader;

@@ -19,22 +19,14 @@ export const Table = ({optionUser,listHead,listData,exist}:{optionUser:object,li
             <tbody>
                 {
                     exist ? (
-                        listData.map((item: any) => (
-                            <tr className="bg-white border-b hover:bg-gray-50" key={item.id}>
-                                <th scope="row" className="px-6 py-4 text-center">
-                                    {item.order}
+                        <tr className="bg-white border-b hover:bg-gray-50">
+                            {listData.map((item: any) => (
+                                <th scope="row" className="px-6 py-4 text-center" key={item}>
+                                    {item}
                                 </th>
-                                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                    {item.vtitulo}
-                                </th>
-                                <td className="px-6 py-4 text-start ">
-                                    {item.vtextobreve}
-                                </td>
-                                <td className="px-6 py-4 text-center">
-                                    <img className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}></img>
-                                </td>
-                            </tr>
-                        ))
+                            
+                              ))}
+                        </tr>
                     ) : (
                         <tr className="bg-white border-b hover:bg-gray-50">
                             <th scope="row" colSpan={6} className="px-6 py-4 font-medium text-gray-900 text-center">
