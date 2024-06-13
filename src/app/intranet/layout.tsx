@@ -53,14 +53,19 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
 
 
     const handleIdle = () => {
-        console.log('User is idle');
         
         // Aquí puedes agregar la lógica que deseas ejecutar cuando el usuario está inactivo
         LogoutService();
         window.location.pathname = '/authentication'
         
       };
-    
+      const [data, setData] = useState(true);
+
+      useEffect(() => {
+        // Simula una llamada a una API
+        setTimeout(() => {
+          setData(false)}, 1500); // Simula un retraso de 2 segundos
+      }, []);
     return(
             <div className=" flex flex-col justify-center w-full min-h-screen">
                 <IdleTimer timeout={tiempo} onIdle={handleIdle}/>
@@ -72,9 +77,9 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
 
                 {/* Sidebar */}
                 <Sidebar />
-                    <Suspense fallback={<Loader />}>
-                        {children}
-                    </Suspense>
+                    {
+                       data ? <Loader /> : children
+                    }
                         
                 </div>
                 <div className="">
