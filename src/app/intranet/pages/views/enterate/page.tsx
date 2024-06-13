@@ -250,7 +250,7 @@ const EnterateViewPage = () => {
                                 allowFullScreen
                     >*/}
                             <video width="700" height={400} controls crossOrigin="anonymous" autoPlay>
-                                <source  src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`} type="video/mp4" />
+                                <source  src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
                             </video>
                         </div>
 

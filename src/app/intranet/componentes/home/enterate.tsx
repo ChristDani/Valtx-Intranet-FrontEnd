@@ -107,7 +107,7 @@ export const Enterate = () => {
 
                             /> */}
                             <video width="600" controls crossOrigin="anonymous" autoPlay>
-                                <source  src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`} type="video/mp4" />
+                                <source  src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
                         </div>
