@@ -66,6 +66,7 @@ export default function IntranetLayout( {children} : {children: React.ReactNode}
         setTimeout(() => {
           setData(false)}, 1500); // Simula un retraso de 2 segundos
       }, []);
+       
     return(
             <div className=" flex flex-col justify-center w-full min-h-screen">
                 <IdleTimer timeout={tiempo} onIdle={handleIdle}/>
