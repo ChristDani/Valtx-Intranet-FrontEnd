@@ -47,21 +47,23 @@ const IdleTimer = ({ timeout, onIdle } : any) => {
 export default function IntranetLayout( {children} : {children: React.ReactNode}){
 
     
+  
     const {dtiempo_inactividad}:any = secureLocalStorage.getItem("user");
-    
     const tiempo = dtiempo_inactividad  * 1000 * 60
-
-
-    const handleIdle = () => {
-        
-        // Aquí puedes agregar la lógica que deseas ejecutar cuando el usuario está inactivo
-        LogoutService();
-        window.location.pathname = '/authentication'
-        
-      };
-      const [data, setData] = useState(true);
-
-      useEffect(() => {
+   
+  
+  
+  const handleIdle = () => {
+    
+    // Aquí puedes agregar la lógica que deseas ejecutar cuando el usuario está inactivo
+    LogoutService();
+    window.location.pathname = '/authentication'
+    
+    };
+    const [data, setData] = useState(true);
+    
+    useEffect(() => {
+      
         // Simula una llamada a una API
         setTimeout(() => {
           setData(false)}, 1500); // Simula un retraso de 2 segundos

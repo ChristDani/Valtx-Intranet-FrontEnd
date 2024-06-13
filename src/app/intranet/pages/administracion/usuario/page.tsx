@@ -815,7 +815,7 @@ const UsersPage = () => {
                     onInput={(e: any) => setEditNombre(e.target.value)}
                   ></input>
                 </div>
-                <div className="flex-auto relative w-14">
+                {/* <div className="flex-auto relative w-14">
                   <label
                     htmlFor="vtitulo"
                     className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
@@ -846,7 +846,7 @@ const UsersPage = () => {
                     value={editApeMat}
                     onInput={(e: any) => setEditApeMat(e.target.value)}
                   ></input>
-                </div>
+                </div> */}
               </div>
               <div className="mb-5 flex gap-2 justify-between">
                 <div className="relative">
@@ -1075,7 +1075,7 @@ const UsersPage = () => {
                 </div>
               </div>
               <div className="text-right">
-                {modalState.update && (
+                {/* {modalState.update && (
                   <button
                     type="button"
                     className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
@@ -1083,7 +1083,7 @@ const UsersPage = () => {
                   >
                     Reiniciar Contraseña
                   </button>
-                )}
+                )} */}
                 <button
                   type="button"
                   className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
