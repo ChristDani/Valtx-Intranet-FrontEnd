@@ -1,6 +1,7 @@
 "use client";
 
 import ModalComponent from "@/app/intranet/componentes/mantenedores/modal";
+import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import { PerfilesService } from "@/app/intranet/services/administration/perfiles.service";
 import { parametrosServices } from "@/app/intranet/services/parametros.service";
@@ -8,13 +9,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 const ProfilesPage = () => {
   // obtener la ruta
   const pathName = usePathname();
   const [pathFinal, setPathFinal] = useState("");
 
- 
+
 
   // obtener opciones por usuario
   const [optionUser, setOptionUser] = useState({
@@ -128,14 +130,15 @@ const ProfilesPage = () => {
     setPagesToShow(list);
   };
 
-  const searchData = (title: string) => {
+  const searchData = (e: any) => {
+    const title = e.target.value;
     setSearchTitle(title);
     getData(1, itemsPorPagina, title);
   };
 
   useEffect(() => {
-     // obtener opciones de usuario
-    const perfilId = localStorage.getItem("perfil") || "";
+    // obtener opciones de usuario
+    const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
     getData(currentPage, itemsPorPagina, searchTitle);
     getOptionsData();
     obtenerPath();
@@ -248,7 +251,7 @@ const ProfilesPage = () => {
     e.preventDefault();
 
     if (modalState.create) {
-      if(optionsChange){
+      if (optionsChange) {
         const datos = await PerfilesService.create(
           editTitle,
           editDesc,
@@ -262,13 +265,13 @@ const ProfilesPage = () => {
         setModalMessage('No hay cambios en lista de opciones');
         setAviso(true);
       }
-      
+
     } else if (modalState.update) {
-      
-        await PerfilesService.update(editTitle, editDesc, editId);
-        const data = await optionsServices.setPefilOptions(newOptions);
-        closeModal();
-      
+
+      await PerfilesService.update(editTitle, editDesc, editId, editState);
+      const data = await optionsServices.setPefilOptions(newOptions);
+      closeModal();
+
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
       closeModal();
@@ -380,63 +383,13 @@ const ProfilesPage = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-          <div className="mb-5 w-96 relative flex ">
-            <input
-              type="text"
-              name="itemtitle"
-              className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400"
-              placeholder="Buscar por perfil"
-              value={searchTitle}
-              onInput={(e: any) => searchData(e.target.value)}
-            ></input>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z"
-                  stroke="#7D7E8A"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-          {optionUser.crear ? (
-            <button
-              className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500"
-              onClick={createItem}
-            >
-              <svg
-                className="text-gray-800  dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 12h14m-7 7V5"
-                />
-              </svg>
-              <span className=" text-white font-bold">Agregar</span>
-            </button>
-          ) : (
-            ""
-          )}
-        </div>
-      </div>
+      <TopTable
+        title="Buscar por perfil"
+        search={searchTitle}
+        searchData={searchData}
+        createItem={createItem}
+        crear={optionUser.crear}
+      />
       {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -478,11 +431,10 @@ const ProfilesPage = () => {
                       <div key={state.iid_tabla_detalle}>
                         {state.iid_tabla_detalle == item.iid_estado_registro ? (
                           <div
-                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
-                              state.vvalor_texto_corto === "ACTIVO"
+                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === "ACTIVO"
                                 ? "bg-emerald-100 text-emerald-700"
                                 : "bg-rose-200 text-rose-800"
-                            }`}
+                              }`}
                           >
                             {state.vvalor_texto_corto != null
                               ? capitalize(state.vvalor_texto_corto)
@@ -730,13 +682,12 @@ const ProfilesPage = () => {
       {/* modal */}
       <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
-          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${
-            modalState.create || modalState.update
+          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update
               ? "w-[700px]"
               : modalState.delete
-              ? "w-[500px]"
-              : "w-[600px]"
-          }`}
+                ? "w-[500px]"
+                : "w-[600px]"
+            }`}
         >
           <div className="flex justify-between">
             <div className="capitalize">
@@ -745,10 +696,10 @@ const ProfilesPage = () => {
                 {modalState.create
                   ? "Agregar"
                   : modalState.update
-                  ? "Actualizar"
-                  : modalState.delete
-                  ? "Eliminar"
-                  : "Detalles"}
+                    ? "Actualizar"
+                    : modalState.delete
+                      ? "Eliminar"
+                      : "Detalles"}
               </strong>
             </div>
             <div
@@ -869,140 +820,140 @@ const ProfilesPage = () => {
                     {modalState.create
                       ? optionInfo.IsSuccess
                         ? optionList.map((item: any) => (
-                            <tr
-                              key={item.iid_opcion}
-                              className="bg-gray-100 hover:bg-gray-50"
-                            >
-                              <th className="text-start border-2">
-                                {item.vtitulo_modulo}
-                              </th>
-                              <td className="text-start border-2">
-                                {item.vtitulo}
-                              </td>
-                              <td className="border-b-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_visualizar"
-                                    className=""
-                                    value={item.ivisualizar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Ver
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_crear"
-                                    className=""
-                                    value={item.icrear}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Crear
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_actualizar"
-                                    className=""
-                                    value={item.iactualizar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Editar
-                                </label>
-                              </td>
-                              <td className="border-2">
-                                <label>
-                                  <input
-                                    type="checkbox"
-                                    name="iacceso_eliminar"
-                                    className=""
-                                    value={item.ieliminar}
-                                    onChange={(e) =>
-                                      handleChange(e, item.iid_opcion)
-                                    }
-                                  />
-                                  Eliminar
-                                </label>
-                              </td>
-                            </tr>
-                          ))
-                        : ""
-                      : optionId.map((item: any) => (
                           <tr
                             key={item.iid_opcion}
                             className="bg-gray-100 hover:bg-gray-50"
                           >
-                            <th>{item.vtitulo_modulo}</th>
-                            <td>{item.vtitulo}</td>
-                            <td>
+                            <th className="text-start border-2">
+                              {item.vtitulo_modulo}
+                            </th>
+                            <td className="text-start border-2">
+                              {item.vtitulo}
+                            </td>
+                            <td className="border-b-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="ivisualizar"
-                                  value="iacceso_visualizar"
-                                  defaultChecked={item.ivisualizar}
+                                  name="iacceso_visualizar"
+                                  className=""
+                                  value={item.ivisualizar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Ver
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="icrear"
-                                  value="iacceso_crear"
-                                  defaultChecked={item.icrear}
+                                  name="iacceso_crear"
+                                  className=""
+                                  value={item.icrear}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Crear
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="iactualizar"
-                                  value="iacceso_actualizar"
-                                  defaultChecked={item.iactualizar}
+                                  name="iacceso_actualizar"
+                                  className=""
+                                  value={item.iactualizar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Editar
                               </label>
                             </td>
-                            <td>
+                            <td className="border-2">
                               <label>
                                 <input
                                   type="checkbox"
-                                  name="ieliminar"
-                                  value="iacceso_eliminar"
-                                  defaultChecked={item.ieliminar}
+                                  name="iacceso_eliminar"
+                                  className=""
+                                  value={item.ieliminar}
                                   onChange={(e) =>
-                                    handleChangeEdit(e, item.iid_opcion)
+                                    handleChange(e, item.iid_opcion)
                                   }
                                 />
                                 Eliminar
                               </label>
                             </td>
                           </tr>
-                        ))}
+                        ))
+                        : ""
+                      : optionId.map((item: any) => (
+                        <tr
+                          key={item.iid_opcion}
+                          className="bg-gray-100 hover:bg-gray-50"
+                        >
+                          <th>{item.vtitulo_modulo}</th>
+                          <td>{item.vtitulo}</td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="ivisualizar"
+                                value="iacceso_visualizar"
+                                defaultChecked={item.ivisualizar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Ver
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="icrear"
+                                value="iacceso_crear"
+                                defaultChecked={item.icrear}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Crear
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="iactualizar"
+                                value="iacceso_actualizar"
+                                defaultChecked={item.iactualizar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Editar
+                            </label>
+                          </td>
+                          <td>
+                            <label>
+                              <input
+                                type="checkbox"
+                                name="ieliminar"
+                                value="iacceso_eliminar"
+                                defaultChecked={item.ieliminar}
+                                onChange={(e) =>
+                                  handleChangeEdit(e, item.iid_opcion)
+                                }
+                              />
+                              Eliminar
+                            </label>
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
@@ -1072,19 +1023,19 @@ const ProfilesPage = () => {
         </div>
       </ModalComponent>
       {
-        aviso && 
+        aviso &&
         <ModalComponent isOpen={aviso} closeModal={closeAviso} >
           <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
             <div className="flex justify-end">
-                <div className="cursor-pointer  rounded-full p-1 " onClick={closeAviso}>
-                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
-                    </svg>
-                </div>
+              <div className="cursor-pointer  rounded-full p-1 " onClick={closeAviso}>
+                <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                </svg>
+              </div>
             </div>
             <div className="flex flex-col items-center w-full">
-                <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                <div className="text-center">{modalMessage}</div>
+              <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+              <div className="text-center">{modalMessage}</div>
             </div>
           </div>
         </ModalComponent>

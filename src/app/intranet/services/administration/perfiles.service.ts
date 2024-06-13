@@ -41,13 +41,14 @@ export const PerfilesService = {
     return data;
   },
 
-  async update(titulo: string, descripcion: string, id: any) {
+  async update(titulo: string, descripcion: string, id: any, estado: string) {
     tokenAuth(token);
 
     const res = await axiosClient.post("perfil/updateperfil", {
       'iid_perfil': id,
       'vnombre_perfil': titulo,
-      'vdescripcion_perfil': descripcion
+      'vdescripcion_perfil': descripcion,
+      'iid_estado_registro': +estado
     });
 
     return res;
