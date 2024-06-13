@@ -10,8 +10,7 @@ import { PerfilesService } from '../services/administration/perfiles.service';
 import Link from 'next/link';
 import { Icons, IconsResponseDTO } from '../interfaces/icons.response.dto';
 import { iconServices } from '../services/mantenedores/iconos.service';
-import ImagenFront from './mantenedores/imagenFront';
-
+import secureLocalStorage from 'react-secure-storage';
 
 export default function Navbar() {
 
@@ -29,14 +28,14 @@ export default function Navbar() {
     }, []);
 
     const validatePerfil = async () =>{
-        const perfilId = localStorage.getItem("perfil") || '';
+        const perfilId : any= secureLocalStorage.getItem("perfil") || "";
         const perfil = await PerfilesService.getPerfilById(perfilId);
-        
     }
 
     const UserName = async () => {
-        const userdoc = localStorage.getItem("userDocument");
-        const userName = localStorage.getItem("userName") + ' ' + localStorage.getItem("userFirstLastName") + ' ' + localStorage.getItem("userSecondLastName");
+        const {vnombres}: any = secureLocalStorage.getItem("user");
+        const userName = vnombres;
+        
         setNombre(userName);
     }
 
@@ -63,8 +62,6 @@ export default function Navbar() {
         try {
             
             const icons: IconsResponseDTO = await iconServices.getListWeb(1,10,"",3,7,"asc");
-            console.log(icons.data);
-            
             const iconsL: Icons[] = icons.data;
             iconsL.length>0 ? setIconList([iconsL[0]]) : setIconList([]); 
         } catch (error) {

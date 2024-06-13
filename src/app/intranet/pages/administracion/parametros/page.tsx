@@ -10,6 +10,8 @@ import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
 import ManagerFolder from "./ManagerFolders";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
+import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 
 const CabeceraPage = () => {
 
@@ -105,7 +107,7 @@ const CabeceraPage = () => {
 
     useEffect(() => {
         // obtener opciones de usuario
-        const perfilId = localStorage.getItem("perfil") || '';
+        const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
         getData(currentPage, itemsPorPagina, searchTitle, 2);
         obtenerPath();
         getStates();
@@ -131,12 +133,14 @@ const CabeceraPage = () => {
         iniciarPaginacion(page, pages);
     }
 
-    const searchData = (desc: string) => {
+    const searchData = (e: any) => {
+        const desc = e.target.value
         setSearchTitle(desc)
         getData(1, itemsPorPagina, desc, 2);
     }
 
-    const createItem = async () => {
+    const createItem = async (e: any) => {
+        e.preventDefault();
         setModalState({ create: true, update: false, delete: false })
         openModal()
     }
@@ -158,11 +162,11 @@ const CabeceraPage = () => {
         id_tabla_cabecera: 0,
         nameCabecera: ""
     });
-    const itemDetails = (e: any, id: number,name:string) => {
+    const itemDetails = (e: any, id: number, name: string) => {
         setShow({
             state: true,
             id_tabla_cabecera: id,
-            nameCabecera:name
+            nameCabecera: name
         })
         openModal()
     }
@@ -184,15 +188,15 @@ const CabeceraPage = () => {
 
         if (modalState.create) {
             if (editDesc !== '') {
-                const res = await cabeceraServices.create(editDesc, editAgregacion,editState,editId);
-                if (!res.data.IsSuccess){
+                const res = await cabeceraServices.create(editDesc, editAgregacion, editState, editId);
+                if (!res.data.IsSuccess) {
                     setMessageModal(res.data.Message)
                     setErrorModal(true);
                     return;
                 }
             }
         } else if (modalState.update) {
-            const res = await cabeceraServices.update(editDesc, editAgregacion,editState,editId);
+            const res = await cabeceraServices.update(editDesc, editAgregacion, editState, editId);
         } else if (modalState.delete) {
             const res = await cabeceraServices.delete(editId);
         } else {
@@ -248,24 +252,13 @@ const CabeceraPage = () => {
 
     return (
         <>
-            <div className="max-w mt-4 flex flex-wrap items-center justify-between">
-                <div className="mb-5 w-96 relative flex ">
-                    <input type="text" name="itemtitle" className="bg-gray-50 border rounded-xl border-gray-300 text-gray-900 text-sm w-full p-2.5 focus:outline-none  focus:border-gray-400" placeholder="Buscar por título" value={searchTitle} onInput={(e: any) => searchData(e.target.value)}></input>
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 21L16.657 16.657M16.657 16.657C17.3999 15.9141 17.9892 15.0321 18.3912 14.0615C18.7933 13.0909 19.0002 12.0506 19.0002 11C19.0002 9.94936 18.7933 8.90905 18.3913 7.93842C17.9892 6.96779 17.3999 6.08585 16.657 5.34296C15.9141 4.60007 15.0322 4.01078 14.0616 3.60874C13.0909 3.20669 12.0506 2.99976 11 2.99976C9.94942 2.99976 8.90911 3.20669 7.93848 3.60874C6.96785 4.01078 6.08591 4.60007 5.34302 5.34296C3.84269 6.84329 2.99982 8.87818 2.99982 11C2.99982 13.1217 3.84269 15.1566 5.34302 16.657C6.84335 18.1573 8.87824 19.0002 11 19.0002C13.1218 19.0002 15.1567 18.1573 16.657 16.657Z" stroke="#7D7E8A" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                    </div>
-                </div>
-                {optionUser.crear && <button className=" flex flex-row w-32 h-10 items-center justify-center gap-1 rounded-xl bg-sky-400 hover:bg-sky-500" onClick={createItem}>
-                    <svg className="text-gray-800  dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
-                    </svg>
-                    <span className=" text-white font-bold">
-                        Agregar
-                    </span>
-                </button>}
-            </div>
+            <TopTable
+                title="Buscar por titulo"
+                search={searchTitle}
+                searchData={searchData}
+                createItem={createItem}
+                crear={optionUser.crear}
+            />
 
             {/* tabla */}
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -359,7 +352,7 @@ const CabeceraPage = () => {
                         {(pagInicio > 2) ? (
                             <>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle,2)}>1</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(1, itemsPorPagina, searchTitle, 2)}>1</Link>
                                 </li>
                                 <li>
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 cursor-block">...</span>
@@ -373,7 +366,7 @@ const CabeceraPage = () => {
                                 </li>
                             ) : (
                                 <li key={key}>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle,2)}>{item}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(item, itemsPorPagina, searchTitle, 2)}>{item}</Link>
                                 </li>
                             )
                         ))}
@@ -383,7 +376,7 @@ const CabeceraPage = () => {
                                     <span className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700">...</span>
                                 </li>
                                 <li>
-                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle,2)}>{paginas}</Link>
+                                    <Link href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700" onClick={() => getData(paginas, itemsPorPagina, searchTitle, 2)}>{paginas}</Link>
                                 </li>
                             </>
                         ) : (<span></span>)}
@@ -408,70 +401,70 @@ const CabeceraPage = () => {
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 {
                     show.state ? (
-                        <ManagerFolder close={closeModal} idCabecera={show.id_tabla_cabecera} nameCabecera={show.nameCabecera}  crear={optionUser.crear} editar={optionUser.editar} eliminar={optionUser.eliminar}/>
-                    ): (
+                        <ManagerFolder close={closeModal} idCabecera={show.id_tabla_cabecera} nameCabecera={show.nameCabecera} crear={optionUser.crear} editar={optionUser.editar} eliminar={optionUser.eliminar} />
+                    ) : (
 
-                <div className = {`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
-                    <div className="flex justify-between">
-                        <div className="capitalize">
-                            Mantenedores › {pathFinal} › <strong>{modalState.create ? 'Agregar' : modalState.update ? 'Actualizar' : modalState.delete ? 'Eliminar' : 'Detalles'}</strong>
-                        </div>
-                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
-                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                    </div>
-                    <hr />
-                    {
-                        modalState.create || modalState.update ? (
-                            <form onSubmit={confirmOp} className="mt-5">
-                                <div className="mb-5 hidden">
-                                    <label htmlFor="idItem" >ID</label>
-                                    <input type="text" name="idItem" defaultValue={editId}></input>
+                        <div className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update ? 'w-[700px]' : modalState.delete ? 'w-[500px]' : 'w-[600px]'}`}>
+                            <div className="flex justify-between">
+                                <div className="capitalize">
+                                    {pathFinal} › <strong>{modalState.create ? 'Agregar' : modalState.update ? 'Actualizar' : modalState.delete ? 'Eliminar' : 'Detalles'}</strong>
                                 </div>
-                                <div className="mb-5 relative">
-                                    <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
-                                    <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
-                                </div>
-                                <ModalComponent isOpen={errorModal} closeModal={closeError}>
-                                                <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
-                                                    <div className="flex justify-end">
-                                                        <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
-                                                            <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                                                <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex flex-col items-center w-full">
-                                                        <IoWarningOutline className="text-yellow-500 h-28 w-28" />
-                                                        <div className="text-center">{messageModal}</div>
-                                                    </div>
-                                                </div>
-                                            </ModalComponent>
-                                <div className="text-right">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
-                                </div>
-                            </form>
-                        ) : modalState.delete ? (
-                            <div className="mt-5">
-                                <h1>¿Está seguro que desea eliminar este elemento?</h1>
-                                <p>- {editDesc}</p>
-                                <br />
-                                <div className="text-end">
-                                    <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
-                                    <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
+                                <div className="cursor-pointer  rounded-full p-1 " onClick={closeModal}>
+                                    <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                        <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                    </svg>
                                 </div>
                             </div>
-                        ) : (
-                            ""
-                        )
-                    }
-                </div>
-            )
+                            <hr />
+                            {
+                                modalState.create || modalState.update ? (
+                                    <form onSubmit={confirmOp} className="mt-5">
+                                        <div className="mb-5 hidden">
+                                            <label htmlFor="idItem" >ID</label>
+                                            <input type="text" name="idItem" defaultValue={editId}></input>
+                                        </div>
+                                        <div className="mb-5 relative">
+                                            <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
+                                            <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
+                                        </div>
+                                        <ModalComponent isOpen={errorModal} closeModal={closeError}>
+                                            <div className="bg-white rounded-xl m-auto p-2 min-h-52 w-60">
+                                                <div className="flex justify-end">
+                                                    <div className="cursor-pointer  rounded-full p-1 " onClick={closeError}>
+                                                        <svg className="w-6 h-6 fill-gray-300 hover:bg-gray-200  rounded-full" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                                                            <path fillRule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm7.707-3.707a1 1 0 0 0-1.414 1.414L10.586 12l-2.293 2.293a1 1 0 1 0 1.414 1.414L12 13.414l2.293 2.293a1 1 0 0 0 1.414-1.414L13.414 12l2.293-2.293a1 1 0 0 0-1.414-1.414L12 10.586 9.707 8.293Z" clipRule="evenodd" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col items-center w-full">
+                                                    <IoWarningOutline className="text-yellow-500 h-28 w-28" />
+                                                    <div className="text-center">{messageModal}</div>
+                                                </div>
+                                            </div>
+                                        </ModalComponent>
+                                        <div className="text-right">
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]">Guardar</button>
+                                        </div>
+                                    </form>
+                                ) : modalState.delete ? (
+                                    <div className="mt-5">
+                                        <h1>¿Está seguro que desea eliminar este elemento?</h1>
+                                        <p>- {editDesc}</p>
+                                        <br />
+                                        <div className="text-end">
+                                            <button type="button" className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white" onClick={closeModal}>Cancelar</button>
+                                            <button type="submit" className="bg-[#0C3587] border border-[#0C3587] text-white rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 hover:text-white hover:bg-[#0e0c87]" onClick={confirmOp}>Confirmar</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    ""
+                                )
+                            }
+                        </div>
+                    )
                 }
-        </ModalComponent >
+            </ModalComponent >
         </>
     );
 }

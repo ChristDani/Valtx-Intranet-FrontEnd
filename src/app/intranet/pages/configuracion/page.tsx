@@ -5,23 +5,22 @@ import { userServices } from "../../services/administration/users.service";
 import Link from "next/link";
 import ModalComponent from "../../componentes/mantenedores/modal";
 import { IoWarningOutline } from "react-icons/io5";
+import secureLocalStorage from "react-secure-storage";
 
 export default function ConfiguracionPage() {
   // datosUsuario
   const [editId, setEditId] = useState(0);
-  const [editNombre, setEditNombre] = useState("");
-  const [editApePat, setEditApePat] = useState("");
-  const [editApeMat, setEditApeMat] = useState("");
-  const [editEmail, setEditEmail] = useState("");
+  const [editNombre, setEditNombre] = useState("Sin nombre");
+  const [editEmail, setEditEmail] = useState("Sin correo");
   const [newEditEmail, setNewEditEmail] = useState("");
-  const [editDocumento, setEditDocumento] = useState("");
+  const [editDocumento, setEditDocumento] = useState("Sin documento registrado");
   const [editIdPerfil, setEditIdPerfil] = useState("");
-  const [editPerfil, setEditPerfil] = useState("");
+  const [editPerfil, setEditPerfil] = useState("Sin perfil registrado");
   const [telefono, setTelefono] = useState("");
   const [newTelefono, setNewTelefono] = useState("");
-  const [editIdDocumento, setIdDocumento] = useState("");
+  const [editIdDocumento, setIdDocumento] = useState("Sin documento registrado");
   const [estado, setEstado] = useState("0");
-  const [editVcip, setEditVcip] = useState("");
+  const [editVcip, setEditVcip] = useState("Sin VCIP registrado");
   const [editTipoEmp, setEditTipoEmp] = useState("");
   const [editEmpresa, setEditEmpresa] = useState("");
 
@@ -62,16 +61,17 @@ export default function ConfiguracionPage() {
   
 
   const getUsuario = async () => {
-    const usuario = localStorage.getItem("userId");
-    const userData = await userServices.getOneConfig(usuario);
-    const userInfo = userData.data;
+    const {iid_usuario}:any = secureLocalStorage.getItem("user");
+
+    const {data} = await userServices.getOneConfig(iid_usuario);
+
+    const userInfo = data;
+
 
     userInfo.map(
       (item: any) => (
-        setEditId(item.iid_usuario),
+        setEditId(item.iid_usuario ) ,
         setEditNombre(item.vnombres),
-        setEditApePat(item.vapellido_paterno),
-        setEditApeMat(item.vapellido_materno),
         setEditEmail(item.vcorreo_electronico),
         setEditDocumento(item.vnro_documento),
         setEditPerfil(item.perfil.vdescripcion_perfil),
@@ -116,7 +116,7 @@ export default function ConfiguracionPage() {
     const tel = newTelefono.length > 1 ? newTelefono : telefono;
     e.preventDefault();
     try {
-      const res = await userServices.updateUsuarioConfig(editId, editNombre, editApePat, editApeMat, editDocumento, email, tel, editIdPerfil, editIdDocumento, editEmpresa, editTipoEmp, estado, editVcip);
+      const res = await userServices.updateUsuarioConfig(editId, editNombre, editDocumento, email, tel, editIdPerfil, editIdDocumento, editEmpresa, editTipoEmp, estado, editVcip);
       if(!res.data.IsSuccess) {
         setModalMessage(res.data.Message);
         setAviso(true);
@@ -170,9 +170,10 @@ export default function ConfiguracionPage() {
                     <h1 className=" font-semibold text-center capitalize">Datos Generales </h1>
                     <br/>
                     <div className="text-left ">
-                      <h2 className="font-semibold">Nombre : </h2> <p className="capitalize">{editNombre} {editApePat} {editApeMat}</p>
-                      <h2 className="font-semibold">Documento: </h2> <p className="capitalize">{editDocumento}</p>
-                      <h2 className="font-semibold">VCIP: </h2> <p>{editVcip}</p>
+                      <h2 className="font-semibold">Nombre : </h2> <p className="capitalize">{editNombre} </p>
+                      <h2 className="font-semibold">Documento: </h2> <p className="capitalize">{editDocumento === '' || editDocumento === null ? 'N/A' : editDocumento}</p>
+                      <h2 className="font-semibold">VCIP: </h2> <p>{editVcip === '' || editVcip === null ? 'N/A' : editVcip}</p>
+                      <h2 className="font-semibold">Email: </h2><p>{editEmail === '' || editEmail === null ? 'N/A' : editEmail}</p>
                       <h2 className="font-semibold">Perfil: </h2><p>{editPerfil}</p>
                     </div>
                     
@@ -191,6 +192,7 @@ export default function ConfiguracionPage() {
                             
                             placeholder={editEmail ? editEmail : "Ingrese el email"}
                             onChange={(e) => setNewEditEmail(e.target.value)}
+                            disabled
                           />
                         </div>
                         <div className="form-group text-left">
@@ -206,27 +208,7 @@ export default function ConfiguracionPage() {
                           />
                         </div>
                         <br/>
-                        <div className="form-group">
-                          <Link
-                            href=""
-                            className="font-medium text-blue-600 hover:underline flex gap-1 items-center"
-                            onClick={upadtePassword}
-                          >
-                            <svg
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M12 22C6.477 22 2 17.523 2 12C2 6.477 6.477 2 12 2C17.523 2 22 6.477 22 12C22 17.523 17.523 22 12 22ZM11 11V17H13V11H11ZM11 7V9H13V7H11Z"
-                                fill="#0C3587"
-                              />
-                            </svg>
-                            ¿Cambiar Contraseña?
-                          </Link>
-                        </div>
+                        
                         <br/>
                         <div className="text-end">
                           {showButton && <button

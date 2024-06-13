@@ -32,10 +32,12 @@ export const userServices = {
   },
 
   async getOne(id: any) {
-    tokenAuth(token);
+    const token1 = getCookie('token') || "";
+    tokenAuth(token1);
 
     const { data } = await axiosClient.get(`usuario/getUsuarioId?iid_usuario=${id}`);
     return data;
+    
   },
 
   async getOneConfig(id: any) {
@@ -93,14 +95,12 @@ export const userServices = {
 
   },
 
-  async updateUsuarioConfig(id: number, nombre: string, apePat: string, apeMat: string, documento: string, email: string, telefono: string, tperfil: string, tdocumento: string, empresa: string, tusuario: string, state: string, vcip: string) {
+  async updateUsuarioConfig(id: number, nombre: string,  documento: string, email: string, telefono: string, tperfil: string, tdocumento: string, empresa: string, tusuario: string, state: string, vcip: string) {
     tokenAuth(token);
 
     const res = await axiosClient.post('usuario/updateUsuarioWeb', {
       "iid_usuario": id,
       "vnombres": nombre,
-      "vapellido_paterno": apePat,
-      "vapellido_materno": apeMat,
       "vnro_documento": documento,
       "vcorreo_electronico": email,
       "vnumero_telefonico": telefono,

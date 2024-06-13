@@ -3,6 +3,9 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+
+
+
 const UsPage = () => {
     // obtener la ruta
     const pathName = usePathname()
@@ -20,6 +23,7 @@ const UsPage = () => {
 
         <div className="mb-4">
             <div className=" m-5">
+            
                 <hr />
             </div>
             <div className="flex flex-col gap-5 w-full items-center">
@@ -87,5 +91,7 @@ const UsPage = () => {
 
     );
 }
+
+
 
 export default UsPage;
