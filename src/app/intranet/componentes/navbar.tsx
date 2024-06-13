@@ -33,8 +33,8 @@ export default function Navbar() {
     }
 
     const UserName = async () => {
-        const {vnombres, vapellido_paterno, vapellido_materno}: any = secureLocalStorage.getItem("user");
-        const userName = vnombres + ' ' + vapellido_paterno + ' ' + vapellido_materno;
+        const {vnombres}: any = secureLocalStorage.getItem("user");
+        const userName = vnombres;
         
         setNombre(userName);
     }

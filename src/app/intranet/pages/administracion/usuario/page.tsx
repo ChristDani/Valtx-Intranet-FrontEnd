@@ -489,7 +489,7 @@ const UsersPage = () => {
                     className="bg-white border-b hover:bg-gray-50"
                   >
                     <td className="px-6 py-4 text-center capitalize">
-                      {capitalize(item.vnombre_completo)}
+                      {item.vnombres}
                     </td>
                     <td className="px-6 py-4 text-center lowercase">
                       {item.vcorreo_electronico}

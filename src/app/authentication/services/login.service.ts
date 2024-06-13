@@ -18,15 +18,16 @@ export const loginService = {
 
     validate: async (credentials: any): Promise<string | null>  => {
         const userDocument = credentials.document
-        const userPassword = loginService.encryptPassword(credentials.password);
+        const userPassword = credentials.password
         const res = await axios.post('http://localhost:4000/api/v1/seguridad/login', {
-            email: userDocument,
+            username: userDocument,
             password: userPassword
         })
 
 
         if (res.data.IsSuccess) {
             loginService.setCookie("token", res.data.tokens.access.token, 1);
+            loginService.setCookie("refresh", res.data.tokens.refresh.token, 1);
             secureLocalStorage.setItem("user", res.data.data);
             secureLocalStorage.setItem("perfil", res.data.data.iid_perfil);
             secureLocalStorage.setItem("permisosMenu", JSON.stringify(res.data.data.perfil.permisos));
