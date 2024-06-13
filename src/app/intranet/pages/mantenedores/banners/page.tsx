@@ -13,6 +13,7 @@ import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 
 import { ActionDel, ActionEdit, ActionInf } from "@/app/intranet/componentes/mantenedores/actions";
 import { ListStates } from "@/app/intranet/componentes/mantenedores/states";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 type DataRow = {
     id: number;

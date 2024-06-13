@@ -16,6 +16,7 @@ import {
   ActionEdit,
   ActionInf,
 } from "@/app/intranet/componentes/mantenedores/actions";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const IcoPage = () => {
   // obtener la ruta
@@ -470,11 +471,11 @@ const IcoPage = () => {
                   </th>
                   <td className="px-6 py-4 text-start ">{item.vtextobreve}</td>
                   <td className="px-6 py-4 text-center">
-                    <img
+                    <ImagenFront
                       className="rounded-lg h-20 w-auto mx-auto content-center"
-                      src={`/images/${item.vimagen}`}
+                      src={item.vimagen}
                       alt={`${item.vtextobreve}`}
-                    ></img>
+                    ></ImagenFront> 
                   </td>
                   <td className="px-6 py-4 text-start">
                     {iconsList.map((icon: any) => (

@@ -12,6 +12,7 @@ import secureLocalStorage from "react-secure-storage";
 import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 import { ListStates } from "@/app/intranet/componentes/mantenedores/states";
 import { ActionDel, ActionEdit, ActionInf } from "@/app/intranet/componentes/mantenedores/actions";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const EnteratePage = () => {
 

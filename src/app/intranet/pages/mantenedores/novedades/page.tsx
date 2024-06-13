@@ -16,6 +16,7 @@ import {
   ActionEdit,
   ActionInf,
 } from "@/app/intranet/componentes/mantenedores/actions";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const NovedadesPage = () => {
   // obtener la ruta

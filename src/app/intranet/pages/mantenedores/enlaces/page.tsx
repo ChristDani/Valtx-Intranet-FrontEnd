@@ -12,6 +12,7 @@ import secureLocalStorage from "react-secure-storage";
 import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 import { ActionInf, ActionShowFiles, ActionEdit, ActionDel } from "@/app/intranet/componentes/mantenedores/actions";
 import { ListStates } from "@/app/intranet/componentes/mantenedores/states";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const LinksPage = () => {
 

@@ -13,6 +13,7 @@ import secureLocalStorage from "react-secure-storage";
 import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
 import { ListStates } from "@/app/intranet/componentes/mantenedores/states";
 import { ActionInf, ActionEdit, ActionDel, ActionShowFiles } from "@/app/intranet/componentes/mantenedores/actions";
+import ImagenFront from "@/app/intranet/componentes/mantenedores/imagenFront";
 
 const DocuPage = () => {
 
