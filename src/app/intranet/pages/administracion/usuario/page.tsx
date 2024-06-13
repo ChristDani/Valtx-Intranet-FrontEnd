@@ -1,5 +1,6 @@
 "use client";
 
+import LoaderTable from "@/app/intranet/componentes/mantenedores/loaderTable";
 import ModalComponent from "@/app/intranet/componentes/mantenedores/modal";
 import Paginacion from "@/app/intranet/componentes/mantenedores/paginacion";
 import { TopTable } from "@/app/intranet/componentes/mantenedores/topTable";
@@ -60,7 +61,8 @@ const UsersPage = () => {
 
   //Documentos
   const [documentList, setDocumentList] = useState<any[]>([]);
-
+  //Loader
+  const [loader, setLoader] = useState(true);
   // edición
   const [editId, setEditId] = useState(0);
   const [editNombre, setEditNombre] = useState("");
@@ -161,7 +163,6 @@ const UsersPage = () => {
   const getData = async (page: number, items: number, titulo: string) => {
     setCurrentPage(page);
     setItems(items);
-
     const itemsList: any = await userServices.getList(
       page,
       items,
@@ -181,6 +182,7 @@ const UsersPage = () => {
         : 1;
     setPages(pages);
     iniciarPaginacion(page, pages);
+    setLoader(false);
   };
 
   const getOneItem = async (id: number) => {
@@ -446,14 +448,16 @@ const UsersPage = () => {
 
   return (
     <>
-          <TopTable
+      {
+        loader ? <LoaderTable /> : (
+      <div>
+      <TopTable
           title="Buscar por documento"
           search={searchTitle}
           searchData={searchData}
           createItem ={createItem}
           crear={optionUser.crear}
           />
-      {/* tabla */}
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -607,10 +611,14 @@ const UsersPage = () => {
                     </td>
                   </tr>
                 ))
-              : null}
+              : null
+            }
           </tbody>
         </table>
       </div>
+      </div>
+        )
+      }
       {/* paginacion */}
 
       {/*<Paginacion pagInicio={pagInicio} currentPage={currentPage} pagFinal={pagFinal} totalPages={paginas} previusPage={previusPage(currentPage - 1)} nextPage={nextPage(currentPage + 1)} getdata={getData(1, itemsPorPagina, searchTitle)} pagesToShow={pagesToShow}></Paginacion>*/}
@@ -815,7 +823,7 @@ const UsersPage = () => {
                     onInput={(e: any) => setEditNombre(e.target.value)}
                   ></input>
                 </div>
-                <div className="flex-auto relative w-14">
+                {/* <div className="flex-auto relative w-14">
                   <label
                     htmlFor="vtitulo"
                     className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
@@ -846,7 +854,7 @@ const UsersPage = () => {
                     value={editApeMat}
                     onInput={(e: any) => setEditApeMat(e.target.value)}
                   ></input>
-                </div>
+                </div> */}
               </div>
               <div className="mb-5 flex gap-2 justify-between">
                 <div className="relative">
@@ -1075,7 +1083,7 @@ const UsersPage = () => {
                 </div>
               </div>
               <div className="text-right">
-                {modalState.update && (
+                {/* {modalState.update && (
                   <button
                     type="button"
                     className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
@@ -1083,7 +1091,7 @@ const UsersPage = () => {
                   >
                     Reiniciar Contraseña
                   </button>
-                )}
+                )} */}
                 <button
                   type="button"
                   className="text-blue-800 border rounded-lg border-[#0C3587] text-sm px-5 py-2.5 text-center me-2 mb-2 hover:bg-[#0C3587] hover:text-white"
