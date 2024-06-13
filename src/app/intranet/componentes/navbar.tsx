@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Icons, IconsResponseDTO } from '../interfaces/icons.response.dto';
 import { iconServices } from '../services/mantenedores/iconos.service';
 import secureLocalStorage from 'react-secure-storage';
+import ImagenFront from './mantenedores/imagenFront';
 
 export default function Navbar() {
 
