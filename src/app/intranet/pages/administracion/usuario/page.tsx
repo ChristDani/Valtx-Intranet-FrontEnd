@@ -187,7 +187,7 @@ const UsersPage = () => {
 
   const getOneItem = async (id: number) => {
     const onlyOneItem = await userServices.getOne(id);
-    console.log(onlyOneItem);
+    
     
     const edittttt = onlyOneItem.data;
     
@@ -284,7 +284,6 @@ const UsersPage = () => {
       delete: false,
       resetPassword: false,
     });
-    console.log(res);
   };
 
   const iniciarPaginacion = (page: number, pages: number) => {

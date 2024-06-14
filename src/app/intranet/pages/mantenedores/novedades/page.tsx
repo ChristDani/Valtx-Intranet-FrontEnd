@@ -465,15 +465,15 @@ const NovedadesPage = () => {
                     <div className="flex gap-2 max-lg:hidden">
                       <ActionInf
                         permiso={optionUser.visualizar}
-                        accion={(e) => itemDetails(e, item.iid_banner)}
+                        accion={(e) => itemDetails(e, item.iid_novedad)}
                       />
                       <ActionEdit
                         permiso={optionUser.editar}
-                        accion={(e) => editItem(e, item.iid_banner)}
+                        accion={(e) => editItem(e, item.iid_novedad)}
                       />
                       <ActionDel
                         permiso={optionUser.eliminar}
-                        accion={(e) => deleteItem(e, item.iid_banner)}
+                        accion={(e) => deleteItem(e, item.iid_novedad)}
                       />
                     </div>
                   </td>
