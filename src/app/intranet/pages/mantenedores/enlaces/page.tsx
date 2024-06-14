@@ -385,7 +385,7 @@ const LinksPage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={`/images/${item.vimagen}`} alt={`${item.vtextobreve}`}/>
+                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`}/>
                                         </td>
                                         <td className='px-6 py-4'>
                                             <ListStates

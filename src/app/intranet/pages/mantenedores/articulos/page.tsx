@@ -394,11 +394,11 @@ const ArticPage = () => {
                                             <div className="flex gap-2 max-lg:hidden">
                                                 <ActionInf
                                                     permiso = {optionUser.visualizar}
-                                                    accion={(e) => itemDetails(e, item.iid_banner)}
+                                                    accion={(e) => itemDetails(e, item.iid_articulo)}
                                                 />
                                                 <ActionEdit
                                                     permiso = {optionUser.editar}
-                                                    accion={(e) => editItem(e, item.iid_banner)}
+                                                    accion={(e) => editItem(e, item.iid_articulo)}
                                                 />
                                                 <ActionDel
                                                     permiso = {optionUser.eliminar}

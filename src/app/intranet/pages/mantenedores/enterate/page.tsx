@@ -456,15 +456,15 @@ const EnteratePage = () => {
                                             <div className="flex gap-2 max-lg:hidden">
                                                 <ActionInf
                                                     permiso = {optionUser.visualizar}
-                                                    accion={(e) => itemDetails(e, item.iid_banner)}
+                                                    accion={(e) => itemDetails(e, item.iid_enterate)}
                                                 />
                                                 <ActionEdit
                                                     permiso = {optionUser.editar}
-                                                    accion={(e) => editItem(e, item.iid_banner)}
+                                                    accion={(e) => editItem(e, item.iid_enterate)}
                                                 />
                                                 <ActionDel
                                                     permiso = {optionUser.eliminar}
-                                                    accion={(e) => deleteItem(e,item.iid_banner)}
+                                                    accion={(e) => deleteItem(e,item.iid_enterate)}
                                                     />
                                             </div>
                                         </td>
