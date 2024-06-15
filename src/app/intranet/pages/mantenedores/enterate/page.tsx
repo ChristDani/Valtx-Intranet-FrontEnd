@@ -698,7 +698,7 @@ const EnteratePage = () => {
                                                                 allowFullScreen
                                                             ></iframe> */}
                                                             <video className="max-h-44 max-w-[60%] mx-auto relative" controls crossOrigin="anonymous" >
-                                                                <source  src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${editVideo}`} type="video/mp4" />
+                                                                <source  src={`http://172.13.34.99:4000/public/enterate/videos/${editVideo}`} type="video/mp4" />
                                                                 Tu navegador no soporta el elemento de video.
                                                             </video>
                                                             <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
