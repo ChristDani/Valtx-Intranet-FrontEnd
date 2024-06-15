@@ -395,9 +395,10 @@ const EventPage = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
+    //const day = String(now.getDate()).padStart(2, "0");
 
-    return `${year}-${month}-${day}`;
+    //return `${year}-${month}-${day}`;
+    return `${year}-${month}-01`;
   };
 
   const imageRef = useRef<any>(null);
@@ -405,7 +406,17 @@ const EventPage = () => {
   const openInputImage = () => {
     imageRef.current.click();
   };
-
+  const DateRegister = (date: string) => {
+    const d = new Date(date);
+    const day = String(d.getUTCDate()).padStart(2, "0");
+    const monthnumber = String(d.getMonth() + 1).padStart(2, "0");
+    const month= monthName(Number(monthnumber));
+    return `${day} de ${month}`;
+  }
+  const monthName =(date:number)=>{
+    const day = ['Enero','Febrero','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre'];
+    return day[date];
+  }
   const deleteImage = () => {
     setImage(null);
     setSrcImage(null);
@@ -433,7 +444,7 @@ const EventPage = () => {
                 Titulo
               </th>
               <th scope="col" className="px-6 py-3 text-center">
-                Descripción
+                Fecha
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Imagen
@@ -463,7 +474,7 @@ const EventPage = () => {
                   >
                     {item.vtitulo}
                   </th>
-                  <td className="px-6 py-4 text-start ">{item.vtextobreve}</td>
+                  <td className="px-6 py-4 text-center ">{DateRegister(item.dfecha )}</td>
                   <td className="px-6 py-4 text-center">
                     <ImagenFront
                       className="rounded-lg h-20 w-auto mx-auto content-center"
