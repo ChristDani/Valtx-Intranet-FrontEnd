@@ -77,11 +77,12 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
             const { data } = await parametrosServices.getRepositoriesTypes(e.target.value);
 
             setRepositoriesList(data);
+            setRepoSelect(false);
         } catch (error) {
             console.log(error);
         }
     };
-
+    const [repoSelect, setRepoSelect] = useState(true);
     const handleRepoChange = (e: any) => {
         setEditNameRepo(e.target.children[e.target.selectedIndex].textContent); // textContent;
         setEditCabecera(e.target.value)
@@ -218,7 +219,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                     ))
                                 }
                             </select>
-                            <select id="carpetas" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" onChange={(e) => handleRepoChange(e)}>
+                            <select id="carpetas" required className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" disabled={repoSelect} onChange={(e) => handleRepoChange(e)}>
                                 <option hidden value="0">Seleccione una carpeta</option>
                                 {
                                     repositriesList.map((tipo: any) => (
