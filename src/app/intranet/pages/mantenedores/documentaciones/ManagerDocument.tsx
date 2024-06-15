@@ -264,7 +264,7 @@ const ManagerDoc = ({ close, idDoc, crear, editar, eliminar }: {
                                                             }
                                                         </td>
                                                         <td className="flex gap-1 items-center justify-center my-auto px-4 h-14">
-                                                            <Link href={`https://intranetconexion.valtx.pe:9021/public/documentacion/${item.vdocumento}`}
+                                                            <Link href={`http://172.13.34.99:4000/public/documentacion/${item.vdocumento}`}
                                                                 target="_blank"
                                                                 className="font-medium text-blue-600 hover:underline">
                                                                 <svg className=" text-dark" width="20" height="20" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
