@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { newsServices } from "../../services/mantenedores/news.service";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ImagenFront from "../../componentes/mantenedores/imagenFront";
 
 const NewsViewPage = () => {
 
@@ -107,7 +108,7 @@ const NewsViewPage = () => {
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 min-h-[350px] rounded-lg overflow-hidden shadow-lg bg-gray-50">
                         
-                            <img className="object-cover w-full h-40 " src={`/images/${item.vimagen}`} alt={item.vtitulo}/>
+                            <ImagenFront src={item.vimagen} alt={item.vtitulo} />
                         <div className="flex flex-col gap-4 w-full p-4">
                             <div className="min-h-10 font-bold text-xl">{item.vtitulo}</div>
                             <div className="h-[70px] text-gray-700 text-base line-clamp-3 overflow-hidden">
