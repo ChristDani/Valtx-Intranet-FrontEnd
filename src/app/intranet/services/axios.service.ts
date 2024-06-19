@@ -8,7 +8,7 @@ import axios from 'axios';
  */
 
 const axiosClient = axios.create({
-  baseURL: 'http://172.13.34.99:4000/api/v1',
+  baseURL: 'https://intranetconexion.valtx.pe:9021/api/v1',
 });
 
 export default axiosClient;

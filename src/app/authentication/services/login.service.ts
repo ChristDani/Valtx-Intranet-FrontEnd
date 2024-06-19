@@ -20,7 +20,7 @@ export const loginService = {
     validate: async (credentials: any): Promise<string | null>  => {
         const userDocument = credentials.document
         const userPassword = credentials.password
-        const res = await axios.post('http://172.13.34.99:4000/api/v1/seguridad/login', {
+        const res = await axios.post('https://intranetconexion.valtx.pe:9021/api/v1/seguridad/login', {
             username: userDocument,
             password: userPassword
         })

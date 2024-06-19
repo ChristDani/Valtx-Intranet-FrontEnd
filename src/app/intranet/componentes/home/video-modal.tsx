@@ -19,7 +19,7 @@ const VideoModal = ({ onClose, videoUrl }:{onClose: ()=>void, videoUrl:string}) 
                 >X</span>
 
           <video width={700} height={700} controls autoPlay>
-              <source src={`http://172.13.34.99:4000/public/enterate/videos/${videoUrl}`} type="video/mp4"></source>
+              <source src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${videoUrl}`} type="video/mp4"></source>
           </video>
         </div>
 
