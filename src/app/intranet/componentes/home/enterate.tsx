@@ -106,7 +106,7 @@ export const Enterate = () => {
                                 referrerPolicy="no-referrer"
 
                             /> */}
-                            <video width="600" controls crossOrigin="anonymous" autoPlay>
+                            <video width="700" height="400" controls crossOrigin="anonymous" autoPlay>
                                 <source  src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
