@@ -1156,7 +1156,7 @@ const UsersPage = () => {
             <>
               <hr />
               <div className="px-5 py-3">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{`${editApePat} ${editApeMat} ${editNombre}`}</h5>
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{`${editNombre}`}</h5>
                 <p className="mb-1 font-normal text-gray-700">
                   Documento: {editDocumento}
                 </p>
