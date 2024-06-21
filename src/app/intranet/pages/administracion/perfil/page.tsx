@@ -165,6 +165,8 @@ const ProfilesPage = () => {
 
     setDataInfo(itemsList);
     setDataList(itemsList.data);
+    console.log(itemsList.data);
+    
     const pages =
       Math.ceil(itemsList.TotalRecords / items) != 0
         ? Math.ceil(itemsList.TotalRecords / items)
@@ -247,35 +249,43 @@ const ProfilesPage = () => {
     setOptionChange(false);
   };
 
+  const validarPerfilName = (nombre: string, List: any) => {
+    console.log(List);
+    
+    return List.some((element:any)=>element.vnombre_perfil== nombre.toUpperCase());
+  }
   const confirmOp = async (e: any) => {
     e.preventDefault();
 
     if (modalState.create) {
-      if (optionsChange) {
-        const datos = await PerfilesService.create(
-          editTitle,
-          editDesc,
-          editId,
-          editState
-        );
-        rellenarId(datos.data.Codigo);
-        const data = await optionsServices.setPefilOptions(select);
-        closeModal();
-      } else {
-        setModalMessage('No hay cambios en lista de opciones');
+      if(!validarPerfilName(editTitle, dataList)) {
+        if (optionsChange) {
+          const datos = await PerfilesService.create(
+            editTitle,
+            editDesc,
+            editId,
+            editState
+          );
+          rellenarId(datos.data.Codigo);
+          const data = await optionsServices.setPefilOptions(select);
+          closeModal();
+        } else {
+          setModalMessage('Lista de opciones vacía');
+          setAviso(true);
+        }
+      }else{
+        setModalMessage('El perfil ya existe');
         setAviso(true);
       }
-
+      
     } else if (modalState.update) {
 
       await PerfilesService.update(editTitle, editDesc, editId, editState);
       const data = await optionsServices.setPefilOptions(newOptions);
       closeModal();
-
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
       closeModal();
-    } else {
     }
     getData(currentPage, itemsPorPagina, searchTitle);
   };
@@ -730,7 +740,7 @@ const ProfilesPage = () => {
                 <label htmlFor="idItem">ID</label>
                 <input type="text" name="idItem" defaultValue={editId}></input>
               </div>
-              <div className="mb-5 flex flex-grow gap-2">
+              <div className="flex flex-grow gap-2">
                 <div className="flex-auto w-1/3 relative">
                   <label
                     htmlFor="vtitulo"
@@ -804,7 +814,7 @@ const ProfilesPage = () => {
                   </select>
                 </div>
               </div>
-              <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <div className="h-[400px] overflow-y-scroll shadow-md rounded-lg">
                 <table className="table-auto bg-gray-50 w-full ">
                   <thead>
                     <tr className="bg-gray-300">
