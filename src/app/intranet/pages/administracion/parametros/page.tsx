@@ -6,7 +6,6 @@ import ModalComponent from '../../../componentes/mantenedores/modal';
 import Paginacion from '../../../componentes/mantenedores/paginacion'
 import { usePathname } from "next/navigation";
 import { optionsServices } from "@/app/intranet/services/administration/perfiles-opcion.service";
-import ManagerFolder from "../parametros/ManagerFolders";
 import { IoWarningOutline } from "react-icons/io5";
 import secureLocalStorage from "react-secure-storage";
 
