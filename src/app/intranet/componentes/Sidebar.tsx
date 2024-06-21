@@ -117,12 +117,12 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-        <div className="relative flex">
+        <div className="relative flex w-92">
           <input
             type="text"
             placeholder="Buscar"
             disabled
-            className="px-4 pr-10 rounded-full border border-[#F5F5F5] focus:outline-none focus:border-blue-500 bg-[#F5F5F5] placeholder-gray-400"
+            className="px-4 pr-10 w-full rounded-full border border-[#F5F5F5] focus:outline-none focus:border-blue-500 bg-[#F5F5F5] placeholder-gray-400"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none rounded-full">
             <svg

@@ -118,7 +118,7 @@ export default function AuthenticationPage() {
                         <div className="w-14 h-2 mx-auto border-2 border-sky-400 bg-sky-400 rounded"></div>
                     </div>
                     {/** Form container */}
-                    <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                    <div className="mt-10 sm:mx-auto sm:p-2 sm:w-full sm:max-w-sm p-4">
                         <form className="space-y-6" action="#" method="POST" onSubmit={onSubmit}>
                             <div>
                                 <label className="relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Usuario:</label>
