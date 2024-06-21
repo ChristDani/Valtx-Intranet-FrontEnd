@@ -1109,7 +1109,7 @@ const UsersPage = () => {
           ) : modalState.delete ? (
             <div className="mt-5">
               <h1>¿Está seguro que desea eliminar este elemento?</h1>
-              <p>- {`${editApePat} ${editApeMat} ${editNombre}`}</p>
+              <p>- {`${editNombre}`}</p>
               <br />
               <div className="text-end">
                 <button
