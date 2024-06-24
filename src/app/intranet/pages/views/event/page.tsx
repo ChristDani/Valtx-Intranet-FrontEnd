@@ -165,7 +165,7 @@ const EventsViewPage = () => {
                                     <span className=" text-slate-500 text-xl">{dayName(item.dayNumber)}</span>
                                     <span className="font-bold text-2xl">{item.day}</span>
                             </div>
-                            <div className="w-3/4 overflow-hidden flex gap-1 border-b-slate-400 border-b">
+                            <div className="w-3/4 overflow-hidden flex gap-3 border-b-slate-400 border-b">
                                 <span className="w-2/6 my-auto text-center text-slate-600 max-md:w-full">{item.titulo}</span>
                                 <p className="w-4/6 my-auto font-medium max-md:hidden line-clamp-3">{item.desc}</p>
                             </div>
