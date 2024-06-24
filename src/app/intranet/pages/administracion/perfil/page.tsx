@@ -249,7 +249,7 @@ const ProfilesPage = () => {
     setOptionChange(false);
   };
 
-  const validarPerfilName = (nombre: string, List: any) => {
+  const validarNombre = (nombre: string, List: any) => {
     if(modalState.create || modalState.update) {
       return List.some((element:any)=>element.vnombre_perfil== nombre.toUpperCase());
     }
@@ -257,7 +257,7 @@ const ProfilesPage = () => {
   }
   const confirmOp = async (e: any) => {
     e.preventDefault();
-    if(validarPerfilName(editTitle, dataList)) {
+    if(validarNombre(editTitle, dataList)) {
       setModalMessage('Ya existe un perfil con ese nombre');
       setAviso(true);
       return;
@@ -273,7 +273,7 @@ const ProfilesPage = () => {
           );
           rellenarId(datos.data.Codigo);
           const data = await optionsServices.setPefilOptions(select);
-          closeModal();
+          return;
         } else {
           setModalMessage('Lista de opciones vacía');
           setAviso(true);
@@ -282,11 +282,11 @@ const ProfilesPage = () => {
 
       await PerfilesService.update(editTitle, editDesc, editId, editState);
       const data = await optionsServices.setPefilOptions(newOptions);
-      closeModal();
+      return;
     } else if (modalState.delete) {
       await PerfilesService.delete(editId);
-      closeModal();
     }
+    closeModal();
     getData(currentPage, itemsPorPagina, searchTitle);
   };
 

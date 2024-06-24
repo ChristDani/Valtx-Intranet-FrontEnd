@@ -258,9 +258,20 @@ const EnteratePage = () => {
     }
     
     const [messageModal, setMessageModal] = useState("");
+    const validarNombre = (nombre: string, List: any) => {
+        if(modalState.update) {
+          return List.some((element:any)=>element.vtitulo == nombre);
+        }
+        return false;
+      }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
+        if(validarNombre(editTitle, dataList)) {
+            setMessageModal('Ya existe un registro con ese nombre');
+            setErrorModal(true);
+            return;
+          }
         if (modalState.create) {
             if (Image != null) {
                 const codigo: any = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);

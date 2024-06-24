@@ -48,17 +48,6 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
     const [repositriesList, setRepositoriesList] = useState([]);
     const [state, setState] = useState('create');
     const [openModal, setModalIsOpen] = useState(false);
-    const repositoriesTipos = async () => {
-        //const { data } = await parametrosServices.getRepositoriesTypes();
-        //setRepositoriesList(data);
-    }
-    const openInterModal = () => {
-        setModalIsOpen(true);
-    }
-    const closeInterModal = () => {
-        setModalIsOpen(false);
-        cleanData();
-    }
     const handleCabeceraChange = async (e: any) => {
         setEditNameCabecera(e.target.children[e.target.selectedIndex].textContent); // textContent;
         setEditCabeceraMaestra(e.target.value);
@@ -94,44 +83,6 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
         setCabeceraList(cabeceraList);
     }
 
-    const getOneItem = async (id: number) => {
-        const onlyOneItem = await repositorioServices.getOne(id);
-        const edit = onlyOneItem.data
-        edit.map((item: any) => (
-            setEditId(item.iid_repo), // idrepositorio
-            setEditCabecera(item.iid_tabla_cabecera), // idcabecera
-            setIdDoc(item.iid_documentacion), // iddoc
-            setEditTitle(item.vtitulo),
-            setEditDoc(item.vdocumento),
-            setEditState(item.iid_estado_registro),
-            setNameDoc(nombredoc(item.vdocumento)),
-            setEditCabeceraMaestra(item.iid_tabla_cabeceraMaestra)
-        ))
-    }
-
-
-    const confirmOp = async (e: any) => {
-        e.preventDefault();
-        if (state === 'create') {
-            if (editDoc != null) {
-                const res = await repositorioServices.create(editDoc, editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera);
-            } else {
-                alert('Debe llenar todos los campos')
-            }
-        } else if (state === 'update') {
-            if (editDoc != null) {
-                const res = await repositorioServices.update(editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera, editDoc)
-            } else {
-                const res = await repositorioServices.update(editTitle, editCabecera, editState, editId, editIdDoc, editNameRepo, editNameCabecera)
-            }
-        } else if (state === 'delete') {
-            const res = await repositorioServices.delete(editId);
-        }
-        cleanData();
-        closeInterModal();
-        getData();
-    }
-
     const cleanData = () => {
         setEditId('0'),
             setEditTitle(''),
@@ -145,12 +96,7 @@ const ManagerDoc = ({ close, idDoc }:{close: () => void, idDoc: any}) => {
         return parts[parts.length - 1].trim();
     }
     const [nameDoc, setNameDoc] = useState('');
-    const handleFileChange = (e: any) => {
-        setEditDoc(e.target.files[0]);
-        if (e.target.files[0].name !== null) {
-            setNameDoc(e.target.files[0].name)
-        }
-    }
+  
 
     useEffect(() => {
         getData();

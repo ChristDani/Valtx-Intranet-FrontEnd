@@ -169,9 +169,19 @@ const AuxPage = () => {
         openModal()
     }
 
+    const validarNombre = (nombre: string, List: any) => {
+        if(modalState.create || modalState.update) {
+          return List.some((element:any)=>element.vnombre_perfil== nombre.toUpperCase());
+        }
+        return false;
+      }
     const confirmOp = async (e: any) => {
         e.preventDefault();
-
+        if(validarNombre(editDesc, dataList)) {
+            setMessageModal('Ya existe un parametro con ese nombre');
+            setErrorModal(true);
+            return;
+          }
         if (modalState.create) {
             if (editDesc !== '') {
                 const res = await auxiliaresServices.setParametro(

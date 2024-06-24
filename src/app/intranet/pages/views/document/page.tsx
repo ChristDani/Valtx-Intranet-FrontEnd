@@ -290,7 +290,9 @@ const DocuViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                    <ImagenFront className="object-cover h-40 w-full" src={item.vimagen} alt={`${item.vtextobreve}`}/>
+                        <a href={item.vlink} target="_blank" rel="noopener noreferrer">
+                            <ImagenFront className="object-cover h-40 w-full" src={item.vimagen} alt={`${item.vtextobreve}`}/>
+                        </a>
                     <div className="flex flex-col gap-4 w-full p-4">
                             <div className="h-10 font-bold text-xl">{item.vtitulo}</div>
                             <div className="h-[70px] text-gray-700 text-base line-clamp-3 overflow-hidden">

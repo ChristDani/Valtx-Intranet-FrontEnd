@@ -226,9 +226,21 @@ const ArticPage = () => {
         openModal()
     }
     const [messageModal, setMessageModal] = useState("");
+
+    const validarNombre = (nombre: string, List: any) => {
+        if(modalState.update) {
+          return List.some((element:any)=>element.vtitulo == nombre);
+        }
+        return false;
+      }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
+        if(validarNombre(editTitle, dataList)) {
+            setMessageModal('Ya existe un registro con ese nombre');
+            setErrorModal(true);
+            return;
+          }
         if (modalState.create) {
             if (Image != null) {
                 const res = await articulosServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
@@ -250,8 +262,6 @@ const ArticPage = () => {
             }
         } else if (modalState.delete) {
             const res = await articulosServices.delete(editId);
-        } else {
-            alert('detalles')
         }
         getData(1, itemsPorPagina, searchTitle)
         closeModal()

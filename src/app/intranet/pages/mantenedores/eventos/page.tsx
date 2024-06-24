@@ -273,9 +273,20 @@ const EventPage = () => {
   };
 
   const [messageModal, setMessageModal] = useState("");
-  const confirmOp = async (e: any) => {
+  const validarNombre = (nombre: string, List: any) => {
+    if(modalState.update) {
+      return List.some((element:any)=>element.vtitulo == nombre);
+    }
+    return false;
+  }
+const confirmOp = async (e: any) => {
     e.preventDefault();
     const fileInput = imageRef.current as HTMLInputElement;
+    if(validarNombre(editTitle, dataList)) {
+        setMessageModal('Ya existe un registro con ese nombre');
+        setErrorModal(true);
+        return;
+      }
 
     if (modalState.create) {
       if (Image != null) {
@@ -409,8 +420,8 @@ const EventPage = () => {
   const DateRegister = (date: string) => {
     const d = new Date(date);
     const day = String(d.getUTCDate()).padStart(2, "0");
-    const monthnumber = String(d.getMonth() + 1).padStart(2, "0");
-    const month= monthName(Number(monthnumber) - 1);
+    const monthnumber = String(d.getMonth()).padStart(2, "0");
+    const month= monthName(Number(monthnumber)-1);
     return `${day} de ${month}`;
   }
   const monthName =(date:number)=>{

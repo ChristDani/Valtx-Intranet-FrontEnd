@@ -182,10 +182,19 @@ const CabeceraPage = () => {
         getOneItem(id)
         openModal()
     }
-
+    const validarNombre = (nombre: string, List: any) => {
+        if(modalState.update) {
+          return List.some((element:any)=>element.vdescripcion== nombre.toUpperCase());
+        }
+        return false;
+      }
     const confirmOp = async (e: any) => {
         e.preventDefault();
-
+        if(validarNombre(editDesc, dataList)) {
+            setMessageModal('Ya existe un registro con ese nombre');
+            setErrorModal(true);
+            return;
+          }
         if (modalState.create) {
             if (editDesc !== '') {
                 const res = await cabeceraServices.create(editDesc, editAgregacion, editState, editId);
