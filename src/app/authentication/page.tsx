@@ -123,7 +123,7 @@ export default function AuthenticationPage() {
                             <div>
                                 <label className="relative bg-white ml-3 px-1 top-3 font-medium text-sm text-gray-900">Usuario:</label>
                                             <div>
-                                                <input required id="document" value={credentials.document} name="document" type="text" autoComplete="off" placeholder="11111111"
+                                                <input required id="document" value={credentials.document} name="document" type="text" autoComplete="off" placeholder="usuarioad"
                                                     className="block w-full 
                                     rounded-md px-3 py-1.5 h-12 text-gray-900 shadow-sm ring-1 ring-inset 
                                     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset 
