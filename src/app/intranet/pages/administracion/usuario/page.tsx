@@ -416,7 +416,7 @@ const UsersPage = () => {
     setEditPerfil("");
     setTelefono("");
     setEditIdPerfil("");
-    setIdDocumento("0");
+    setIdDocumento("");
     setEstado("3");
     setEditEmpresa("22");
     setEditTipoEmp("20");
@@ -765,7 +765,7 @@ const UsersPage = () => {
         >
           <div className="flex justify-between">
             <div className="capitalize">
-              Mantenedores › {pathFinal} ›{" "}
+              Administración › {pathFinal} ›{" "}
               <strong>
                 {modalState.create
                   ? "Agregar"
@@ -880,7 +880,7 @@ const UsersPage = () => {
                             value={document.iid_tabla_detalle}
                             
                           >
-                            {capitalize(document.vvalor_texto_corto)}
+                            {document.vvalor_texto_corto}
                           </option>
                       )) 
                     }
@@ -908,7 +908,7 @@ const UsersPage = () => {
                     htmlFor="iorden"
                     className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
                   >
-                    Telefono
+                    Teléfono
                   </label>
                   <input
                     type="text"
@@ -1179,16 +1179,14 @@ const UsersPage = () => {
                     )?.vvalor_texto_corto
                   }
                 </p>
-                <p className="mb-1 font-normal text-gray-700">
-                  Empresa:{" "}
+                <p className="mb-1 font-normal text-gray-700 flex gap-1">Empresa: 
                   {
                     datEmpresa?.find(
                       (obj: any) => obj.iid_tabla_detalle == editEmpresa
                     )?.vvalor_texto_corto
                   }
                 </p>
-                <div className="mb-1 font-normal text-gray-700">
-                  Estado:{" "}
+                <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado: 
                   {statesList.map((state: any) => (
                     <div key={state.iid_tabla_detalle}>
                       {state.iid_tabla_detalle == estado

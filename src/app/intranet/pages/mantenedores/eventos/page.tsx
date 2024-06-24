@@ -410,7 +410,7 @@ const EventPage = () => {
     const d = new Date(date);
     const day = String(d.getUTCDate()).padStart(2, "0");
     const monthnumber = String(d.getMonth() + 1).padStart(2, "0");
-    const month= monthName(Number(monthnumber));
+    const month= monthName(Number(monthnumber) - 1);
     return `${day} de ${month}`;
   }
   const monthName =(date:number)=>{
@@ -441,7 +441,7 @@ const EventPage = () => {
                 Orden
               </th>
               <th scope="col" className="px-6 py-3 text-center">
-                Titulo
+                Título
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Fecha
@@ -777,6 +777,7 @@ const EventPage = () => {
                 </label>
                 <input
                   type="file"
+                  accept="image/*"
                   ref={imageRef}
                   name="vimagen"
                   className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
@@ -1023,8 +1024,7 @@ const EventPage = () => {
                 <p className="mb-1 font-normal text-gray-700">
                   Orden: {editOrden}
                 </p>
-                <div className="mb-1 font-normal text-gray-700">
-                  Estado:{" "}
+                <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado: 
                   {statesList.map((state: any) => (
                     <div key={state.iid_tabla_detalle}>
                       {state.iid_tabla_detalle == editState ? (

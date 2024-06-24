@@ -266,10 +266,10 @@ const CabeceraPage = () => {
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th scope="col" className="px-6 py-3 text-center">
-                                Titulo
+                                Título
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
-                                Accion
+                                Acción
                             </th>
                         </tr>
                     </thead>

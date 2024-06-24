@@ -425,7 +425,7 @@ const BlogPage = () => {
                 Orden
               </th>
               <th scope="col" className="px-6 py-3 text-center">
-                Titulo
+                Título
               </th>
               <th scope="col" className="px-6 py-3 text-center">
                 Descripción
@@ -457,11 +457,11 @@ const BlogPage = () => {
                   </th>
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 font-medium text-gray-900"
                   >
                     {item.vtitulo}
                   </th>
-                  <td className="px-6 py-4 text-start ">{item.vtextobreve}</td>
+                  <td className="px-6 py-4 text-start">{item.vtextobreve}</td>
                   <td className="px-6 py-4 text-center">
                     <ImagenFront
                       className="rounded-lg h-20 w-auto mx-auto content-center"
@@ -777,6 +777,7 @@ const BlogPage = () => {
                 <input
                   type="file"
                   ref={imageRef}
+                  accept="image/*"
                   name="vimagen"
                   className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
                   onChange={cambiarImagen}
@@ -838,7 +839,7 @@ const BlogPage = () => {
                       className="max-h-44 max-w-[60%] mx-auto relative"
                       src={srcImage}
                     ></img>
-                    <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
+                    <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
                       {nameImage}
                     </label>
                   </>
@@ -849,7 +850,7 @@ const BlogPage = () => {
                       src={`blogs/${editImage}`}
                       alt=""
                     />
-                    <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
+                    <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
                       {nameImage}
                     </label>
                   </>
@@ -1023,8 +1024,7 @@ const BlogPage = () => {
                 <p className="mb-1 font-normal text-gray-700">
                   Orden: {editOrden}
                 </p>
-                <div className="mb-1 font-normal text-gray-700">
-                  Categoría:{" "}
+                <div className="mb-1 font-normal text-gray-700 flex gap-1"> Categoría:
                   {categoriesList.map((category: any) => (
                     <div key={category.iid_tabla_detalle}>
                       {category.iid_tabla_detalle == editCategory ? (
@@ -1035,8 +1035,7 @@ const BlogPage = () => {
                     </div>
                   ))}
                 </div>
-                <div className="mb-1 font-normal text-gray-700">
-                  Estado:{" "}
+                <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado: 
                   {statesList.map((state: any) => (
                     <div key={state.iid_tabla_detalle}>
                       {state.iid_tabla_detalle == editState ? (

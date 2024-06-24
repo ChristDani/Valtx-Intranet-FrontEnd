@@ -348,7 +348,7 @@ const ArticPage = () => {
                                 Orden
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
-                                Titulo
+                                Título
                             </th>
                             <th scope="col" className="px-6 py-3 text-center">
                                 Descripción
@@ -524,7 +524,7 @@ const ArticPage = () => {
                                 </div>
                                 <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                    <input type="file" ref={imageRef}  accept="image/*" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
                                 {
                                     errorModal &&
@@ -564,12 +564,12 @@ const ArticPage = () => {
                                         Image != null ? (
                                             <>
                                                 <img className="max-h-44 max-w-[60%] mx-auto relative" src={srcImage}></img>
-                                                <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                                <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
                                             </>
                                         ) : editImage != '' ? (
                                             <>
                                                 <ImagenFront className="max-h-44 max-w-[60%] mx-auto relative" src={`articulos/${editImage}`} alt=""/>
-                                                <label className="flex absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
+                                                <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
                                             </>
                                         ) : (
                                             <>
@@ -644,7 +644,7 @@ const ArticPage = () => {
                                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{editTitle}</h5>
                                     <p className="mb-1 font-normal text-gray-700">{editDesc}</p>
                                     <p className="mb-1 font-normal text-gray-700">Orden: {editOrden}</p>
-                                    <div className="mb-1 font-normal text-gray-700">Estado: {
+                                    <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado: {
                                         statesList.map((state: any) => (
                                             <div key={state.iid_tabla_detalle}>
                                                 {
