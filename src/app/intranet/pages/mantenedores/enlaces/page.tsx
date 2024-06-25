@@ -54,7 +54,7 @@ const LinksPage = () => {
     const [editId, setEditId] = useState('0');
     const [editTitle, setEditTitle] = useState('');
     const [editDesc, setEditDesc] = useState('');
-    const [editLink, setEditLink] = useState('#');
+    const [editLink, setEditLink] = useState('');
     const [editOrden, setEditOrden] = useState('');
     const [editState, setEditState] = useState('3');
     const [Image, setImage] = useState(null);
@@ -230,16 +230,16 @@ const LinksPage = () => {
     }
 
     const [messageModal, setMessageModal] = useState("");
-    const validarNombre = (nombre: string, List: any) => {
+    const validarNombre = (nombre: string, List: any,id:string) => {
         if(modalState.update) {
-          return List.some((element:any)=>element.vtitulo == nombre);
+          return List.some((element:any)=>element.iid_enlace !== id && element.vtitulo == nombre);
         }
         return false;
       }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
-        if(validarNombre(editTitle, dataList)) {
+        if(validarNombre(editTitle, dataList,editId)) {
             setMessageModal('Ya existe un registro con ese nombre');
             setErrorModal(true);
             return;
@@ -533,7 +533,7 @@ const LinksPage = () => {
                                 </div>
                                 <div className="mb-5  relative">
                                     <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
-                                    <input required type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
+                                    <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
                                 <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>

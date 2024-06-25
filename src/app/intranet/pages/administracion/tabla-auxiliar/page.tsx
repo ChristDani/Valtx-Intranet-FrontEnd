@@ -184,7 +184,7 @@ const CabeceraPage = () => {
     }
     const validarNombre = (nombre: string, List: any) => {
         if(modalState.update) {
-          return List.some((element:any)=>element.vdescripcion== nombre.toUpperCase());
+          return List.some((element:any)=>element.iid_tabla_cabecera !== editId && element.vdescripcion== nombre.toUpperCase());
         }
         return false;
       }

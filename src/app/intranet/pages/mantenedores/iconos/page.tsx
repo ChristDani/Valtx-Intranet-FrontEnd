@@ -278,16 +278,16 @@ const IcoPage = () => {
 
   const [messageModal, setMessageModal] = useState("");
 
-  const validarNombre = (nombre: string, List: any) => {
+  const validarNombre = (nombre: string, List: any,id:string) => {
     if(modalState.update) {
-      return List.some((element:any)=>element.vtitulo == nombre);
+      return List.some((element:any)=>element.iid_icono !== id && element.vtitulo == nombre);
     }
     return false;
   }
 const confirmOp = async (e: any) => {
     e.preventDefault();
     const fileInput = imageRef.current as HTMLInputElement;
-    if(validarNombre(editTitle, dataList)) {
+    if(validarNombre(editTitle, dataList,editId)) {
         setMessageModal('Ya existe un registro con ese nombre');
         setErrorModal(true);
         return;
@@ -782,7 +782,6 @@ const confirmOp = async (e: any) => {
                   Link
                 </label>
                 <input
-                  required
                   type="text"
                   name="vlink"
                   className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full"

@@ -21,9 +21,6 @@ const AuxPage = () => {
         return pathFinal
     };
 
-    // parametros
-    const [statesList, setStatesList] = useState([]);
-
     // data
     const [dataList, setDataList] = useState([]);
     const [datInfo, setDataInfo] = useState<any>([]);
@@ -171,7 +168,7 @@ const AuxPage = () => {
 
     const validarNombre = (nombre: string, List: any) => {
         if(modalState.create || modalState.update) {
-          return List.some((element:any)=>element.vnombre_perfil== nombre.toUpperCase());
+          return List.some((element:any)=>element.iid_parametro !== editId && element.vnombre_perfil== nombre.toUpperCase());
         }
         return false;
       }

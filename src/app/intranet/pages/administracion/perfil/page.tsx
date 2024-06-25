@@ -251,7 +251,7 @@ const ProfilesPage = () => {
 
   const validarNombre = (nombre: string, List: any) => {
     if(modalState.create || modalState.update) {
-      return List.some((element:any)=>element.vnombre_perfil== nombre.toUpperCase());
+      return List.some((element:any)=> element.iid_perfil !== editId && element.vnombre_perfil== nombre.toUpperCase());
     }
     return false;
   }
