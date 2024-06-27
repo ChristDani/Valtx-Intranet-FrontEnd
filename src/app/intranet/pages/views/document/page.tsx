@@ -307,7 +307,7 @@ const DocuViewPage = () => {
                     </div> 
                     ))
                 ):(
-                    <div className="bg-white border-b hover:bg-gray-50">
+                    <div className="w-full bg-white border-b hover:bg-gray-50">
                     <div  className="px-6 py-4 font-medium text-gray-900 text-center">
                             Lo sentimos, aún no se han registrado datos!
                         </div>
