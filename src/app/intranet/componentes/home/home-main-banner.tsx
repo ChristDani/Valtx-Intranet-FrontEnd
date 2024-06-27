@@ -49,6 +49,9 @@ const HomeMainBanner = () =>{
     const goLink = () =>{
       const banner = banners[currentIndex]
         if(banner.vlink== null || banner.vlink == '') return;
+        if(!banner.vlink.startsWith("https://")){
+          banner.vlink = `https://${banner.vlink}`
+      }
         window.open(`${banner.vlink}`, banner.vredireccion);
     }
     
@@ -76,10 +79,8 @@ const HomeMainBanner = () =>{
 
     return(
     <div className='relative cursor-pointer max-h-[500px] w-full group rounded-xl overflow-hidden max-sm:h-[300px]'>
-        <div className='flex h-full'>
-          <a href={banners[currentIndex]?.vlink} target={banners[currentIndex]?.vredireccion}>
+        <div className='flex h-full' onClick={goLink}>
           <ImagenFront className="w-full" src={banners[currentIndex]?.vimagen} />
-          </a>
         </div>
         <div className='hidden group-hover:block absolute top-[50%] -translate-x-0 translate-y-[-50%] left-5 text-2xl rounded-full p-2 bg-black/20 text-white cursor-pointer'>
           <BsChevronCompactLeft onClick={()=>goToPrevSlide()} size={30} />
