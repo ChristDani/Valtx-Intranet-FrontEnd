@@ -273,7 +273,14 @@ const DocuViewPage = () => {
         state: false,
         id_doc: 0
     });
-
+    const goLink = (link:string) =>{
+        let banner = link
+          if(banner== null || banner == '') return;
+          if(!banner.startsWith("https://")){
+              banner = `https://${banner}`
+          }
+          return banner
+      }
     const showDataFiles = (e: any, id: number) => {
         setShow({
             state: true,
@@ -290,7 +297,7 @@ const DocuViewPage = () => {
                 datInfo.IsSuccess ? (
                     dataList.map((item: any) => ( 
                     <div key={item.idd_blog} className=" max-w-xs my-4 h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50">
-                        <a href={item.vlink} target="_blank" rel="noopener noreferrer">
+                        <a href={goLink(item.vlink)} target="_blank" rel="noopener noreferrer">
                             <ImagenFront className="object-cover h-40 w-full" src={item.vimagen} alt={`${item.vtextobreve}`}/>
                         </a>
                     <div className="flex flex-col gap-4 w-full p-4">

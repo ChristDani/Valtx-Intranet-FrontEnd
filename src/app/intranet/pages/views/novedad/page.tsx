@@ -134,7 +134,7 @@ const NovedadesViewPage = () => {
                     <ImagenFront className="object-cover h-40 w-full" src={item.vimagen}/>
                         <div className="flex flex-col gap-4 w-full p-4">
                             <div className="min-h-10 font-bold text-xl mb-2">{item.vtitulo}</div>
-                            <p className="h-[70px]text-gray-700 text-base line-clamp-2">
+                            <p className="h-[70px]text-gray-700 text-base line-clamp-3">
                                 {item.vtextobreve}
                             </p>
                             <div className="flex  justify-end mr-3">

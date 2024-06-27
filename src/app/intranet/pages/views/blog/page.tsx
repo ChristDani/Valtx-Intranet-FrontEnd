@@ -123,7 +123,15 @@ const BlogsViewPage = () => {
         state: false,
         id_doc: 0
     });
-
+    const goLink = (link:string) =>{
+        let banner = link
+          if(banner== null || banner == '') return;
+          if(!banner.startsWith("https://")){
+              banner = `https://${banner}`
+          }
+          return banner
+      }
+      
     const showDataFiles = (e: any, id: number) => {
         setShow({
             state: true,
@@ -151,7 +159,7 @@ const BlogsViewPage = () => {
                                 {item.vtextobreve}
                             </p>
                             <div className="flex justify-end">
-                                <Link href={`http://${item.vlink}`} className="global-secondary-text">Leer más -{'>'}</Link>
+                                <a href={goLink(item.vlink)} target="_blank" className="global-secondary-text">Leer más -{'>'}</a>
                             </div>
                         </div>
                     </div> 
