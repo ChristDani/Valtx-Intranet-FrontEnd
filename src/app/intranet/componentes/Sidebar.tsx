@@ -117,7 +117,7 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-        <div className="relative flex w-92">
+        <div className="relative w-92 hidden">
           <input
             type="text"
             placeholder="Buscar"

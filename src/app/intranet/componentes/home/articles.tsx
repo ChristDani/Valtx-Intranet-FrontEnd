@@ -25,10 +25,14 @@ const Articles = () => {
         setArticles(articlesList);
     }
 
-    const goLink = (vlink: string, vredireccion: string) => {
-        if (vlink == null || vlink == '') return;
-        window.open(vlink, vredireccion);
-    }
+    const goLink = (link:string) =>{
+        let banner = link
+          if(banner== null || banner == '') return;
+          if(!banner.startsWith("https://")){
+            banner = `https://${banner}`
+        }
+          window.open(`${banner}`, "blank");
+      }
 
 
     return (
@@ -38,19 +42,19 @@ const Articles = () => {
                 <h1 className="text-lg global-main-text"> Nuestro blog </h1>
                 <Link className="cursor-pointer global-secondary-text" href="/intranet/pages/views/blog">Ver todos</Link>
             </div>
-            <div className="flex gap-4 items-center max-md:flex-col">
+            <div className="grid grid-cols-3 max-md:grid-cols-1 gap-2 justify-items-center">
 
                 {articles ? articles.map((article, index) => (
 
-                    <div key={index} className="max-w-xs my-4 max-h-[350px] rounded-lg overflow-hidden shadow-lg bg-slate-50 max-md:w-full">
+                    <div key={index} className="max-w-xs my-4 max-h-[400px] rounded-lg overflow-hidden shadow-lg bg-slate-50 max-md:w-full">
                         <ImagenFront src={article.vimagen} className="object-cover max-h-40 w-full mx-auto"/>
-                        <div className="flex flex-col gap-4 first-letter:w-full p-4">
-                            <div className="h-10 font-bold text-xl">{article.vtitulo}</div>
-                            <p className="h-[70px] text-gray-700 text-base line-clamp-3">
+                        <div className="flex flex-col gap-4 p-4">
+                            <div className="font-bold text-xl line-clamp-2">{article.vtitulo}</div>
+                            <p className="max-h-[70px] text-gray-700 text-base line-clamp-3">
                                 {article.vtextobreve}
                             </p>
-                            <div className="flex justify-end mb-2">
-                                <Link href={`http://${article.vlink}`} className="global-secondary-text">Leer más -{'>'}</Link>
+                            <div className="flex justify-end mb-2 text-sky-500 cursor-pointer" onClick={()=>goLink(article.vlink)}>
+                                Leer más -{'>'}
                             </div>
                         </div>
                     </div>

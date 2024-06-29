@@ -2,13 +2,13 @@
 import React from 'react';
 
 const VideoModal = ({ onClose, videoUrl }:{onClose: ()=>void, videoUrl:string}) => {
+  
   return (
     <>
       <div className="flex fixed align-middle justify-center m-auto top-0 left-0 w-full h-full modal z-40">
         {/** Capa opacidad */}
         <div className="fixed top-0 left-0 bg-black opacity-50 h-full w-full modal-overlay"
               onClick={onClose}>
-        
         </div>
 
         {/** Contenedor de video */}
@@ -19,7 +19,7 @@ const VideoModal = ({ onClose, videoUrl }:{onClose: ()=>void, videoUrl:string}) 
                 >X</span>
 
           <video width={700} height={700} controls autoPlay>
-              <source src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${videoUrl}`} type="video/mp4"></source>
+              <source src={`${process.env.NEXT_PUBLIC_RUTA}/enterate/videos/${videoUrl}`} type="video/mp4"></source>
           </video>
         </div>
 

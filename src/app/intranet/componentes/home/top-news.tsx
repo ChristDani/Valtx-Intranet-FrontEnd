@@ -31,12 +31,14 @@ const TopNews = () =>{
         }
     }
 
-    const goLink = (vlink: string, redireccion: string) =>{
-        if(vlink == null || vlink == '') return;
-        window.open(`http://${vlink}`, redireccion);
+    const goLink = (link:string) =>{
+        let banner = link
+          if(banner== null || banner == '') return;
+          if(!banner.startsWith("https://")){
+            banner = `https://${banner}`
+        }
+          window.open(`${banner}`, "blank");
       }
-
-      
     return(
         
         <div className="flex flex-col">
@@ -48,7 +50,7 @@ const TopNews = () =>{
                 {
                     dataInfo.IsSuccess ? (
                         newsList.map((item:Noticias, index)=>(
-                            <div key={index} className="w-1/2 h-full max-md:w-full" onClick={()=>{goLink(item.vlink, item.vredireccion)}}>
+                            <div key={index} className="w-1/2 h-full max-md:w-full" onClick={()=>{goLink(item.vlink)}}>
                                 <div className="flex align-middle h-full overflow-hidden rounded-2xl justify-center bg-white hover:cursor-pointer">
                                     <ImagenFront className="h-full w-full" src={item.vimagen}/>
                                 </div>

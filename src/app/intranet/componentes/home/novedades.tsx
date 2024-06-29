@@ -26,10 +26,14 @@ export const Novedades = () =>{
         getData();
     },[])
 
-    const goToLink = (vlink: string) =>{
-        if(vlink == null || vlink == '') return;
-        window.open(`http://${vlink}`);
-    }
+    const goLink = (link:string) =>{
+        let banner = link
+          if(banner== null || banner == '') return;
+          if(!banner.startsWith("https://")){
+            banner = `https://${banner}`
+        }
+          window.open(`${banner}`, "blank");
+      }
     return(
         <div className="flex flex-col">
             <div className="flex justify-between align-bottom pt-4 font-bold">
@@ -40,7 +44,7 @@ export const Novedades = () =>{
             {/** Contenido */}
             {
                 dataInfo.IsSuccess ? (
-                <div className=" relative flex w-full max-h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden max-md:h-[300px]" onClick={()=>goToLink(novedades[0]?.vlink)}>
+                <div className=" relative flex w-full max-h-[500px] bg-white rounded-2xl mt-3 rounded-e-xl overflow-hidden max-md:h-[300px]" onClick={()=>goLink(novedades[0]?.vlink)}>
                     <ImagenFront className="w-full h-full object-cover" src={novedades[0]?.vimagen}/>
                     <div className="absolute h-full w-1/2 text-white max-md:w-3/4">
                                 <div className="flex items-center bg-[#31BAFF] h-1/2 p-4 rounded-br-[100px] rounded-tl-lg max-sm:h-2/5">

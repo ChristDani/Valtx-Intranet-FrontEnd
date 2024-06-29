@@ -6,6 +6,7 @@ import { IEnterate, EnterateResponseDTO } from "../../interfaces/enterate.respon
 import ModalComponent from '../mantenedores/modal';
 import Link from "next/link";
 import ImagenFront from "../mantenedores/imagenFront";
+import VideoModal from "./video-modal";
 
 export const Enterate = () => {
 
@@ -80,13 +81,7 @@ export const Enterate = () => {
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <>
-                    {/* <div className="flex fixed rounded-xl p-6 align-middle justify-center m-auto top-0 left-0 w-full h-full modal z-40"> */}
                     <div className={`rounded-xl m-auto h-auto w-[700px]`}>
-                        {/** Capa opacidad */}
-                        {/* <div className="fixed top-0 left-0 bg-black opacity-50 h-full w-full modal-overlay"
-                            onClick={closeModal}>
-
-                        </div> */}
 
                         {/** Contenedor de video */}
                         <div className="relative video-container m-auto z-50">
@@ -94,19 +89,7 @@ export const Enterate = () => {
                 justify-center rounded-full translate-x-4 -translate-y-4 w-[30px] h-[30px]"
                                 onClick={closeModal}
                             >X</span>
-
-                            {/* <iframe
-                                width={700}
-                                height={400}
-                                src={`https://intranetconexion.valtx.pe:9021/public/enterate/videos/${urlvideo}`}
-                                title={Title}
-                                frameBorder={0}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture "
-                                allowFullScreen
-                                referrerPolicy="no-referrer"
-
-                            /> */}
-                            <video width="700" height="400" controls crossOrigin="anonymous" autoPlay>
+                            <video className="min-w-[700px] min-h-[400px]" controls crossOrigin="anonymous" autoPlay>
                                 <source  src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
