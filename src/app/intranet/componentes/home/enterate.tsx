@@ -81,18 +81,26 @@ export const Enterate = () => {
             {/* modal */}
             <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
                 <>
-                    <div className={`rounded-xl m-auto h-auto w-[700px]`}>
+                    <div className="m-auto w-[700px] h-[400px] max-xl:w-[70vw] max-xl:h-[50vh] max-lg:h-[40vh]">
 
                         {/** Contenedor de video */}
                         <div className="relative video-container m-auto z-50">
-                            <span className="flex absolute top-0 right-0 bg-white cursor-pointer font-bold items-center 
-                justify-center rounded-full translate-x-4 -translate-y-4 w-[30px] h-[30px]"
-                                onClick={closeModal}
-                            >X</span>
-                            <video className="min-w-[700px] min-h-[400px]" controls crossOrigin="anonymous" autoPlay>
-                                <source  src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
+                            {urlvideo !== '' ? (
+                                <video className="w-full h-full rounded-2xl" controls crossOrigin="anonymous" autoPlay>
+                                <source src={`${process.env.NEXT_PUBLIC_RUTA}enterate/videos/${urlvideo}`} type="video/mp4" />
                                 Tu navegador no soporta el elemento de video.
                             </video>
+                            ) : (
+                                <div className="flex text-center items-center justify-center w-full h-[400px] max-lg:w-[70vw] max-xl:h-[50vh] max-lg:h-[40vh] bg-slate-50 rounded-2xl">
+                                    No hay video disponible.
+                                </div>
+                            )
+
+                            }
+
+                            <span className="flex absolute top-0 right-0 bg-white cursor-pointer font-bold items-center justify-center rounded-full translate-x-4 -translate-y-4 w-[30px] h-[30px]"
+                                onClick={closeModal}
+                            >X</span>
                         </div>
 
                     </div>
