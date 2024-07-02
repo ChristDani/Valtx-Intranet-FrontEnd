@@ -492,19 +492,19 @@ const UsersPage = () => {
                     key={item.iid_usuario}
                     className="bg-white border-b hover:bg-gray-50"
                   >
-                    <td className="px-6 py-4 text-center capitalize">
+                    <td className="px-6 py-4 text-left capitalize">
                       {item.vnombres}
                     </td>
-                    <td className="px-6 py-4 text-center lowercase">
+                    <td className="px-6 py-4 text-left lowercase">
                       {item.vcorreo_electronico}
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-4 text-left">
                       {item.vnumero_telefonico}
                     </td>
                     <td className="px-6 py-4 text-center">
                       {item.vnro_documento}
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-4 text-left">
                       {item.vdescripcion_perfil}
                     </td>
                     <td>
@@ -529,7 +529,7 @@ const UsersPage = () => {
                         </div>
                       ))}
                     </td>
-                    <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
+                    <td className="flex gap-4 items-center justify-center my-auto px-6 h-16">
                       {optionUser.visualizar && (
                         <Link
                           href=""
