@@ -304,10 +304,10 @@ const AuxPage = () => {
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" className="px-6 py-3 text-center">
+                            <th scope="col" className="px-6 py-3 text-left w-[90%]">
                                 Título Parámetro
                             </th>
-                            <th scope="col" className="px-6 py-3 text-center">
+                            <th scope="col" className="px-6 py-3 text-center w-[10%]">
                                 Acción
                             </th>
                         </tr>
@@ -318,7 +318,7 @@ const AuxPage = () => {
                             datInfo.IsSuccess ? (
                                 dataList.map((item: any) => (
                                     <tr className="bg-white border-b hover:bg-gray-50" key={item.iid_parametro}>
-                                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-center">
+                                        <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-left">
                                             {item.vdescripcion}
                                         </td>
 

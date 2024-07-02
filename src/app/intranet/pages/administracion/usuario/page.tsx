@@ -462,22 +462,22 @@ const UsersPage = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Nombre Completo
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Correo Electrónico
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Teléfono
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Documento
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Perfil
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-center w-[100px]">
                 Estado
               </th>
               <th scope="col" className="px-6 py-3 text-center">
@@ -501,7 +501,7 @@ const UsersPage = () => {
                     <td className="px-6 py-4 text-left">
                       {item.vnumero_telefonico}
                     </td>
-                    <td className="px-6 py-4 text-center">
+                    <td className="px-6 py-4 text-left">
                       {item.vnro_documento}
                     </td>
                     <td className="px-6 py-4 text-left">
@@ -513,7 +513,7 @@ const UsersPage = () => {
                           {state.iid_tabla_detalle ==
                           item.iid_estado_registro ? (
                             <div
-                              className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${
+                              className={`flex items-center justify-center font-bold w-24 h-10 rounded-xl ${
                                 state.vvalor_texto_corto === "ACTIVO"
                                   ? "bg-emerald-100 text-emerald-700"
                                   : "bg-rose-200 text-rose-800"

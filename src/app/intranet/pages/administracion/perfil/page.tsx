@@ -166,7 +166,7 @@ const ProfilesPage = () => {
     setDataInfo(itemsList);
     setDataList(itemsList.data);
     console.log(itemsList.data);
-    
+
     const pages =
       Math.ceil(itemsList.TotalRecords / items) != 0
         ? Math.ceil(itemsList.TotalRecords / items)
@@ -250,34 +250,34 @@ const ProfilesPage = () => {
   };
 
   const validarNombre = (nombre: string, List: any) => {
-    if(modalState.create || modalState.update) {
-      return List.some((element:any)=> element.iid_perfil !== editId && element.vnombre_perfil== nombre.toUpperCase());
+    if (modalState.create || modalState.update) {
+      return List.some((element: any) => element.iid_perfil !== editId && element.vnombre_perfil == nombre.toUpperCase());
     }
     return false;
   }
   const confirmOp = async (e: any) => {
     e.preventDefault();
-    if(validarNombre(editTitle, dataList)) {
+    if (validarNombre(editTitle, dataList)) {
       setModalMessage('Ya existe un perfil con ese nombre');
       setAviso(true);
       return;
     }
 
     if (modalState.create) {
-        if (optionsChange) {
-          const datos = await PerfilesService.create(
-            editTitle,
-            editDesc,
-            editId,
-            editState
-          );
-          rellenarId(datos.data.Codigo);
-          const data = await optionsServices.setPefilOptions(select);
-          return;
-        } else {
-          setModalMessage('Lista de opciones vacía');
-          setAviso(true);
-        }
+      if (optionsChange) {
+        const datos = await PerfilesService.create(
+          editTitle,
+          editDesc,
+          editId,
+          editState
+        );
+        rellenarId(datos.data.Codigo);
+        const data = await optionsServices.setPefilOptions(select);
+        return;
+      } else {
+        setModalMessage('Lista de opciones vacía');
+        setAviso(true);
+      }
     } else if (modalState.update) {
 
       await PerfilesService.update(editTitle, editDesc, editId, editState);
@@ -405,16 +405,16 @@ const ProfilesPage = () => {
         <table className="w-full text-sm text-left rtl:text-right text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Perfil
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-left">
                 Descripción
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-center w-[100px]">
                 Estado
               </th>
-              <th scope="col" className="px-6 py-3 text-center">
+              <th scope="col" className="px-6 py-3 text-center w-[10%]">
                 Acción
               </th>
             </tr>
@@ -429,21 +429,21 @@ const ProfilesPage = () => {
                 >
                   <th
                     scope="row"
-                    className="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap"
+                    className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap"
                   >
                     {capitalize(item.vnombre_perfil)}
                   </th>
-                  <th scope="row" className="px-6 py-4 text-center ">
+                  <th scope="row" className="px-6 py-4 text-left ">
                     {capitalize(item.vdescripcion_perfil)}
                   </th>
-                  <th scope="row" className="px-6 py-4">
+                  <th scope="row" className="px-6 py-4 text-center">
                     {statesList.map((state: any) => (
                       <div key={state.iid_tabla_detalle}>
                         {state.iid_tabla_detalle == item.iid_estado_registro ? (
                           <div
-                            className={`flex items-center justify-center  font-bold min-w-24 h-10 rounded-xl ${state.vvalor_texto_corto === "ACTIVO"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : "bg-rose-200 text-rose-800"
+                            className={`flex items-center justify-center font-bold w-24 h-10 rounded-xl ${state.vvalor_texto_corto === "ACTIVO"
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-rose-200 text-rose-800"
                               }`}
                           >
                             {state.vvalor_texto_corto != null
@@ -693,10 +693,10 @@ const ProfilesPage = () => {
       <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
           className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update
-              ? "w-[700px]"
-              : modalState.delete
-                ? "w-[500px]"
-                : "w-[600px]"
+            ? "w-[700px]"
+            : modalState.delete
+              ? "w-[500px]"
+              : "w-[600px]"
             }`}
         >
           <div className="flex justify-between">
