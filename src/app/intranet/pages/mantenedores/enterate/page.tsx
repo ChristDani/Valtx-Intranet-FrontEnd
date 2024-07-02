@@ -68,38 +68,38 @@ const EnteratePage = () => {
     const [fechaFormat, setFechaFormat] = useState('');
 
 
-  // obtener opciones por usuario
-  const [optionUser, setOptionUser] = useState({
-    visualizar: false,
-    crear: false,
-    editar: false,
-    eliminar: false
-  })
+    // obtener opciones por usuario
+    const [optionUser, setOptionUser] = useState({
+        visualizar: false,
+        crear: false,
+        editar: false,
+        eliminar: false
+    })
     const [errorModal, setErrorModal] = useState(false)
     const closeError = () => {
-            setErrorModal(false)
-        }
-  
-  const getOptionsUser = async (id: any, path : string) => {
-
-    const resul = path.split("/");
-    const finalPath = resul[resul.length - 1]
-    const pathResul = "/" + finalPath
-
-    const datos = await optionsServices.getPerfilOpcionId(id);
-    const listOptionsId = datos.data;
-    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
-
-    if (options) {
-      setOptionUser({
-        visualizar: options.ivisualizar,
-        crear: options.icrear ,
-        editar: options.iactualizar,
-        eliminar: options.ieliminar,
-      });
+        setErrorModal(false)
     }
 
-  };
+    const getOptionsUser = async (id: any, path: string) => {
+
+        const resul = path.split("/");
+        const finalPath = resul[resul.length - 1]
+        const pathResul = "/" + finalPath
+
+        const datos = await optionsServices.getPerfilOpcionId(id);
+        const listOptionsId = datos.data;
+        const options = listOptionsId.find((objeto: any) => objeto.vurl === pathResul)
+
+        if (options) {
+            setOptionUser({
+                visualizar: options.ivisualizar,
+                crear: options.icrear,
+                editar: options.iactualizar,
+                eliminar: options.ieliminar,
+            });
+        }
+
+    };
 
     const cambiarImagen = (e: any) => {
         const file = e.target.files[0];
@@ -139,7 +139,7 @@ const EnteratePage = () => {
 
     useEffect(() => {
         // obtener opciones de usuario
-        const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+        const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
@@ -172,7 +172,7 @@ const EnteratePage = () => {
     }
 
 
-    const createItem = async (e:any) => {
+    const createItem = async (e: any) => {
         e.preventDefault()
         setModalState({ create: true, update: false, delete: false, uploadVideo: false })
         openModal()
@@ -256,27 +256,27 @@ const EnteratePage = () => {
         getOneItem(id)
         openModal()
     }
-    
+
     const [messageModal, setMessageModal] = useState("");
-    const validarNombre = (nombre: string, List: any,id:string) => {
-        if(modalState.update) {
-          return List.some((element:any)=>element.iid_enterate !== id && element.vtitulo == nombre);
+    const validarNombre = (nombre: string, List: any, id: string) => {
+        if (modalState.update) {
+            return List.some((element: any) => element.iid_enterate !== id && element.vtitulo == nombre);
         }
         return false;
-      }
+    }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
-        if(validarNombre(editTitle, dataList,editId)) {
+        if (validarNombre(editTitle, dataList, editId)) {
             setMessageModal('Ya existe un registro con ese nombre');
             setErrorModal(true);
             return;
-          }
+        }
         if (modalState.create) {
             if (Image != null) {
                 const codigo: any = await enterateServices.create(Image, editTitle, editDesc, editOrden, editState, editId);
                 const CODIGO = codigo['Codigo'];
-                if (!codigo.IsSuccess){
+                if (!codigo.IsSuccess) {
                     setMessageModal(codigo.Message)
                     setErrorModal(true);
                     return;
@@ -284,7 +284,7 @@ const EnteratePage = () => {
                 if (modalState.uploadVideo) {
                     if (Video != null) {
                         const res = await enterateServices.uploadVideo(Video, CODIGO)
-        
+
                     } else {
                         alert('Debe ingresar un video')
                     }
@@ -456,29 +456,29 @@ const EnteratePage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`}/>
+                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`} />
                                         </td>
                                         <td className='px-6 py-4'>
                                             <ListStates
-                                                    list={statesList}
-                                                    status={item.iid_estado_registro}
-                                                    funt={capitalize}
-                                                />
+                                                list={statesList}
+                                                status={item.iid_estado_registro}
+                                                funt={capitalize}
+                                            />
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
                                             <div className="flex gap-2 max-lg:hidden">
                                                 <ActionInf
-                                                    permiso = {optionUser.visualizar}
+                                                    permiso={optionUser.visualizar}
                                                     accion={(e) => itemDetails(e, item.iid_enterate)}
                                                 />
                                                 <ActionEdit
-                                                    permiso = {optionUser.editar}
+                                                    permiso={optionUser.editar}
                                                     accion={(e) => editItem(e, item.iid_enterate)}
                                                 />
                                                 <ActionDel
-                                                    permiso = {optionUser.eliminar}
-                                                    accion={(e) => deleteItem(e,item.iid_enterate)}
-                                                    />
+                                                    permiso={optionUser.eliminar}
+                                                    accion={(e) => deleteItem(e, item.iid_enterate)}
+                                                />
                                             </div>
                                         </td>
                                     </tr>
@@ -578,7 +578,7 @@ const EnteratePage = () => {
                                     <label htmlFor="idItem" >ID</label>
                                     <input type="text" name="idItem" defaultValue={editId}></input>
                                 </div>
-                                <div className="mb-5 flex">
+                                <div className="mb-3 flex">
                                     <div className="flex-auto w-28 relative">
                                         <label htmlFor="iorden" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Orden</label>
                                         <input type="text" name="iorden" className="bg-gray-50 border border-gray-300 rounded-lg w-3/4 block p-2" value={editOrden} onInput={(e: any) => validarOrder(e.target)}></input>
@@ -588,13 +588,13 @@ const EnteratePage = () => {
                                         <input required type="text" name="vtitulo" className="bg-gray-50 border border-gray-300 rounded-lg w-full block p-2" value={editTitle} onInput={(e: any) => setEditTitle(e.target.value)}></input>
                                     </div>
                                 </div>
-                                <div className="mb-5 relative">
+                                <div className="mb-1 relative">
                                     <label htmlFor="vtextobreve" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Descripción</label>
                                     <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                 </div>
                                 <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" accept="image/*" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                    <input type="file" accept=".jpg, .jpeg, .png" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
                                 {
                                     errorModal &&
@@ -614,7 +614,7 @@ const EnteratePage = () => {
                                         </div>
                                     </ModalComponent>
                                 }
-                                <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                <div className="flex justify-center relative gap-1 border border-gray-300 p-1 rounded-xl">
                                     <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
                                     {
                                         Image != null || editImage != '' ? (
@@ -638,7 +638,7 @@ const EnteratePage = () => {
                                             </>
                                         ) : editImage != '' ? (
                                             <>
-                                                <ImagenFront className="max-h-44 max-w-[60%] mx-auto relative" src={"enterate/"+editImage} alt=""/>
+                                                <ImagenFront className="max-h-44 max-w-[60%] mx-auto relative" src={"enterate/" + editImage} alt="" />
                                                 <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
                                             </>
                                         ) : (
@@ -666,14 +666,17 @@ const EnteratePage = () => {
                                         )
                                     }
                                 </div>
+                                <div className="text-xs text-red-300 mb-3 mt-1">
+                                    Formatos aceptados jpeg, jpg, png
+                                </div>
                                 {
                                     modalState.uploadVideo ? (
                                         <>
                                             <div className="mb-5 hidden relative">
                                                 <label htmlFor="video" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Video</label>
-                                                <input type="file" ref={videoRef} name="video" accept="video/mp4" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarVideo}></input>
+                                                <input type="file" ref={videoRef} name="video" accept="video/mp4" size={5000} className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarVideo}></input>
                                             </div>
-                                            <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                            <div className="flex justify-center relative gap-1 border border-gray-300 p-1 rounded-xl">
                                                 <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Video</label>
                                                 {
                                                     Video != null || editVideo != '' ? (
@@ -703,15 +706,8 @@ const EnteratePage = () => {
                                                         </>
                                                     ) : editVideo != '' ? (
                                                         <>
-                                                            {/* <iframe
-                                                                className="max-h-44 max-w-[60%] mx-auto relative"
-                                                                src={`/videos/${editVideo}`}
-                                                                title={nameVideo}
-                                                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                                                allowFullScreen
-                                                            ></iframe> */}
                                                             <video className="max-h-44 max-w-[60%] mx-auto relative" controls crossOrigin="anonymous" >
-                                                                <source  src={`${process.env.NEXT_PUBLIC_RUTA}/enterate/videos/${editVideo}`} type="video/mp4" />
+                                                                <source src={`${process.env.NEXT_PUBLIC_RUTA}/enterate/videos/${editVideo}`} type="video/mp4" />
                                                                 Tu navegador no soporta el elemento de video.
                                                             </video>
                                                             <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameVideo}</label>
@@ -741,6 +737,9 @@ const EnteratePage = () => {
                                                     )
                                                 }
                                             </div>
+                                            <div className="text-xs text-red-300 mb-3 mt-1">
+                                                Formato aceptado .mp4
+                                            </div>
                                         </>
                                     ) : (
                                         <>
@@ -748,13 +747,13 @@ const EnteratePage = () => {
                                     )
                                 }
                                 <div className="flex justify-start gap-4">
-                                    <div className="mb-5 relative">
+                                    <div className="relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                         <select id="stateItem" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            
-                                                <option hidden key="0" value="0">
-                                                    Seleccione
-                                                </option>
+
+                                            <option hidden key="0" value="0">
+                                                Seleccione
+                                            </option>
                                             {
                                                 statesList.map((state: any) => (
                                                     <option
@@ -763,9 +762,9 @@ const EnteratePage = () => {
                                                     >
                                                         {capitalize(state.vvalor_texto_corto)}
                                                     </option>
-                                                    ) 
                                                 )
-                                                }
+                                                )
+                                            }
                                         </select>
                                     </div>
                                 </div>
