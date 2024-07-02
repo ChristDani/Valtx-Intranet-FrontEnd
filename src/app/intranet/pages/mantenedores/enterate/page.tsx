@@ -389,6 +389,7 @@ const EnteratePage = () => {
         setImage(null)
         setSrcImage(null)
         setNameImage(editImage)
+        imageRef.current.value = "";
     };
 
     const videoRef = useRef<any>(null)
@@ -400,6 +401,7 @@ const EnteratePage = () => {
     const deleteVideo = () => {
         setVideo(null)
         setNameVideo(editVideo)
+        videoRef.current.value = "";
     }
 
     return (

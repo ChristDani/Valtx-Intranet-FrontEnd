@@ -431,6 +431,7 @@ const EventPage = () => {
     setImage(null);
     setSrcImage(null);
     setNameImage(editImage);
+    imageRef.current.value = "";
   };
 
   return (

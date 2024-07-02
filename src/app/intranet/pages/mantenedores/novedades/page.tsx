@@ -402,6 +402,7 @@ const confirmOp = async (e: any) => {
     setImage(null);
     setSrcImage(null);
     setNameImage(editImage);
+    imageRef.current.value = "";
   };
 
   return (
