@@ -132,7 +132,7 @@ const DocuPage = () => {
     }
     useEffect(() => {
         // obtener opciones de usuario
-        const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+        const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
@@ -170,7 +170,7 @@ const DocuPage = () => {
         setSearchTitle(title)
         getData(1, itemsPorPagina, title)
     }
-    const createItem = async (e:any) => {
+    const createItem = async (e: any) => {
         e.preventDefault()
         setModalState({ create: true, update: false, delete: false })
         openModal()
@@ -241,24 +241,24 @@ const DocuPage = () => {
     }
 
     const [messageModal, setMessageModal] = useState("");
-    const validarNombre = (nombre: string, List: any,id:string) => {
-        if(modalState.update) {
-          return List.some((element:any)=>element.iid_documentacion !== id && element.vtitulo == nombre);
+    const validarNombre = (nombre: string, List: any, id: string) => {
+        if (modalState.update) {
+            return List.some((element: any) => element.iid_documentacion !== id && element.vtitulo == nombre);
         }
         return false;
-      }
+    }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
-        if(validarNombre(editTitle, dataList,editId)) {
+        if (validarNombre(editTitle, dataList, editId)) {
             setMessageModal('Ya existe un registro con ese nombre');
             setErrorModal(true);
             return;
-          }
+        }
         if (modalState.create) {
             if (Image != null) {
                 const res = await documentacionServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
-                if (!res.data.IsSuccess){
+                if (!res.data.IsSuccess) {
                     setMessageModal(res.data.Message)
                     setErrorModal(true);
                     return;
@@ -438,32 +438,32 @@ const DocuPage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`}/>
+                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`} />
                                         </td>
                                         <td className='px-6 py-4'>
                                             <ListStates
-                                                    list={statesList}
-                                                    status={item.iid_estado_registro}
-                                                    funt={capitalize}
-                                                />
+                                                list={statesList}
+                                                status={item.iid_estado_registro}
+                                                funt={capitalize}
+                                            />
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
-                                                <ActionInf
-                                                    permiso = {optionUser.visualizar}
-                                                    accion={(e) => itemDetails(e, item.iid_documentacion)}
-                                                />
-                                                <ActionShowFiles 
-                                                    permiso = {optionUser.visualizar}
-                                                    accion={(e) => showDataFiles(e, item.iid_documentacion)}
-                                                />
-                                                <ActionEdit
-                                                    permiso = {optionUser.editar}
-                                                    accion={(e) => editItem(e, item.iid_documentacion)}
-                                                />
-                                                <ActionDel
-                                                    permiso = {optionUser.eliminar}
-                                                    accion={(e) => deleteItem(e,item.iid_documentacion)}
-                                                />
+                                            <ActionInf
+                                                permiso={optionUser.visualizar}
+                                                accion={(e) => itemDetails(e, item.iid_documentacion)}
+                                            />
+                                            <ActionShowFiles
+                                                permiso={optionUser.visualizar}
+                                                accion={(e) => showDataFiles(e, item.iid_documentacion)}
+                                            />
+                                            <ActionEdit
+                                                permiso={optionUser.editar}
+                                                accion={(e) => editItem(e, item.iid_documentacion)}
+                                            />
+                                            <ActionDel
+                                                permiso={optionUser.eliminar}
+                                                accion={(e) => deleteItem(e, item.iid_documentacion)}
+                                            />
                                         </td>
                                     </tr>
                                 ))
@@ -585,8 +585,20 @@ const DocuPage = () => {
                                             <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                         </div>
                                         <div className="mb-5 hidden relative">
-                                            <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                            <input type="file" ref={imageRef} accept="image/*" name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                            <label
+                                                htmlFor="vimagen"
+                                                className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs"
+                                            >
+                                                Imagen
+                                            </label>
+                                            <input
+                                                type="file"
+                                                ref={imageRef}
+                                                accept="image/*"
+                                                name="vimagen"
+                                                className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
+                                                onChange={cambiarImagen}
+                                            ></input>
                                         </div>
                                         {
                                             errorModal &&
@@ -607,74 +619,130 @@ const DocuPage = () => {
                                             </ModalComponent>
                                         }
                                         <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
-                                            <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
-                                            {
-                                                Image != null || editImage != '' ? (
-                                                    <>
-                                                        <div className="flex justify-center items-center h-44 bg-red-200 text-red-600 w-[20%] rounded-s-lg cursor-pointer hover:bg-red-100 hover:text-red-300" onClick={deleteImage}>
-                                                            <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
-                                                            </svg>
-                                                        </div>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                    </>
-                                                )
-                                            }
-                                            {
-                                                Image != null ? (
-                                                    <>
-                                                        <img className="max-h-44 max-w-[60%] mx-auto relative" src={srcImage}></img>
-                                                        <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
-                                                    </>
-                                                ) : editImage != '' ? (
-                                                    <>
-                                                        <ImagenFront className="max-h-44 max-w-[60%] mx-auto relative" src={`documentacion/${editImage}`}/>
-                                                        <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">{nameImage}</label>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <div className="hidden justify-center items-center h-44 bg-yellow-200 text-yellow-800 w-[60%] cursor-pointer hover:bg-yellow-100 hover:text-yellow-400" onClick={openInputImage}>
-                                                            <svg className="w-8 h-8" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 12h14m-7 7V5" />
-                                                            </svg>
-                                                        </div>
-                                                    </>
-                                                )
-                                            }
-                                            {
-                                                Image != null || editImage != '' ? (
-                                                    <>
-                                                        <div className="flex justify-center items-center h-44 bg-blue-200 text-blue-600 w-[20%] rounded-r-lg cursor-pointer hover:bg-blue-100 hover:text-blue-300" onClick={openInputImage}>
-                                                            <svg className="w-7 h-7" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4" />
-                                                            </svg>
-                                                        </div>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                    </>
-                                                )
-                                            }
+                                            <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs">
+                                                Imagen
+                                            </label>
+                                            {Image != null || editImage != "" ? (
+                                                <>
+                                                    <div
+                                                        className="flex justify-center items-center h-44 bg-red-200 text-red-600 w-[20%] rounded-s-lg cursor-pointer hover:bg-red-100 hover:text-red-300"
+                                                        onClick={deleteImage}
+                                                    >
+                                                        <svg
+                                                            className="w-7 h-7"
+                                                            aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="24"
+                                                            height="24"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="2"
+                                                                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <></>
+                                            )}
+                                            {Image != null ? (
+                                                <>
+                                                    <img
+                                                        className="max-h-44 max-w-[60%] mx-auto relative"
+                                                        src={srcImage}
+                                                    ></img>
+                                                    <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
+                                                        {nameImage}
+                                                    </label>
+                                                </>
+                                            ) : editImage != "" ? (
+                                                <>
+                                                    <ImagenFront
+                                                        className="max-h-44 max-w-[60%] mx-auto relative"
+                                                        src={`blogs/${editImage}`}
+                                                        alt=""
+                                                    />
+                                                    <label className="hidden absolute px-1 transform translate-y-4 bg-gray-600 bg-opacity-10 backdrop-blur-xl text-center bottom-1 text-black rounded-md max-w-[60%] items-center justify-center">
+                                                        {nameImage}
+                                                    </label>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div
+                                                        className="flex justify-center items-center h-44 bg-yellow-200 text-yellow-800 w-[60%] cursor-pointer hover:bg-yellow-100 hover:text-yellow-400"
+                                                        onClick={openInputImage}
+                                                    >
+                                                        <svg
+                                                            className="w-8 h-8"
+                                                            aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="24"
+                                                            height="24"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="2"
+                                                                d="M5 12h14m-7 7V5"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </>
+                                            )}
+                                            {Image != null || editImage != "" ? (
+                                                <>
+                                                    <div
+                                                        className="flex justify-center items-center h-44 bg-blue-200 text-blue-600 w-[20%] rounded-r-lg cursor-pointer hover:bg-blue-100 hover:text-blue-300"
+                                                        onClick={openInputImage}
+                                                    >
+                                                        <svg
+                                                            className="w-7 h-7"
+                                                            aria-hidden="true"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            width="24"
+                                                            height="24"
+                                                            fill="none"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                stroke="currentColor"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
+                                                                strokeWidth="2"
+                                                                d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <></>
+                                            )}
                                         </div>
                                         <div className="flex justify-start gap-4">
                                             <div className="mb-5 relative">
                                                 <label htmlFor="countries" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                                 <select id="countries" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                                    
+
                                                     <option hidden key="0" value="0">
                                                         Seleccione
                                                     </option>
                                                     {
                                                         statesList.map((state: any) => (
-                                                                <option
-                                                                    key={state.iid_tabla_detalle}
-                                                                    value={state.iid_tabla_detalle}
-                                                                >
-                                                                    {capitalize(state.vvalor_texto_corto)}
-                                                                </option>
-                                                            ) 
+                                                            <option
+                                                                key={state.iid_tabla_detalle}
+                                                                value={state.iid_tabla_detalle}
+                                                            >
+                                                                {capitalize(state.vvalor_texto_corto)}
+                                                            </option>
+                                                        )
                                                         )
                                                     }
                                                 </select>
@@ -698,7 +766,7 @@ const DocuPage = () => {
                                 ) : (
                                     <>
                                         <Link href={editLink} target={redirecction}>
-                                            <ImagenFront className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`documentacion/${editImage}`} alt=""/>
+                                            <ImagenFront className="rounded-lg max-h-72 w-auto mx-auto my-3" src={`documentacion/${editImage}`} alt="" />
                                         </Link>
                                         <hr />
                                         <div className="px-5 py-3">
