@@ -581,10 +581,10 @@ const DocuPage = () => {
                                             <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                         </div>
                                         <div className="mb-5  relative">
-                                            <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
+                                            <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link (Opcional)</label>
                                             <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                         </div>
-                                        <div className="mb-5 hidden relative">
+                                        <div className="hidden relative">
                                             <label
                                                 htmlFor="vimagen"
                                                 className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs"
@@ -594,7 +594,7 @@ const DocuPage = () => {
                                             <input
                                                 type="file"
                                                 ref={imageRef}
-                                                accept="image/*"
+                                                accept=".jpg, .jpeg, .png"
                                                 name="vimagen"
                                                 className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
                                                 onChange={cambiarImagen}
@@ -725,6 +725,9 @@ const DocuPage = () => {
                                             ) : (
                                                 <></>
                                             )}
+                                        </div>
+                                        <div className="text-xs text-red-300 mb-4 mt-1">
+                                            Formatos aceptados jpeg, jpg, png
                                         </div>
                                         <div className="flex justify-start gap-4">
                                             <div className="mb-5 relative">

@@ -66,38 +66,38 @@ const LinksPage = () => {
     const [fechaFormat, setFechaFormat] = useState('');
 
 
-  // obtener opciones por usuario
-  const [optionUser, setOptionUser] = useState({
-    visualizar: false,
-    crear: false,
-    editar: false,
-    eliminar: false
-  })
+    // obtener opciones por usuario
+    const [optionUser, setOptionUser] = useState({
+        visualizar: false,
+        crear: false,
+        editar: false,
+        eliminar: false
+    })
 
     const [errorModal, setErrorModal] = useState(false)
     const closeError = () => {
-            setErrorModal(false)
-        }
-  const getOptionsUser = async (id: any, path : string) => {
-
-    const resul = path.split("/");
-    const finalPath = resul[resul.length - 1]
-    const pathResul = "/" + finalPath
-
-    const datos = await optionsServices.getPerfilOpcionId(id);
-    const listOptionsId = datos.data;
-    const options = listOptionsId.find((objeto:any) => objeto.vurl === pathResul)
-
-    if (options) {
-      setOptionUser({
-        visualizar: options.ivisualizar,
-        crear: options.icrear ,
-        editar: options.iactualizar,
-        eliminar: options.ieliminar,
-      });
+        setErrorModal(false)
     }
+    const getOptionsUser = async (id: any, path: string) => {
 
-  };
+        const resul = path.split("/");
+        const finalPath = resul[resul.length - 1]
+        const pathResul = "/" + finalPath
+
+        const datos = await optionsServices.getPerfilOpcionId(id);
+        const listOptionsId = datos.data;
+        const options = listOptionsId.find((objeto: any) => objeto.vurl === pathResul)
+
+        if (options) {
+            setOptionUser({
+                visualizar: options.ivisualizar,
+                crear: options.icrear,
+                editar: options.iactualizar,
+                eliminar: options.ieliminar,
+            });
+        }
+
+    };
 
     const cambiarImagen = (e: any) => {
         const file = e.target.files[0];
@@ -126,9 +126,9 @@ const LinksPage = () => {
     };
 
     useEffect(() => {
-        
-       // obtener opciones de usuario
-       const perfilId:string = secureLocalStorage.getItem("perfil")?.toString() || '';
+
+        // obtener opciones de usuario
+        const perfilId: string = secureLocalStorage.getItem("perfil")?.toString() || '';
         getData(currentPage, itemsPorPagina, searchTitle);
         obtenerPath();
         getStates();
@@ -160,7 +160,7 @@ const LinksPage = () => {
         getData(1, itemsPorPagina, title)
     }
 
-    const createItem = async (e:any) => {
+    const createItem = async (e: any) => {
         e.preventDefault()
         setModalState({ create: true, update: false, delete: false })
         openModal()
@@ -230,24 +230,24 @@ const LinksPage = () => {
     }
 
     const [messageModal, setMessageModal] = useState("");
-    const validarNombre = (nombre: string, List: any,id:string) => {
-        if(modalState.update) {
-          return List.some((element:any)=>element.iid_enlace !== id && element.vtitulo == nombre);
+    const validarNombre = (nombre: string, List: any, id: string) => {
+        if (modalState.update) {
+            return List.some((element: any) => element.iid_enlace !== id && element.vtitulo == nombre);
         }
         return false;
-      }
+    }
     const confirmOp = async (e: any) => {
         e.preventDefault();
         const fileInput = imageRef.current as HTMLInputElement;
-        if(validarNombre(editTitle, dataList,editId)) {
+        if (validarNombre(editTitle, dataList, editId)) {
             setMessageModal('Ya existe un registro con ese nombre');
             setErrorModal(true);
             return;
-          }
+        }
         if (modalState.create) {
             if (Image != null) {
                 const res = await linkServices.create(Image, editTitle, editDesc, editLink, editOrden, editState, editId);
-                if (!res.data.IsSuccess){
+                if (!res.data.IsSuccess) {
                     setMessageModal(res.data.Message)
                     setErrorModal(true);
                     return;
@@ -396,28 +396,28 @@ const LinksPage = () => {
                                             {item.vtextobreve}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`}/>
+                                            <ImagenFront className="rounded-lg h-20 w-auto mx-auto content-center" src={item.vimagen} alt={`${item.vtextobreve}`} />
                                         </td>
                                         <td className='px-6 py-4'>
                                             <ListStates
-                                                    list={statesList}
-                                                    status={item.iid_estado_registro}
-                                                    funt={capitalize}
-                                                />
+                                                list={statesList}
+                                                status={item.iid_estado_registro}
+                                                funt={capitalize}
+                                            />
                                         </td>
                                         <td className="flex gap-4 items-center justify-center my-auto px-6 h-28">
-                                                <ActionInf
-                                                    permiso = {optionUser.visualizar}
-                                                    accion={(e) => itemDetails(e, item.iid_enlace)}
-                                                />
-                                                <ActionEdit
-                                                    permiso = {optionUser.editar}
-                                                    accion={(e) => editItem(e, item.iid_enlace)}
-                                                />
-                                                <ActionDel
-                                                    permiso = {optionUser.eliminar}
-                                                    accion={(e) => deleteItem(e,item.iid_enlace)}
-                                                />
+                                            <ActionInf
+                                                permiso={optionUser.visualizar}
+                                                accion={(e) => itemDetails(e, item.iid_enlace)}
+                                            />
+                                            <ActionEdit
+                                                permiso={optionUser.editar}
+                                                accion={(e) => editItem(e, item.iid_enlace)}
+                                            />
+                                            <ActionDel
+                                                permiso={optionUser.eliminar}
+                                                accion={(e) => deleteItem(e, item.iid_enlace)}
+                                            />
                                         </td>
                                     </tr>
                                 ))
@@ -532,12 +532,12 @@ const LinksPage = () => {
                                     <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                 </div>
                                 <div className="mb-5  relative">
-                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
+                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link (Opcional)</label>
                                     <input type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
                                 <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" accept="image/*" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                    <input type="file" accept=".jpg, .jpeg, .png" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
                                 {
                                     errorModal &&
@@ -609,14 +609,17 @@ const LinksPage = () => {
                                         )
                                     }
                                 </div>
+                                <div className="text-xs text-red-300 mb-4 mt-1">
+                                    Formatos aceptados jpeg, jpg, png
+                                </div>
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
                                         <label htmlFor="stateItem" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs">Estado</label>
                                         <select id="stateItem" value={editState} className="bg-gray-50 border border-gray-300 rounded-lg p-2" onChange={(e) => setEditState(e.target.value)}>
-                                            
+
                                             <option hidden key="0" value="0">
-                                                    Seleccione
-                                                </option>
+                                                Seleccione
+                                            </option>
                                             {
                                                 statesList.map((state: any) => (
                                                     <option
@@ -625,10 +628,10 @@ const LinksPage = () => {
                                                     >
                                                         {capitalize(state.vvalor_texto_corto)}
                                                     </option>
-                                                    
+
                                                 ))
-                                        }
-                                                
+                                            }
+
                                         </select>
                                     </div>
                                 </div>

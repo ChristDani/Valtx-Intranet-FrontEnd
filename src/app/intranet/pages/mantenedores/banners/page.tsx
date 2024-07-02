@@ -570,12 +570,12 @@ const BannPage = () => {
                                     <textarea required name="vtextobreve" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editDesc} onInput={(e: any) => setEditDesc(e.target.value)}></textarea>
                                 </div>
                                 <div className="mb-5  relative">
-                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link</label>
+                                    <label htmlFor="vlink" className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Link (Opcional)</label>
                                     <input  type="text" name="vlink" className="bg-gray-50 border border-gray-300 rounded-lg p-2 w-full" value={editLink} onInput={(e: any) => setEditLink(e.target.value)}></input>
                                 </div>
                                 <div className="mb-5 hidden relative">
                                     <label htmlFor="vimagen" className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs" >Imagen</label>
-                                    <input type="file" accept="image/*" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
+                                    <input type="file" accept=".jpg, .jpeg, .png" ref={imageRef} name="vimagen" className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer" onChange={cambiarImagen}></input>
                                 </div>
                                 {
                                     errorModal &&
@@ -595,7 +595,7 @@ const BannPage = () => {
                                         </div>
                                     </ModalComponent>
                                 }
-                                <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+                                <div className="flex justify-center relative gap-1 border border-gray-300 p-1 rounded-xl">
                                     <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs" >Imagen</label>
                                     {
                                         Image != null || editImage != '' ? (
@@ -646,6 +646,9 @@ const BannPage = () => {
                                             </>
                                         )
                                     }
+                                </div>
+                                <div className="text-xs text-red-300 mb-4 mt-1">
+                                    Formatos aceptados jpeg, jpg, png
                                 </div>
                                 <div className="flex justify-start gap-4">
                                     <div className="mb-5 relative">
