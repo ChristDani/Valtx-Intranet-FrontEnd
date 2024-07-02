@@ -763,7 +763,7 @@ const confirmOp = async (e: any) => {
                   htmlFor="vlink"
                   className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
                 >
-                  Link
+                  Link (Opcional)
                 </label>
                 <input
                   type="text"
@@ -821,7 +821,7 @@ const confirmOp = async (e: any) => {
                   </div>
                 </ModalComponent>
               )}
-              <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+              <div className="flex justify-center relative gap-1 border border-gray-300 p-1 rounded-xl">
                 <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs">
                   Imagen
                 </label>
@@ -928,6 +928,9 @@ const confirmOp = async (e: any) => {
                   <></>
                 )}
               </div>
+              <div className="text-xs text-red-300 mb-4 mt-1">
+                                    Formatos aceptados jpeg, jpg, png
+                                </div>
               <div className="flex justify-start gap-4">
                 <div className="mb-5 relative">
                   <label

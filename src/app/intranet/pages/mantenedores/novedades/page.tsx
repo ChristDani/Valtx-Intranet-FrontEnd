@@ -766,7 +766,7 @@ const confirmOp = async (e: any) => {
                   htmlFor="vlink"
                   className="absolute left-2 p-1 bg-gray-50 transform -translate-y-1/2 text-xs"
                 >
-                  Link
+                  Link (Opcional)
                 </label>
                 <input
                   type="text"

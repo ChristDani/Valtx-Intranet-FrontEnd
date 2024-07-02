@@ -222,8 +222,7 @@ const EventPage = () => {
     const formattedTime = `${formattedHours}:${formattedMinutes}:${formattedSeconds} ${amOrPm}`;
 
     setFechaFormat(
-      `${diassemana[day - 1]}, ${dateNum} de ${
-        meses[month - 1]
+      `${diassemana[day - 1]}, ${dateNum} de ${meses[month - 1]
       } del ${year} / ${formattedTime}`
     );
   };
@@ -273,20 +272,20 @@ const EventPage = () => {
   };
 
   const [messageModal, setMessageModal] = useState("");
-  const validarNombre = (nombre: string, List: any,id:string) => {
-    if(modalState.update) {
-      return List.some((element:any)=>element.iid_evento !== id && element.vtitulo == nombre);
+  const validarNombre = (nombre: string, List: any, id: string) => {
+    if (modalState.update) {
+      return List.some((element: any) => element.iid_evento !== id && element.vtitulo == nombre);
     }
     return false;
   }
-const confirmOp = async (e: any) => {
+  const confirmOp = async (e: any) => {
     e.preventDefault();
     const fileInput = imageRef.current as HTMLInputElement;
-    if(validarNombre(editTitle, dataList,editId)) {
-        setMessageModal('Ya existe un registro con ese nombre');
-        setErrorModal(true);
-        return;
-      }
+    if (validarNombre(editTitle, dataList, editId)) {
+      setMessageModal('Ya existe un registro con ese nombre');
+      setErrorModal(true);
+      return;
+    }
 
     if (modalState.create) {
       if (Image != null) {
@@ -421,11 +420,11 @@ const confirmOp = async (e: any) => {
     const d = new Date(date);
     const day = String(d.getUTCDate()).padStart(2, "0");
     const monthnumber = String(d.getMonth()).padStart(2, "0");
-    const month= monthName(Number(monthnumber)-1);
+    const month = monthName(Number(monthnumber) - 1);
     return `${day} de ${month}`;
   }
-  const monthName =(date:number)=>{
-    const day = ['Enero','Febrero','Abril','Mayo','Junio','Julio','Agosto','Setiembre','Octubre','Noviembre','Diciembre'];
+  const monthName = (date: number) => {
+    const day = ['Enero', 'Febrero', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     return day[date];
   }
   const deleteImage = () => {
@@ -485,7 +484,7 @@ const confirmOp = async (e: any) => {
                   >
                     {item.vtitulo}
                   </th>
-                  <td className="px-6 py-4 text-center ">{DateRegister(item.dfecha )}</td>
+                  <td className="px-6 py-4 text-center ">{DateRegister(item.dfecha)}</td>
                   <td className="px-6 py-4 text-center">
                     <ImagenFront
                       className="rounded-lg h-20 w-auto mx-auto content-center"
@@ -667,13 +666,12 @@ const confirmOp = async (e: any) => {
       {/* modal */}
       <ModalComponent isOpen={modalIsOpen} closeModal={closeModal}>
         <div
-          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${
-            modalState.create || modalState.update
+          className={`bg-white rounded-xl m-auto p-6 min-h-52 ${modalState.create || modalState.update
               ? "w-[700px]"
               : modalState.delete
-              ? "w-[500px]"
-              : "w-[600px]"
-          }`}
+                ? "w-[500px]"
+                : "w-[600px]"
+            }`}
         >
           <div className="flex justify-between">
             <div className="capitalize">
@@ -682,10 +680,10 @@ const confirmOp = async (e: any) => {
                 {modalState.create
                   ? "Agregar"
                   : modalState.update
-                  ? "Actualizar"
-                  : modalState.delete
-                  ? "Eliminar"
-                  : "Detalles"}
+                    ? "Actualizar"
+                    : modalState.delete
+                      ? "Eliminar"
+                      : "Detalles"}
               </strong>
             </div>
             <div
@@ -779,7 +777,7 @@ const confirmOp = async (e: any) => {
                   onInput={(e: any) => setEditLink(e.target.value)}
                 ></input>
               </div>
-              <div className="mb-5 hidden relative">
+              <div className="hidden relative">
                 <label
                   htmlFor="vimagen"
                   className="absolute left-2 px-1 bg-gray-50 transform -translate-y-1/2 text-xs"
@@ -788,7 +786,7 @@ const confirmOp = async (e: any) => {
                 </label>
                 <input
                   type="file"
-                  accept="image/*"
+                  accept=".jpg, .jpeg, .png"
                   ref={imageRef}
                   name="vimagen"
                   className="file:hidden bg-gray-50 border border-gray-300 rounded-lg p-2 w-full cursor-pointer"
@@ -827,7 +825,7 @@ const confirmOp = async (e: any) => {
                   </div>
                 </ModalComponent>
               )}
-              <div className="flex justify-center mb-5 relative gap-1 border border-gray-300 p-1 rounded-xl">
+              <div className="flex justify-center relative gap-1 border border-gray-300 p-1 rounded-xl">
                 <label className="absolute left-2 px-1 bg-transparent backdrop-blur-sm transform -translate-y-1/2 text-xs">
                   Imagen
                 </label>
@@ -934,6 +932,9 @@ const confirmOp = async (e: any) => {
                   <></>
                 )}
               </div>
+              <div className="text-xs text-red-300 mb-4 mt-1">
+                Formatos aceptados jpeg, jpg, png
+              </div>
               <div className="flex justify-start gap-4">
                 <div className="mb-5 relative">
                   <label
@@ -1035,7 +1036,7 @@ const confirmOp = async (e: any) => {
                 <p className="mb-1 font-normal text-gray-700">
                   Orden: {editOrden}
                 </p>
-                <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado: 
+                <div className="mb-1 font-normal text-gray-700 flex gap-1">Estado:
                   {statesList.map((state: any) => (
                     <div key={state.iid_tabla_detalle}>
                       {state.iid_tabla_detalle == editState ? (
